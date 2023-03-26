@@ -4,6 +4,8 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SplashScreen from "./screens/SplashScreen";
 import HomeScreen from "./screens/HomeScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,8 +24,23 @@ export default function RootNavigation() {
                         headerShown: false,
                     }} />
                 <Stack.Screen
+                    name="RegisterScreen"
+                    component={RegisterScreen}
+                    options={{
+                        headerShown: false,
+                    }} />
+                <Stack.Screen
+                    name="LoginScreen"
+                    component={LoginScreen}
+                    options={{
+                        headerShown: false,
+                    }} />
+                <Stack.Screen
                     name="HomeScreen"
-                    component={HomeScreen} />
+                    component={HomeScreen}
+                    options={{
+                        headerShown: false,
+                    }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
