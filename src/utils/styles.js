@@ -6,14 +6,14 @@ export const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#16337E',
     },
     box: {
         maxWidth: 300,
         width: '100%',
         borderRadius: 20,
         padding: 20,
-        backgroundColor: '#F3EDF6',
+        backgroundColor: 'white',
         shadowColor: '#A8A6A6',
         shadowOffset: {
             width: 3,
