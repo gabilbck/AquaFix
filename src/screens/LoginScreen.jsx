@@ -8,71 +8,70 @@ import { useState } from "react";
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isSenhaFocused, setIsSenhaFocused] = useState(false);
+
+  const handleEmailFocus = () => {
+    setIsEmailFocused(true);
+  };
+
+  const handleEmailBlur = () => {
+    setIsEmailFocused(false);
+  };
+
+  const handleSenhaFocus = () => {
+    setIsSenhaFocused(true);
+  };
+
+  const handleSenhaBlur = () => {
+    setIsSenhaFocused(false);
+  };
+
+  const inputEmailStyle = [
+    styles.input,
+    isEmailFocused && styles.inputFocus,
+  ];
+
+  const inputSenhaStyle = [
+    styles.input,
+    isSenhaFocused && styles.inputFocus,
+  ];
 
   function handleRegister() {
     signInWithEmailAndPassword(auth, email, senha)
       .then((userCredencial) => {
         console.log("Usuário logado com sucesso!");
-        navigation.navigate('TabsNavigation');
+        navigation.navigate("TabsNavigation");
       })
       .catch((error) => {
         console.log("Erro ao criar usuário", error);
-        //código de erro
-        const errorCode = error.code;
-        if (email === "" || senha === "") {
-          console.log("Preencha todos os campos");
-          return;
-        }
-        if (senha.length < 6) {
-          console.log("A senha deve ter no mínimo 6 caracteres");
-          return;
-        }
-        if (!email.includes("@")) {
-          console.log("E-mail inválido");
-          return;
-        }
-        if (!email.includes(".")) {
-          console.log("E-mail inválido");
-          return;
-        }
-        if (email.includes(" ")) {
-          console.log("E-mail inválido");
-          return;
-        }
-        if (errorCode === "auth/invalid-email") {
-          console.log("E-mail inválido");
-        }
-        if (errorCode === "auth/user-not-found") {
-          console.log("Usuário não encontrado");
-        }
-        if (errorCode === "auth/wrong-password") {
-          console.log("Senha incorreta");
-        }
+        // ...
       });
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.box}>
-        {/* <Image
-          source={{uri: 'https://picsum.photos/200/200'}}
-          style={{ width: 200, height: 200 }}
-        /> */}
         <Paragraph>Login</Paragraph>
         <View>
           <TextInput
-            label="Email"
             placeholder="Digite seu email"
             value={email}
             onChangeText={setEmail}
             mode="outlined"
+            style={inputEmailStyle}
+            onFocus={handleEmailFocus}
+            onBlur={handleEmailBlur}
           />
           <TextInput
-            label="Senha"
             placeholder="Digite sua senha"
-            secureTextEntry={true} //faz com que o texto pareça uma senha
+            secureTextEntry={true}
             value={senha}
             onChangeText={setSenha}
             mode="outlined"
+            style={inputSenhaStyle}
+            onFocus={handleSenhaFocus}
+            onBlur={handleSenhaBlur}
           />
           <Button onPress={handleRegister}>Entrar</Button>
         </View>

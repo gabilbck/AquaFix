@@ -29,4 +29,12 @@ export const styles = StyleSheet.create({
     distancia: {
         margin: 20,
     },
+    input: {
+        boxShadow: 'inset 0 5 10 0 rgba(0, 0, 0, 0.5)',
+
+    },
+    inputFocus: {
+        transform: "translateY('5px')",
+        boxShadow: 'inset 0px 10px 20px 2px rgba(0, 0, 0, 0.25)',
+    },
 });
