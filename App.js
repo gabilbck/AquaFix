@@ -2,6 +2,7 @@ import RootNavigation from './src';
 
 
 /**
+ * @function App
  * @author Adriano Ramos <adriano.ramos3208@gmail.com>
  * @since 0.1.0
  * 
