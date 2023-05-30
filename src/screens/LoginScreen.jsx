@@ -4,6 +4,18 @@ import { styles } from "../utils/styles";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useState } from "react";
+/**
+ * Tela de login
+ * @auth Gabrieli Eduarda Lembeck
+ * @name LoginScreen
+ * @description Tela de login do aplicativo
+ * @function LoginScreen faaz a autenticação do usuário
+ * @param {Object} navigation
+ * @export RootNavigation - navegação principal
+ * @return {React.Component} Tela de login  do aplicativo
+ * @since 1.0.0
+
+ */
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");

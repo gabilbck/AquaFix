@@ -7,6 +7,15 @@ import HomeScreen from "./screens/HomeScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 
+/**
+ * @auth Gabrieli Eduarda Lembeck
+ * @since 1.0.0
+ * @description Função que retorna a navegação de telas
+ * @param {Object} navigation
+ * @export RootNavigation função que retorna a navegação de telas
+ * @return {React.Component} navegação principal
+ */
+
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigation() {
