@@ -5,21 +5,6 @@ import { useState } from "react";
 import { auth } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
-<<<<<<< HEAD
-
-/**
- * @function RegisterScreen
- * @author Gabrieli Eduarda Lembeck 
- * @since 0.1.0
- * 
- * @description Tela de cadastro do aplicativo
- * @param {Object} navigation Objeto de navegação 
- * @export {Function} RegisterScreen
- * @return {React.Component} 
- */
-
-
-=======
 /**
  * Tela de cadastro
  * @auth Gabrieli Eduarda Lembeck
@@ -32,7 +17,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
  * @since 1.0.0
  */
 
->>>>>>> f906246 (add)
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
