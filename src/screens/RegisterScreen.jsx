@@ -5,6 +5,19 @@ import { useState } from "react";
 import { auth } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
+
+/**
+ * @function RegisterScreen
+ * @author Gabrieli Eduarda Lembeck 
+ * @since 0.1.0
+ * 
+ * @description Tela de cadastro do aplicativo
+ * @param {Object} navigation Objeto de navegação 
+ * @export {Function} RegisterScreen
+ * @return {React.Component} 
+ */
+
+
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
