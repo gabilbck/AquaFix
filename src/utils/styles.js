@@ -1,5 +1,17 @@
 import { StyleSheet } from "react-native";
 
+/**
+ * @description Arquivo de estilos globais
+ * @param {object} styles Objeto com os estilos
+ * @param {object} styles.container Estilo do container
+ * @param {object} styles.box Estilo da caixa
+ * @param {object} styles.titulo Estilo do título
+ * @param {object} styles.distancia Estilo da distância
+ * @param {object} styles.input Estilo do input
+ * @param {object} styles.inputFocus Estilo do input quando focado
+ * @since 0.1.0
+ */
+
 // CSS TEMPORÁRIO!
 export const styles = StyleSheet.create({
     container: {
