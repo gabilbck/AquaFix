@@ -9,12 +9,11 @@ import { useState } from "react";
  * @auth Gabrieli Eduarda Lembeck
  * @name LoginScreen
  * @description Tela de login do aplicativo
- * @function LoginScreen faaz a autenticação do usuário
+ * @function LoginScreen faz a autenticação do usuário
  * @param {Object} navigation
  * @export RootNavigation - navegação principal
  * @return {React.Component} Tela de login  do aplicativo
  * @since 1.0.0
-
  */
 
 export default function LoginScreen({ navigation }) {
