@@ -21,7 +21,9 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigation() {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator
+                initialRouteName="LoginScreen"
+            >
                 <Stack.Screen
                     name="SplashScreen"
                     component={SplashScreen}

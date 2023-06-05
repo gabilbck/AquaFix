@@ -14,39 +14,59 @@ import { StyleSheet } from "react-native";
 
 // CSS TEMPORÁRIO!
 export const styles = StyleSheet.create({
-    container: {
+    container: { //Base: PRIMEIRO VIEW DE TODOS AZUL
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#16337E',
+        backgroundColor: "#16337E",
     },
-    box: {
-        maxWidth: 300,
-        width: '100%',
-        borderRadius: 20,
-        padding: 20,
-        backgroundColor: 'white',
-        shadowColor: '#A8A6A6',
-        shadowOffset: {
-            width: 3,
-            height: 3,
-        },
+    imagemTopo:{ //Base: IMAGEM DE CIMA
+        alignItems: "center",
+        paddingVertical: 40,
+    },
+    conteudo: { //Base: CONTEÚDO ESCRITO COM BOTOES TEXTOS ETC
+        backgroundColor: "#F4F4F4",
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        paddingTop: 40,
+        paddingHorizontal: 40,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "flex-start",
+        gap: 20,
     },
     titulo: {
-        fontSize: 20,
+        fontSize: 25,
         textAlign: 'center',
         margin: 10,
-        textDecorationStyle: 'bold',
-    },
-    distancia: {
-        margin: 20,
+        color: '#16337E',
+        fontWeight: 'bold',
     },
     input: {
-        boxShadow: 'inset 0 5 10 0 rgba(0, 0, 0, 0.5)',
-
+        height: 50,
+        width: 270,
+        fontSize: 17,
+        padding: 10,
+        // outros estilos do botão...
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        borderRadius: 10,
+        borderStyle: 'none',
+        borderWidth: 1,
+        outline: 'none',
+        backgroundColor: 'white',
     },
-    inputFocus: {
-        transform: "translateY('5px')",
-        boxShadow: 'inset 0px 10px 20px 2px rgba(0, 0, 0, 0.25)',
-    },
+    botao:{
+        height: 50,
+        fontSize: 17,
+        padding: 10,
+        backgroundColor: '#16337E',
+        borderRadius: 5,
+        color: 'white',
+        textDecorationColor: 'white',
+    }
 });

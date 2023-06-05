@@ -1,5 +1,5 @@
-import { Button, Paragraph, TextInput } from "react-native-paper";
-import { View } from "react-native";
+import { Button, Text } from "react-native-paper";
+import { Image, TextInput, View } from "react-native";
 import { styles } from "../utils/styles";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
@@ -19,34 +19,6 @@ import { useState } from "react";
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [isEmailFocused, setIsEmailFocused] = useState(false);
-  const [isSenhaFocused, setIsSenhaFocused] = useState(false);
-
-  const handleEmailFocus = () => {
-    setIsEmailFocused(true);
-  };
-
-  const handleEmailBlur = () => {
-    setIsEmailFocused(false);
-  };
-
-  const handleSenhaFocus = () => {
-    setIsSenhaFocused(true);
-  };
-
-  const handleSenhaBlur = () => {
-    setIsSenhaFocused(false);
-  };
-
-  const inputEmailStyle = [
-    styles.input,
-    isEmailFocused && styles.inputFocus,
-  ];
-
-  const inputSenhaStyle = [
-    styles.input,
-    isSenhaFocused && styles.inputFocus,
-  ];
 
   function handleRegister() {
     signInWithEmailAndPassword(auth, email, senha)
@@ -62,30 +34,36 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.box}>
-        <Paragraph>Login</Paragraph>
-        <View>
+      {/* Parte que aparece a imagem: azul e logo */}
+      <View style={styles.imagemTopo}>
+        <Image
+          source={require("/assets/img/logocomp-branca.png")}
+          style={{ width: 200, height: 127 }}
+        />
+      </View>
+      {/* Parte que aparece o conteúdo: cinza/branco */}
+      <View style={styles.conteudo}>
+        <Text style={styles.titulo}>LOGIN</Text>
           <TextInput
             placeholder="Digite seu email"
             value={email}
             onChangeText={setEmail}
-            mode="outlined"
-            style={inputEmailStyle}
-            onFocus={handleEmailFocus}
-            onBlur={handleEmailBlur}
+            mode="disabled"
+            style={styles.input}
           />
           <TextInput
             placeholder="Digite sua senha"
             secureTextEntry={true}
             value={senha}
             onChangeText={setSenha}
-            mode="outlined"
-            style={inputSenhaStyle}
-            onFocus={handleSenhaFocus}
-            onBlur={handleSenhaBlur}
+            mode="disabled"
+            style={styles.input}
           />
-          <Button onPress={handleRegister}>Entrar</Button>
-        </View>
+          <Button 
+            onPress={handleRegister}
+            style={styles.botao}
+            textColor="white"
+          >ENTRAR</Button>
       </View>
     </View>
   );
