@@ -20,7 +20,7 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  function handleRegister() {
+  function handleRegister({ navigation}) {
     signInWithEmailAndPassword(auth, email, senha)
       .then((userCredencial) => {
         console.log("Usuário logado com sucesso!");
@@ -71,13 +71,13 @@ export default function LoginScreen({ navigation }) {
             <View style={styles.coluna}>
               <Text>Não tem conta?</Text>
               <Button textColor={'black'}>
-                <Text style={styles.botaoPreto}>Cadastre-se!</Text>
+                <Text style={styles.botaoPreto} onPress={navigation.navigate("RegisterScreen")}>Cadastre-se!</Text>
               </Button>
             </View>
             <View style={styles.coluna}>
               <Text>Esqueceu a senha?</Text>
               <Button textColor={'black'}>
-                <Text style={styles.botaoPreto}>Recuperar Senha</Text>
+                <Text style={styles.botaoPreto} onPress={navigation.navigate("HomeScreen")}>Recuperar Senha</Text>
               </Button>
             </View>
           </View>

@@ -20,7 +20,7 @@ export default function SplashScreen({navigation}) {
     // },1000)
 
     setTimeout(() =>{
-      navigation.navigate('RegisterScreen');
+      navigation.navigate('LoginScreen');
       },1000)
 
     return (
