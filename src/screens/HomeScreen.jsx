@@ -12,6 +12,13 @@ import { styles } from "../utils/styles";
  * @since 1.0.0
  */
 
+/**
+ *
+ *
+ * @export
+ * @param {*} {navigation}
+ * @return {*} 
+ */
 export default function HomeScreen({navigation}) {
   return (
     <View style={styles.container}>
