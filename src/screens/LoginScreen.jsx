@@ -43,7 +43,8 @@ export default function LoginScreen({ navigation }) {
       </View>
       {/* Parte que aparece o conteúdo: cinza/branco */}
       <View style={styles.conteudo}>
-        <Text style={styles.titulo}>LOGIN</Text>
+        <View style={styles.containerInner}>
+          <Text style={styles.titulo}>LOGIN</Text>
           <TextInput
             placeholder="Digite seu email"
             value={email}
@@ -59,11 +60,28 @@ export default function LoginScreen({ navigation }) {
             mode="disabled"
             style={styles.input}
           />
-          <Button 
+          <Button
             onPress={handleRegister}
             style={styles.botao}
             textColor="white"
-          >ENTRAR</Button>
+          >
+            ENTRAR
+          </Button>
+          <View style={styles.linha}>
+            <View style={styles.coluna}>
+              <Text>Não tem conta?</Text>
+              <Button textColor={'black'}>
+                <Text style={styles.botaoPreto}>Cadastre-se!</Text>
+              </Button>
+            </View>
+            <View style={styles.coluna}>
+              <Text>Esqueceu a senha?</Text>
+              <Button textColor={'black'}>
+                <Text style={styles.botaoPreto}>Recuperar Senha</Text>
+              </Button>
+            </View>
+          </View>
+        </View>
       </View>
     </View>
   );

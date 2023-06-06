@@ -18,7 +18,11 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#16337E",
     },
-    imagemTopo:{ //Base: IMAGEM DE CIMA
+    containerInner: {
+        maxWidth: 500,
+        width: "100%",
+    },
+    imagemTopo: { //Base: IMAGEM DE CIMA
         alignItems: "center",
         paddingVertical: 40,
     },
@@ -31,7 +35,6 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "flex-start",
-        gap: 20,
     },
     titulo: {
         fontSize: 25,
@@ -39,12 +42,14 @@ export const styles = StyleSheet.create({
         margin: 10,
         color: '#16337E',
         fontWeight: 'bold',
+        margin: 40,
     },
     input: {
         height: 50,
-        width: 270,
+        width: "100%",
         fontSize: 17,
         padding: 10,
+        alignSelf: 'stretch',
         // outros estilos do botão...
         shadowColor: '#000',
         shadowOffset: {
@@ -59,13 +64,28 @@ export const styles = StyleSheet.create({
         borderWidth: 1,
         outline: 'none',
         backgroundColor: 'white',
+        marginVertical: 12,
     },
-    botao:{
+    botao: {
         fontSize: 17,
         padding: 4,
         backgroundColor: '#16337E',
         borderRadius: 5,
         color: 'white',
         textDecorationColor: 'white',
-    }
+        alignSelf: 'center',
+        marginVertical: 40,
+    },
+    botaoPreto:{
+        fontWeight: 'bolder',
+    },
+    linha: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        justifyContent: 'space-between',
+    },
+    coluna: {
+        flex: 1,
+        alignItems: 'center',
+    },
 });
