@@ -14,6 +14,7 @@ import { StyleSheet } from "react-native";
 
 // CSS TEMPORÁRIO!
 export const styles = StyleSheet.create({
+/** Cadastros/Logins/etc */
     container: { //Base: PRIMEIRO VIEW DE TODOS AZUL
         flex: 1,
         backgroundColor: "#16337E",
@@ -22,11 +23,11 @@ export const styles = StyleSheet.create({
         maxWidth: 500,
         width: "100%",
     },
-    imagemTopo: { //Base: IMAGEM DE CIMA
+    imagemTopo: { //logo DE CIMA
         alignItems: "center",
         paddingVertical: 40,
     },
-    conteudo: { //Base: CONTEÚDO ESCRITO COM BOTOES TEXTOS ETC
+    conteudo: { //CONTEÚDO ESCRITO COM BOTOES TEXTOS ETC => para cadastros
         backgroundColor: "#F4F4F4",
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
@@ -50,7 +51,6 @@ export const styles = StyleSheet.create({
         fontSize: 17,
         padding: 10,
         alignSelf: 'stretch',
-        // outros estilos do botão...
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
