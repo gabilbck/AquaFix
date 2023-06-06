@@ -61,9 +61,8 @@ export const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     botao:{
-        height: 50,
         fontSize: 17,
-        padding: 10,
+        padding: 4,
         backgroundColor: '#16337E',
         borderRadius: 5,
         color: 'white',
