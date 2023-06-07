@@ -108,7 +108,7 @@ export default function LoginScreen({ navigation }) {
             </View>
             <View style={styles.coluna}>
               <Text>Esqueceu a senha?</Text>
-              <Button textColor={'black'} onPress={() => navigation.navigate("HomeScreen")}>
+              <Button textColor={'black'} onPress={() => navigation.navigate("RecuperarSenha")}>
                 <Text style={styles.botaoPreto}>Recuperar Senha</Text>
               </Button>
             </View>

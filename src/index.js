@@ -6,6 +6,8 @@ import SplashScreen from "./screens/SplashScreen";
 import HomeScreen from "./screens/HomeScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
+import RecuperarSenha from "./screens/RecuperarSenha";
+
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -49,6 +51,12 @@ export default function RootNavigation({ navigation}) {
                 <Stack.Screen
                     name="HomeScreen"
                     component={HomeScreen}
+                    options={{
+                        headerShown: false,
+                    }} />
+                <Stack.Screen
+                    name="RecuperarSenha"
+                    component={RecuperarSenha}
                     options={{
                         headerShown: false,
                     }} />

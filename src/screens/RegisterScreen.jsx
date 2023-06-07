@@ -1,5 +1,5 @@
-import { Button, Paragraph, TextInput } from "react-native-paper";
-import { Image, Text, View } from "react-native";
+import { Button, Paragraph } from "react-native-paper";
+import { Image, Text, View, TextInput } from "react-native";
 import { styles } from "../utils/styles";
 import { useState } from "react";
 import { auth } from "../config/firebase";
