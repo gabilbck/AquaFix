@@ -1,5 +1,5 @@
 import { Button, Paragraph, TextInput } from "react-native-paper";
-import { View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { styles } from "../utils/styles";
 import { useState } from "react";
 import { auth } from "../config/firebase";
@@ -61,26 +61,42 @@ export default function RegisterScreen({ navigation }) {
     }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.box}>
-        <Paragraph>Realize o seu cadastro {email}</Paragraph>
-        <TextInput
-          label="Email"
-          placeholder="Digite seu e-mail"
-          value={email}
-          onChangeText={setEmail}
-          mode="outlined"
+<View style={styles.container}>
+      {/* Parte que aparece a imagem: azul e logo */}
+      <View style={styles.imagemTopo}>
+        <Image
+          source={require("/assets/img/logocomp-branca.png")}
+          style={{ width: 200, height: 127 }}
         />
-        <TextInput
-          label={"Senha"}
-          placeholder={"Digite sua senha"}
-          value={senha}
-          onChangeText={setSenha}
-          secureTextEntry={true} //faz com que o texto pareça uma senha
-          mode="outlined"
-        />
-        <Button onPress={handleRegister}>Registre-se</Button>
-        <Button onPress={handleLogin}>Já tenho uma conta</Button>
+      </View>
+      {/* Parte que aparece o conteúdo: cinza/branco */}
+      <View style={styles.conteudo}>
+        <View style={styles.containerInner}>
+          <Text style={styles.titulo}>REGISTRE-SE</Text>
+          <TextInput
+            placeholder="Digite seu email"
+            value={email}
+            onChangeText={setEmail}
+            mode="disabled"
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Digite sua senha"
+            secureTextEntry={true}
+            value={senha}
+            onChangeText={setSenha}
+            mode="disabled"
+            style={styles.input}
+          />
+          <Button
+            onPress={handleRegister}
+            style={styles.botao}
+            textColor="white"
+          >
+            REGISTRAR
+          </Button>
+
+        </View>
       </View>
     </View>
   );
