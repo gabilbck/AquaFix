@@ -96,5 +96,6 @@ export default function RegisterScreen({ navigation }) {
         </View>
       </View>
     </View>
+    // AaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAa
   );
 }
