@@ -15,12 +15,12 @@ import { getAuth } from "firebase/auth";
  * @since 0.1.0 
  */
 const firebaseConfig = {
-  apiKey: "AIzaSyC3peghs0Z1zY179lW5OILGFVUkLHsFcTQ",
-  authDomain: "triste-ea550.firebaseapp.com",
-  projectId: "triste-ea550",
-  storageBucket: "triste-ea550.appspot.com",
-  messagingSenderId: "23384883368",
-  appId: "1:23384883368:web:862036d54a24ef63d4029d"
+  apiKey: "AIzaSyBr1OGo5lOFQ4aTsYQRADiP5WqyDG4zGso",
+  authDomain: "aquafix-4df2e.firebaseapp.com",
+  projectId: "aquafix-4df2e",
+  storageBucket: "aquafix-4df2e.appspot.com",
+  messagingSenderId: "699173900788",
+  appId: "1:699173900788:web:d88401edd38056c75c69a1"
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
