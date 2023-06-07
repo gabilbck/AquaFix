@@ -2,100 +2,132 @@ import { Button, Paragraph } from "react-native-paper";
 import { Image, Text, View, TextInput } from "react-native";
 import { styles } from "../utils/styles";
 import { useState } from "react";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-
-/**
- * Tela de cadastro
- * @auth Gabrieli Eduarda Lembeck
- * @name RegisterScreen
- * @description Tela de cadastro do aplicativo
- * @function RegisterScreen faz o cadastro do usuário
- * @param {Object} navigation
- * @export RootNavigation - navegação principal
- * @return {React.Component} Tela de cadastro do aplicativo
- * @since 1.0.0
- */
+import { doc, setDoc } from "firebase/firestore";
 
 export default function RegisterScreen({ navigation }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [neighborhood, setNeighborhood] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [senha, setSenha] = useState("");
+  const [confirmSenha, setConfirmSenha] = useState("");
 
   function handleRegister() {
+    if (senha !== confirmSenha) {
+      console.log("A senha e a confirmação de senha não correspondem");
+      return;
+    }
+
     createUserWithEmailAndPassword(auth, email, senha)
-      .then((userCredencial) => {
-        console.log("Usuário criado com sucesso!");
-        navigation.navigate("LoginScreen");
+      .then((userCredential) => {
+        console.log("Usuário criado com sucesso!", userCredential);
+        const uid = userCredential.user.uid;
+
+        setDoc(doc(db, "usuario", uid), {
+          adm: false,
+          bio_usu: "",
+          cep_usu: zipCode,
+          // cpf_usu: "",
+          email_usu: email,
+          // foto_usu: "",
+          // nome_real_usu: "",
+          nome_usu: name,
+          senha_usu: senha,
+          whatsapp_usu: phone,
+        }).then(() => {
+          console.log("Document successfully written!");
+          navigation.navigate("LoginScreen");
+        });
       })
       .catch((error) => {
         console.log("Erro ao criar usuário", error);
-
-        //código de erro
-        const errorCode = error.code;
-        //mensagem de erro
-        if (errorCode === "auth/weak-password") {
-          console.log("A senha deve ter no mínimo 6 caracteres");
-        }
-        if (errorCode === "auth/email-already-in-use") {
-          console.log("Este e-mail já está em uso");
-        }
-        if (errorCode === "auth/invalid-email") {
-          console.log("E-mail inválido");
-        }
-        if (errorCode === "auth/operation-not-allowed") {
-          console.log("Operação não permitida");
-        }
-        if (errorCode === "auth/argument-error") {
-          console.log("Argumento inválido");
-        }
-        if (errorCode === "auth/invalid-credential") {
-          console.log("Credencial inválida");
-        }
-        if (errorCode === "auth/internal-error") {
-          console.log("Erro interno");
-        }
+        // Handle error codes
       });
   }
 
-  return (
-<View style={styles.container}>
-      {/* Parte que aparece a imagem: azul e logo */}
-      <View style={styles.imagemTopo}>
-        <Image
-          source={require("/assets/img/logocomp-branca.png")}
-          style={{ width: 200, height: 127 }}
-        />
-      </View>
-      {/* Parte que aparece o conteúdo: cinza/branco */}
-      <View style={styles.conteudo}>
-        <View style={styles.containerInner}>
-          <Text style={styles.titulo}>REGISTRE-SE</Text>
-          <TextInput
-            placeholder="Digite seu email"
-            value={email}
-            onChangeText={setEmail}
-            mode="disabled"
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Digite sua senha"
-            secureTextEntry={true}
-            value={senha}
-            onChangeText={setSenha}
-            mode="disabled"
-            style={styles.input}
-          />
-          <Button
-            onPress={handleRegister}
-            style={styles.botao}
-            textColor="white"
-          >
-            REGISTRAR
-          </Button>
+  function formatPhoneNumber(value) {
+    // Apply the desired phone number mask here
+    const formattedValue = value
+      .replace(/\D/g, "") // Remove non-numeric characters
+      .replace(/(\d{2})(\d)/, "($1) $2") // Add parentheses to the area code
+      .replace(/(\d{5})(\d)/, "$1-$2") // Add hyphen to the main number
+      .replace(/(\d{4})(\d)/, "$1-$2") // Add hyphen to the main number (for 9-digit numbers)
+      .slice(0, 15); // Limit the length of the input
+    return formattedValue;
+  }
 
+  return (
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.imagemTopo}>
+          <Image
+            source={require("/assets/img/logocomp-branca.png")}
+            style={{ width: 200, height: 127 }}
+          />
         </View>
-      </View>
-    </View>
-    // AaAaAaAaAaAaAaAaAaAaAaAaAaAaAaAa
+        <View style={styles.conteudo}>
+          <View style={styles.containerInner}>
+            <Text style={styles.titulo}>REGISTRE-SE</Text>
+            <TextInput
+              placeholder="Digite seu nome"
+              value={name}
+              onChangeText={setName}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Digite seu email"
+              value={email}
+              onChangeText={setEmail}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Digite seu telefone"
+              value={phone}
+              onChangeText={(value) => setPhone(formatPhoneNumber(value))}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Digite seu bairro"
+              value={neighborhood}
+              onChangeText={setNeighborhood}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Digite seu endereço"
+              value={streetAddress}
+              onChangeText={setStreetAddress}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Digite seu CEP"
+              value={zipCode}
+              onChangeText={setZipCode}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Digite sua senha"
+              secureTextEntry={true}
+              value={senha}
+              onChangeText={setSenha}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Confirme sua senha"
+              secureTextEntry={true}
+              value={confirmSenha}
+              onChangeText={setConfirmSenha}
+              style={styles.input}
+            />
+            <Button onPress={handleRegister} style={styles.botao}>
+              REGISTRAR
+            </Button>
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
