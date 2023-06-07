@@ -1,5 +1,5 @@
 import { Button, Paragraph } from "react-native-paper";
-import { Image, Text, View, TextInput } from "react-native";
+import { Image, Text, View, TextInput, KeyboardAvoidingView, ScrollView } from "react-native";
 import { styles } from "../utils/styles";
 import { useState } from "react";
 import { auth, db } from "../config/firebase";
@@ -7,14 +7,16 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
 export default function RegisterScreen({ navigation }) {
-  const [name, setName] = useState("");
+  const [nomeUsu, setNomeUsu] = useState("");
+  const [nomeCompleto, setNomeCompleto] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [streetAddress, setStreetAddress] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmSenha, setConfirmSenha] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [bio, setBio] = useState("");
+  const [photo, setPhoto] = useState("");
+  const [whatsappUsu, setWhatsappUsu] = useState("");
 
   function handleRegister() {
     if (senha !== confirmSenha) {
@@ -29,15 +31,15 @@ export default function RegisterScreen({ navigation }) {
 
         setDoc(doc(db, "usuario", uid), {
           adm: false,
-          bio_usu: "",
+          bio_usu: 'Olá, eu sou '+nomeUsu,
           cep_usu: zipCode,
-          // cpf_usu: "",
+          cpf_usu: "",
           email_usu: email,
-          // foto_usu: "",
-          // nome_real_usu: "",
-          nome_usu: name,
+          foto_usu: "",
+          nome_real_usu: nomeCompleto,
+          nome_usu: nomeUsu,
           senha_usu: senha,
-          whatsapp_usu: phone,
+          whatsapp_usu: whatsappUsu,
         }).then(() => {
           console.log("Document successfully written!");
           navigation.navigate("LoginScreen");
@@ -73,9 +75,15 @@ export default function RegisterScreen({ navigation }) {
           <View style={styles.containerInner}>
             <Text style={styles.titulo}>REGISTRE-SE</Text>
             <TextInput
-              placeholder="Digite seu nome"
-              value={name}
-              onChangeText={setName}
+              placeholder="Digite seu nome completo"
+              value={nomeCompleto}
+              onChangeText={setNomeCompleto}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Digite seu nome de usuário"
+              value={nomeUsu}
+              onChangeText={setNomeUsu}
               style={styles.input}
             />
             <TextInput
@@ -86,20 +94,8 @@ export default function RegisterScreen({ navigation }) {
             />
             <TextInput
               placeholder="Digite seu telefone"
-              value={phone}
-              onChangeText={(value) => setPhone(formatPhoneNumber(value))}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Digite seu bairro"
-              value={neighborhood}
-              onChangeText={setNeighborhood}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Digite seu endereço"
-              value={streetAddress}
-              onChangeText={setStreetAddress}
+              value={whatsappUsu}
+              onChangeText={(value) => setWhatsappUsu(formatPhoneNumber(value))}
               style={styles.input}
             />
             <TextInput
@@ -122,7 +118,7 @@ export default function RegisterScreen({ navigation }) {
               onChangeText={setConfirmSenha}
               style={styles.input}
             />
-            <Button onPress={handleRegister} style={styles.botao}>
+            <Button textColor={'white'} onPress={handleRegister} style={styles.botao}>
               REGISTRAR
             </Button>
           </View>
