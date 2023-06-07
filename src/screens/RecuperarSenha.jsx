@@ -42,12 +42,7 @@ export default function RecuperarSenha({ navigation }) {
             style={styles.input}
             onChangeText={setEmail}
           />
-
-          <Button
-            textColor={"white"}
-            style={styles.botao}
-            onPress={handlePasswordReset}
-          >
+          <Button style={styles.botao} textColor="white"    onPress={handlePasswordReset}>
             Enviar código de verificação
           </Button>
         </View>
