@@ -26,7 +26,7 @@ export default function LoginScreen({ navigation }) {
     signInWithEmailAndPassword(auth, email, senha)
       .then((userCredencial) => {
         console.log("Usuário logado com sucesso!");
-        navigation.navigate("IniciarJogo");
+        navigation.navigate("HomeScreen");
       })
       .catch((error) => {
         console.log("Erro ao criar usuário", error);

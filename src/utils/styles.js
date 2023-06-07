@@ -62,7 +62,6 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         borderStyle: 'none',
         borderWidth: 1,
-        outline: 'none',
         backgroundColor: 'white',
         marginVertical: 12,
     },

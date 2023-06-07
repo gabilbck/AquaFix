@@ -56,9 +56,6 @@ export default function RegisterScreen({ navigation }) {
         }
       });
   }
-    function handleLogin() {
-      navigation.navigate("LoginScreen");
-    }
 
   return (
 <View style={styles.container}>
