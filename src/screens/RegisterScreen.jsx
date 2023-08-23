@@ -41,7 +41,7 @@ export default function RegisterScreen({ navigation }) {
           senha_usu: senha,
           whatsapp_usu: whatsappUsu,
         }).then(() => {
-          console.log("Document successfully written!");
+          console.log("Cadastrado!");
           navigation.navigate("LoginScreen");
         });
       })

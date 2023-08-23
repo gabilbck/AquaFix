@@ -1,8 +1,6 @@
 import { Image, View } from "react-native";
 import { Text } from "react-native-paper";
 import { styles } from "../utils/styles";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 /**
  * @auth Gabrieli Eduarda Lembeck
  * @name LoginScreen
@@ -21,7 +19,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
  * @param {*} {navigation}
  * @return {*} 
  */
-export default function HomeScreen({navigation}) {
+export default function ProfileScreen({navigation}) {
   return (
     <View style={styles.container}>
       {/* Parte que aparece a imagem: azul e logo */}
@@ -34,30 +32,9 @@ export default function HomeScreen({navigation}) {
       {/* Parte que aparece o conteúdo: cinza/branco */}
       <View style={styles.conteudo}>
         <View style={styles.containerInner}>
-          <Text style={styles.titulo}>HOME</Text>
+          <Text style={styles.titulo}>PERFIL</Text>
         </View>
-        
       </View>
     </View>
   );
-}
-
-const Tabs = createMaterialBottomTabNavigator();
-
-function TabsNavigation({navigation}) {
-    return (
-        <Tabs.Navigator 
-        activeColor="#e91e63" 
-        style={{ backgroundColor: 'tomato' }}>
-            <Tabs.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-                options={{
-                    tabBarLabel: 'Home',
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={26} />
-                    ),
-                }} />
-        </Tabs.Navigator>
-    );
 }

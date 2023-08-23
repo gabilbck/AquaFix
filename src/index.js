@@ -1,12 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SplashScreen from "./screens/SplashScreen";
 import HomeScreen from "./screens/HomeScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RecuperarSenha from "./screens/RecuperarSenha";
+import ProfileScreen from "./screens/ProfileScreen";
+import TabsNavigation from "./screens/HomeScreen"
 
 
 /**
@@ -60,27 +60,13 @@ export default function RootNavigation({ navigation}) {
                     options={{
                         headerShown: false,
                     }} />
+                <Stack.Screen
+                    name="ProfileScreen"
+                    component={ProfileScreen}
+                    options={{
+                        headerShown: false,
+                    }} />
             </Stack.Navigator>
         </NavigationContainer>
-    );
-}
-
-const Tabs = createMaterialBottomTabNavigator();
-
-function TabsNavigation() {
-    return (
-        <Tabs.Navigator 
-        activeColor="#e91e63" 
-        style={{ backgroundColor: 'tomato' }}>
-            <Tabs.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-                options={{
-                    tabBarLabel: 'Home',
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={26} />
-                    ),
-                }} />
-        </Tabs.Navigator>
     );
 }
