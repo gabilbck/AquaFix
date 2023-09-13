@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
         borderRadius: 10,
-        borderStyle: 'none',
+        //borderStyle: 'none',
         borderWidth: 1,
         backgroundColor: 'white',
         marginVertical: 12,
@@ -76,7 +76,7 @@ export const styles = StyleSheet.create({
         marginVertical: 40,
     },
     botaoPreto:{
-        fontWeight: 'bolder',
+        fontWeight: 'bold',
     },
     linha: {
         flexDirection: 'row',
