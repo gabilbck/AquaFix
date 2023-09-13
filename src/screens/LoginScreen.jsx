@@ -1,5 +1,6 @@
 import { Button, Text } from "react-native-paper";
-import { Image, TextInput, View } from "react-native";
+import { TextInput, View } from "react-native";
+import { Image } from "expo-image";
 import { styles } from "../utils/styles";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
@@ -92,23 +93,25 @@ export default function LoginScreen({ navigation }) {
             mode="disabled"
             style={styles.input}
           />
-          <Button
-            onPress={handleLogin}
-            style={styles.botao}
-            textColor="white"
-          >
+          <Button onPress={handleLogin} style={styles.botao} textColor="white">
             ENTRAR
           </Button>
           <View style={styles.linha}>
             <View style={styles.coluna}>
               <Text>Não tem conta?</Text>
-              <Button textColor={'black'} onPress={() => navigation.navigate("RegisterScreen")}>
+              <Button
+                textColor={"black"}
+                onPress={() => navigation.navigate("RegisterScreen")}
+              >
                 <Text style={styles.botaoPreto}>Cadastre-se!</Text>
               </Button>
             </View>
             <View style={styles.coluna}>
               <Text>Esqueceu a senha?</Text>
-              <Button textColor={'black'} onPress={() => navigation.navigate("RecuperarSenha")}>
+              <Button
+                textColor={"black"}
+                onPress={() => navigation.navigate("RecuperarSenha")}
+              >
                 <Text style={styles.botaoPreto}>Recuperar Senha</Text>
               </Button>
             </View>

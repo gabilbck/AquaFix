@@ -1,5 +1,12 @@
 import { Button, Paragraph } from "react-native-paper";
-import { Image, Text, View, TextInput, KeyboardAvoidingView, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
+import { Image } from "expo-image";
 import { styles } from "../utils/styles";
 import { useState } from "react";
 import { auth, db } from "../config/firebase";
@@ -31,7 +38,7 @@ export default function RegisterScreen({ navigation }) {
 
         setDoc(doc(db, "usuario", uid), {
           adm: false,
-          bio_usu: 'Olá, eu sou '+nomeUsu,
+          bio_usu: "Olá, eu sou " + nomeUsu,
           cep_usu: zipCode,
           cpf_usu: "",
           email_usu: email,
@@ -118,7 +125,11 @@ export default function RegisterScreen({ navigation }) {
               onChangeText={setConfirmSenha}
               style={styles.input}
             />
-            <Button textColor={'white'} onPress={handleRegister} style={styles.botao}>
+            <Button
+              textColor={"white"}
+              onPress={handleRegister}
+              style={styles.botao}
+            >
               REGISTRAR
             </Button>
           </View>

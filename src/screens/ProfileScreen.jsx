@@ -1,4 +1,5 @@
-import { Image, View } from "react-native";
+import { View } from "react-native";
+import { Image } from "expo-image";
 import { Text } from "react-native-paper";
 import { styles } from "../utils/styles";
 /**
@@ -7,8 +8,8 @@ import { styles } from "../utils/styles";
  * @description Tela de home do aplicativo
  * @function HomeScreen
  * @param {Object} navigation
- * @export RootNavigation 
- * @return {React.Component} 
+ * @export RootNavigation
+ * @return {React.Component}
  * @since 1.0.0
  */
 
@@ -17,9 +18,9 @@ import { styles } from "../utils/styles";
  *
  * @export
  * @param {*} {navigation}
- * @return {*} 
+ * @return {*}
  */
-export default function ProfileScreen({navigation}) {
+export default function ProfileScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {/* Parte que aparece a imagem: azul e logo */}
