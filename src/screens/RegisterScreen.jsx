@@ -67,7 +67,7 @@ export default function RegisterScreen({ navigation }) {
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.imagemTopo}>
           <Image
-            source={require("/assets/img/logocomp-branca.png")}
+            source={require("../../assets/img/logocomp-branca.png")}
             style={{ width: 200, height: 127 }}
           />
         </View>

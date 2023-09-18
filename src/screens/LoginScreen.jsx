@@ -69,7 +69,7 @@ export default function LoginScreen({ navigation }) {
       {/* Parte que aparece a imagem: azul e logo */}
       <View style={styles.imagemTopo}>
         <Image
-          source={require("/assets/img/logocomp-branca.png")}
+          source={require("../../assets/img/logocomp-branca.png")}
           style={{ width: 200, height: 127 }}
         />
       </View>
