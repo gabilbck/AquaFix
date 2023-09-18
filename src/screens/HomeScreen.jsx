@@ -1,30 +1,69 @@
-import { View } from "react-native";
-import { Image } from "expo-image";
-import { Text } from "react-native-paper";
+import { View } from "react-native"
+import { Text } from "react-native-paper"
 import { styles } from "../utils/styles";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-/**
- * @auth Gabrieli Eduarda Lembeck
- * @name LoginScreen
- * @description Tela de home do aplicativo
- * @function HomeScreen
- * @param {Object} navigation
- * @export RootNavigation
- * @return {React.Component}
- * @since 1.0.0
- */
+import { useEffect, useState } from "react"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth, db } from "../config/firebase"
+import { collection, getDocs, query, where } from "firebase/firestore"
 
-/**
- *
- *
- * @export
- * @param {*} {navigation}
- * @return {*}
- */
-export default function HomeScreen({ navigation }) {
-  return (
-    <View style={styles.container}>
+export default function HomeScreen() {
+    const [usuario, setUsuario] = useState({})
+
+    useEffect(() => {
+        const unsub = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("Usuário UID: ", user.uid)
+                setUsuario({ uid: user.uid })
+            } else {
+                console.log("Usuário não logado")
+            }
+        })
+
+        return () => { unsub() }
+    }, [])
+
+    useEffect(() => {
+
+        // verifica se uid não é vazio
+        if (!usuario.uid) return
+
+        // seleciona a coleção usuarios
+        const usuariosRef = collection(db, "usuario");
+
+        // começa a preparar a busca
+        const q = query(
+            usuariosRef,
+            // define a cláusula where
+            where("userUID", "==", usuario.uid)
+        )
+
+        // executa a busca
+        getDocs(q)
+            .then((querySnapshot) => {
+                // caso não esteja vazio
+                if (!querySnapshot.empty) {
+                    // pega o primeiro documento
+                    const userData = querySnapshot.docs[0].data()
+                    // define o usuário
+                    setUsuario(userData)
+                    // ou se preferir pode definir assim:
+                    setUsuario({
+                        nome: userData.nome_usu,
+                        telefone: userData.whatsapp_usu,
+                        email: userData.email_usu,
+                        uid: userData.uid
+                    })
+                } else {
+                    console.log("Usuário não encontrado")
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }, [usuario.uid])
+
+    return (
+      <View style={styles.container}>
       {/* Parte que aparece a imagem: azul e logo */}
       <View style={styles.imagemTopo}>
         <Image
@@ -35,28 +74,10 @@ export default function HomeScreen({ navigation }) {
       {/* Parte que aparece o conteúdo: cinza/branco */}
       <View style={styles.conteudo}>
         <View style={styles.containerInner}>
-          <Text style={styles.titulo}>HOME</Text>
+          <Text style={styles.titulo}>Bom dia, {usuario?.nome_usu}?</Text>
+          <Text style={styles.subtitulo}>Venha conhecer as novidades do momento:</Text>
         </View>
       </View>
     </View>
-  );
-}
-
-const Tabs = createMaterialBottomTabNavigator();
-
-function TabsNavigation({ navigation }) {
-  return (
-    <Tabs.Navigator activeColor="#e91e63" style={{ backgroundColor: "tomato" }}>
-      <Tabs.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
-          ),
-        }}
-      />
-    </Tabs.Navigator>
-  );
+    )
 }

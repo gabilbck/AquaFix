@@ -50,6 +50,11 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 40,
     },
+    subtitulo: {
+        fontSize: 20,
+        textAlign: 'height',
+        color: '#16337E',
+    },
     input: {
         height: 50,
         width: "100%",
