@@ -58,6 +58,16 @@ export default function RegisterScreen({ navigation }) {
       });
   }
 
+  function retornaLogradouro() {
+    const url = `https://viacep.com.br/ws/${zipCode}/json/`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.logradouro);
+        return data.logradouro;
+      });
+  }
+
   function formatPhoneNumber(value) {
     // Apply the desired phone number mask here
     const formattedValue = value
@@ -121,6 +131,7 @@ export default function RegisterScreen({ navigation }) {
               onChangeText={(e) => setZipCode(formatPhoneNumberCep(e))}
               maxLength={9}
               style={styles.input}
+              onBlur={retornaLogradouro}
             />
             <TextInput
               placeholder="Digite sua senha"
