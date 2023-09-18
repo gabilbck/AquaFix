@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { Image } from "expo-image";
 import { View, TextInput } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { auth } from "../config/firebase";
 import { confirmPasswordReset, sendPasswordResetEmail } from "firebase/auth";
 import { styles } from "../utils/styles";
-import { Image } from "react-native";
 
 export default function RecuperarSenha({ navigation }) {
   const [email, setEmail] = useState("");
@@ -43,7 +43,11 @@ export default function RecuperarSenha({ navigation }) {
             onChangeText={setEmail}
           />
 
-          <Button textColor={'white'}  style={styles.botao} onPress={handlePasswordReset}>
+          <Button
+            textColor={"white"}
+            style={styles.botao}
+            onPress={handlePasswordReset}
+          >
             Enviar código de verificação
           </Button>
         </View>

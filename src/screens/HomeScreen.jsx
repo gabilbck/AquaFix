@@ -1,4 +1,5 @@
-import { Image, View } from "react-native";
+import { View } from "react-native";
+import { Image } from "expo-image";
 import { Text } from "react-native-paper";
 import { styles } from "../utils/styles";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
@@ -9,8 +10,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
  * @description Tela de home do aplicativo
  * @function HomeScreen
  * @param {Object} navigation
- * @export RootNavigation 
- * @return {React.Component} 
+ * @export RootNavigation
+ * @return {React.Component}
  * @since 1.0.0
  */
 
@@ -19,9 +20,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
  *
  * @export
  * @param {*} {navigation}
- * @return {*} 
+ * @return {*}
  */
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {/* Parte que aparece a imagem: azul e logo */}
@@ -36,7 +37,6 @@ export default function HomeScreen({navigation}) {
         <View style={styles.containerInner}>
           <Text style={styles.titulo}>HOME</Text>
         </View>
-        
       </View>
     </View>
   );
@@ -44,20 +44,19 @@ export default function HomeScreen({navigation}) {
 
 const Tabs = createMaterialBottomTabNavigator();
 
-function TabsNavigation({navigation}) {
-    return (
-        <Tabs.Navigator 
-        activeColor="#e91e63" 
-        style={{ backgroundColor: 'tomato' }}>
-            <Tabs.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-                options={{
-                    tabBarLabel: 'Home',
-                    tabBarIcon: ({ color }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={26} />
-                    ),
-                }} />
-        </Tabs.Navigator>
-    );
+function TabsNavigation({ navigation }) {
+  return (
+    <Tabs.Navigator activeColor="#e91e63" style={{ backgroundColor: "tomato" }}>
+      <Tabs.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+    </Tabs.Navigator>
+  );
 }
