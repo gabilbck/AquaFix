@@ -19,6 +19,11 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#16337E",
     },
+    container2:{
+        marginTop: 40,
+        maxWidth: 300,
+        alignSelf: 'center',
+    },
     containerInner: {
         maxWidth: 500,
         width: "100%",
@@ -74,6 +79,18 @@ export const styles = StyleSheet.create({
         textDecorationColor: 'white',
         alignSelf: 'center',
         marginVertical: 40,
+    },
+    botao2: {
+        fontSize: 17,
+        padding: 4,
+        backgroundColor: '#16337E',
+        borderRadius: 5,
+        color: 'white',
+        textDecorationColor: 'white',
+        alignSelf: 'center',
+        marginVertical: 10,
+        width: "100%",
+        paddingHorizontal: 30,
     },
     botaoPreto:{
         fontWeight: 'bold',
