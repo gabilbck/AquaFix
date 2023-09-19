@@ -1,4 +1,4 @@
-import { Button, Paragraph } from "react-native-paper";
+import { Button, RadioButton } from "react-native-paper";
 import {
   Text,
   View,
@@ -21,6 +21,7 @@ export default function RegisterScreen({ navigation }) {
   const [senha, setSenha] = useState("");
   const [confirmSenha, setConfirmSenha] = useState("");
   const [cpf, setCpf] = useState("");
+  const [isValid, setValid] = useState(false);
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
@@ -87,6 +88,23 @@ export default function RegisterScreen({ navigation }) {
     return formattedValueCep;
   }
 
+  function validar(texto){
+    setCpf(cpf);
+    setValid(
+      texto.length === 11 ? cpf.isValid(texto) : cnpj.isValid(texto)
+    );
+  }
+
+  function mask(texto){
+    if (texto.length === 11) {
+      return cpf.format(texto);
+    } else if (texto.length === 14) {
+      return cnpj.format(texto);
+    } else {
+      return texto;
+    }
+  }
+
   return (
     // <KeyboardAvoidingView style={styles.container} behavior="padding">
     <View style={styles.container}>
@@ -118,6 +136,19 @@ export default function RegisterScreen({ navigation }) {
               onChangeText={setEmail}
               style={styles.input}
             />
+            <RadioButton
+              value={cpf}
+              onChangeText={setCpf}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Digite seu CPF"
+              value={cpf}
+              onChangeText={validar}
+              maxLength={14}
+              style={styles.input}
+            />
+            {isValid ? null : (<Text style={styles.error}>CPF inválido</Text>)}
             <TextInput
               placeholder="Digite seu telefone"
               value={whatsappUsu}
