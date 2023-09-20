@@ -109,4 +109,17 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    titulo_register: {
+        fontSize: 25,
+        textAlign: 'center',
+        margin: 20,
+        color: '#16337E',
+        fontWeight: 'bold',
+    },
+    subtitulo_register: {
+        textAlign: 'center',
+        color: '#16337E',
+        fontSize: 15,
+        marginBottom: 20,
+    },
 });
