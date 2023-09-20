@@ -6,6 +6,12 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function CadPasso1({ navigation }) {
+  function handle1() {
+    navigation.navigate("RegisterPessoa");
+  }
+  function handle2() {
+    navigation.navigate("CadPasso2");
+  }
   return (
     <View style={styles.container}>
       {/* Parte que aparece a imagem: azul e logo */}
@@ -25,14 +31,14 @@ export default function CadPasso1({ navigation }) {
           <View style={styles.container2}>
             <Button
               textColor={"white"}
-              onPress={navigation.navigate("RegisterPessoa")}
+              onPress={handle1}
               style={styles.botao2}
             >
               Quero constratar um serviço
             </Button>
             <Button
               textColor={"white"}
-              onPress={navigation.navigate("CadPasso2")}
+              onPress={handle2}
               style={styles.botao2}
             >
               Quero prestar um serviço
