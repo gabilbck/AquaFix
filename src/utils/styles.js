@@ -122,4 +122,11 @@ export const styles = StyleSheet.create({
         fontSize: 15,
         marginBottom: 20,
     },
+    textos_register: {
+        textAlign: 'center',
+        color: '#16337E',
+        fontSize: 15,
+        marginBottom: 20,
+        marginTop: 20,
+    },
 });

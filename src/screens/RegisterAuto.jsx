@@ -14,6 +14,101 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
 export default function RegisterAuto({ navigation }) {
+  const [nomeUsu, setNomeUsu] = useState("");
+  const [nomeCompleto, setNomeCompleto] = useState("");
+  const [email, setEmail] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmSenha, setConfirmSenha] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [cnpj, setCnpj] = useState("");
+  const [isValid, setValid] = useState(null);
+  const [bio, setBio] = useState("");
+  const [photo, setPhoto] = useState("");
+  const [whatsappUsu, setWhatsappUsu] = useState("");
+
+  function handleRegister() {
+    if (senha !== confirmSenha) {
+      console.log("A senha e a confirmação de senha não correspondem");
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, senha)
+      .then((userCredential) => {
+        console.log("Usuário criado com sucesso!", userCredential);
+        const uid = userCredential.user.uid;
+
+        setDoc(doc(db, "usuario", uid), {
+          adm: false,
+          bio_usu: "Olá, eu sou " + nomeUsu,
+          cep_usu: zipCode,
+          cpf_usu: "",
+          cnpj_usu: "",
+          email_usu: email,
+          foto_usu: "",
+          nome_real_usu: nomeCompleto,
+          nome_usu: nomeUsu,
+          senha_usu: senha,
+          whatsapp_usu: whatsappUsu,
+        }).then(() => {
+          console.log("Cadastrado!");
+          navigation.navigate("LoginScreen");
+        });
+      })
+      .catch((error) => {
+        console.log("Erro ao criar usuário", error);
+        // Handle error codes
+      });
+  }
+
+  function retornaLogradouro() {
+    const url = `https://viacep.com.br/ws/${zipCode}/json/`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.logradouro);
+        return data.logradouro;
+      });
+  }
+
+  function formatPhoneNumber(value) {
+    // Apply the desired phone number mask here
+    const formattedValue = value
+      .replace(/\D/g, "") // Remove non-numeric characters
+      .replace(/(\d{2})(\d)/, "($1) $2") // Add parentheses to the area code
+      .replace(/(\d{5})(\d)/, "$1-$2") // Add hyphen to the main number
+      .slice(0, 15); // Limit the length of the input
+    return formattedValue;
+  }
+
+  function formatPhoneNumberCep(value) {
+    // Apply the desired phone number mask here
+    const formattedValueCep = value
+      .replace(/\D/g, "") // Remove non-numeric characters
+      .replace(/(\d{5})(\d)/, "$1-$2") // Add hyphen to the main number
+      .slice(0, 15); // Limit the length of the input
+    return formattedValueCep;
+  }
+
+  // function validar(texto){
+  //   if(texto.length > 14) return;
+  //   setCpf(cpf);
+  //   setCnpj(cnpj);
+  //   setValid(
+  //     texto.length === 11 ? cpf.isValid(texto) : cnpj.isValid(texto)
+  //   )
+  //   console.log();
+  // }
+
+  // function mask(texto){
+  //   if (texto.length === 11) {
+  //     return cpf.format(texto);
+  //   } else if (texto.length === 14) {
+  //     return cnpj.format(texto);
+  //   } else {
+  //     return texto;
+  //   }
+  // }
 
   return (
     // <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -27,7 +122,43 @@ export default function RegisterAuto({ navigation }) {
         </View>
         <View style={styles.conteudo}>
           <View style={styles.containerInner}>
-            <Text style={styles.titulo}>REGISTRE-SE</Text>
+            <Text style={styles.titulo_register}>REGISTRE-SE</Text>
+            <Text style={styles.subtitulo_register}>Para iniciar seu cadastro, preencha as seguintes informações:</Text>
+            <TextInput
+              placeholder="E-mail"
+              value={email}
+              onChangeText={setEmail}
+              style={styles.input}
+            />
+            {/* <TextInput
+              placeholder="Digite seu CPF"
+              value={cpf}
+              onChangeText={validar}
+              maxLength={14}
+              style={styles.input}
+            />
+            {isValid ? null : (<Text style={styles.error}>CPF inválido</Text>)}
+            <TextInput
+              placeholder="Digite seu CNPJ"
+              value={cnpj}
+              onChangeText={validar}
+              maxLength={18}
+              style={styles.input}
+            /> */}
+            <TextInput
+              placeholder="Senha"
+              secureTextEntry={true}
+              value={senha}
+              onChangeText={setSenha}
+              style={styles.input}
+            />
+            <Text style={styles.textos_register}>Agora, preencha o restante das seguintes informações:</Text>
+            <TextInput
+              placeholder="Digite seu nome completo"
+              value={nomeCompleto}
+              onChangeText={setNomeCompleto}
+              style={styles.input}
+            />
           </View>
         </View>
       </ScrollView>
