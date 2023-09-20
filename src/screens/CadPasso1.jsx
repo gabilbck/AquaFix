@@ -2,16 +2,8 @@ import { View } from "react-native";
 import { Image } from "expo-image";
 import { Button, Text } from "react-native-paper";
 import { styles } from "../utils/styles";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function CadPasso1({ navigation }) {
-  function handle1() {
-    navigation.navigate("RegisterPessoa");
-  }
-  function handle2() {
-    navigation.navigate("CadPasso2");
-  }
   return (
     <View style={styles.container}>
       {/* Parte que aparece a imagem: azul e logo */}
@@ -31,14 +23,14 @@ export default function CadPasso1({ navigation }) {
           <View style={styles.container2}>
             <Button
               textColor={"white"}
-              onPress={handle1}
+              onPress={() => navigation.navigate("RegisterPes")}
               style={styles.botao2}
             >
-              Quero constratar um serviço
+              Quero contratar um serviço
             </Button>
             <Button
               textColor={"white"}
-              onPress={handle2}
+              onPress={() => navigation.navigate("CadPasso2")}
               style={styles.botao2}
             >
               Quero prestar um serviço

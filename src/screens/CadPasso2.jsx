@@ -25,14 +25,14 @@ export default function CadPasso2({ navigation }) {
           <View style={styles.container2}>
             <Button
               textColor={"white"}
-              onPress={navigation.navigate("RegisterAuto")}
+              onPress={() => navigation.navigate("RegisterAuto")}
               style={styles.botao2}
             >
               Sou Autônomo
             </Button>
             <Button
               textColor={"white"}
-              onPress={navigation.navigate("RegisterEmp")}
+              onPress={() => navigation.navigate("RegisterEmp")}
               style={styles.botao2}
             >
               Quero registrar minha empresa
