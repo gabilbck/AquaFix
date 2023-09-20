@@ -3,17 +3,14 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Text, TextInput } from "react-native-paper";
 import { styles } from "../utils/styles";
-export default function InputCCValidator({ tipo }) {
+export default function InputCNPJValidator({ tipo }) {
   const [valor, setValor] = useState("");
   const [isValid, setIsValid] = useState(null);
 
   function validar(texto) {
     if (texto.length > 14) return;
     setValor(mask(texto));
-
-    if (tipo === "cpf") {
-      setIsValid(cpf.isValid(texto));
-    } else if (tipo === "cnpj") {
+    if (tipo === "cnpj") {
       setIsValid(cnpj.isValid(texto));
     } else {
       setIsValid(null);
@@ -23,12 +20,10 @@ export default function InputCCValidator({ tipo }) {
   }
 
   function mask(texto) {
-    if (texto.length === 11) {
-      return cpf.format(texto);
-    } else if (texto.length === 14) {
+    if (texto.length === 14) {
       return cnpj.format(texto);
-    } else {
-      return texto;
+    } else{
+        return texto;
     }
   }
 
@@ -40,7 +35,6 @@ export default function InputCCValidator({ tipo }) {
         value={valor}
         onChangeText={validar}
         error={!isValid}
-        maxLength={11}
       />
     </View>
   );

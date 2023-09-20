@@ -10,7 +10,9 @@ import TabsNavigation from "./screens/HomeScreen";
 import CadPasso1 from "./screens/CadPasso1";
 import CadPasso2 from "./screens/CadPasso2";
 import RegisterAuto from "./screens/RegisterAuto";
+import RegisterPes from "./screens/RegisterPes";
 import RegisterUsu from "./screens/RegisterUsu";
+import RegisterEmp from "./screens/RegisterEmp";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -99,6 +101,13 @@ export default function RootNavigation({ navigation }) {
         <Stack.Screen
           name="RegisterUsu"
           component={RegisterUsu}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="RegisterEmp"
+          component={RegisterEmp}
           options={{
             headerShown: false,
           }}

@@ -1,82 +1,189 @@
-// import { View } from "react-native";
-// import { Image } from "expo-image";
-// import { Button, Text, TextInput } from "react-native-paper";
-// import { styles } from "../utils/styles";
-// import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-// import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { View } from "react-native";
+import { Image } from "expo-image";
+import { Button, Text, TextInput } from "react-native-paper";
+import { styles } from "../utils/styles";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import InputCCValidator from "../components/InputCPFValidator";
+import { useState } from "react";
+import InputCNPJValidator from "../components/InputCNPJValidator";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../config/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
-// export default function CadPasso1({ navigation }) {
+export default function RegisterEmp({ navigation }) {
+  const [nomeUsu, setNomeUsu] = useState("");
+  const [nomeCompleto, setNomeCompleto] = useState("");
+  const [email, setEmail] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmSenha, setConfirmSenha] = useState("");
+  const [cnpjUsu, setCnpjUsu] = useState("");
+  const [bio, setBio] = useState("");
+  const [photo, setPhoto] = useState("");
+  const [whatsappUsu, setWhatsappUsu] = useState("");
+  const [valor, setValor] = useState("");
+  const [isValid, setIsValid] = useState(null);
 
-//     function handleRegister() {
-//         const [nomeUsu, setNomeUsu] = useState("");
-//         const [nomeCompleto, setNomeCompleto] = useState("");
-//         const [email, setEmail] = useState("");
-//         const [zipCode, setZipCode] = useState("");
-//         const [senha, setSenha] = useState("");
-//         const [confirmSenha, setConfirmSenha] = useState("");
-//         const [cpf, setCpf] = useState("");
-//         const [isValid, setValid] = useState(null);
-//         const [bio, setBio] = useState("");
-//         const [photo, setPhoto] = useState("");
-//         const [whatsappUsu, setWhatsappUsu] = useState("");
+  function handleRegister() {
+    if (senha !== confirmSenha) {
+      console.log("A senha e a confirmação de senha não correspondem");
+      return;
+    }
 
-//   function handleRegister() {
-//     if (senha !== confirmSenha) {
-//       console.log("A senha e a confirmação de senha não correspondem");
-//       return;
-//     }
+    createUserWithEmailAndPassword(auth, email, senha)
+      .then((userCredential) => {
+        console.log("Usuário criado com sucesso!", userCredential);
+        const uid = userCredential.user.uid;
 
-//     createUserWithEmailAndPassword(auth, email, senha)
-//     .then((userCredential) => {
-//         console.log("Usuário criado com sucesso!", userCredential);
-//         const uid = userCredential.user.uid;
+        setDoc(doc(db, "usuario", uid), {
+          adm: false,
+          bio_usu: "Olá, eu sou " + nomeUsu,
+          cep_usu: zipCode,
+          cnpj: cnpjUsu,
+          email_usu: email,
+          foto_usu: "",
+          nome_completo: nomeCompleto,
+          nome_usu: nomeUsu,
+          senha_usu: senha,
+          whatsapp_usu: whatsappUsu,
+        }).then(() => {
+          console.log("Cadastrado!");
+          navigation.navigate("LoginScreen");
+        });
+      })
+      .catch((error) => {
+        console.log("Erro ao criar usuário", error);
+        // Handle error codes
+      });
+  }
 
-//         setDoc(doc(db, "usuario", uid), {
-//           adm: false,
-//           bio_usu: "Olá, eu sou " + nomeUsu,
-//           cep_usu: zipCode,
-//           cpf_usu: cpfUsu,
-//           email_usu: email,
-//           foto_usu: "",
-//           nome_real_usu: nomeCompleto,
-//           nome_usu: nomeUsu,
-//           senha_usu: senha,
-//           whatsapp_usu: whatsappUsu,
-//         }).then(() => {
-//           console.log("Cadastrado!");
-//           navigation.navigate("LoginScreen");
-//         });
-//       })
-//       .catch((error) => {
-//         console.log("Erro ao criar usuário", error);
-//         // Handle error codes
-//       });
-//   }
+  function retornaLogradouro() {
+    const url = `https://viacep.com.br/ws/${zipCode}/json/`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.logradouro);
+        return data.logradouro;
+      });
+  }
 
-//     function
+  function numeroCelular(value) {
+    // Apply the desired phone number mask here
+    const formattedValue = value
+      .replace(/\D/g, "") // Remove non-numeric characters
+      .replace(/(\d{2})(\d)/, "($1) $2") // Add parentheses to the area code
+      .replace(/(\d{5})(\d)/, "$1-$2") // Add hyphen to the main number
+      .slice(0, 15); // Limit the length of the input
+    return formattedValue;
+  }
 
+  function cep(value) {
+    // Apply the desired phone number mask here
+    const formattedValueCep = value
+      .replace(/\D/g, "") // Remove non-numeric characters
+      .replace(/(\d{5})(\d)/, "$1-$2") // Add hyphen to the main number
+      .slice(0, 15); // Limit the length of the input
+    return formattedValueCep;
+  }
 
-//   return (
-//     <View style={styles.container}>
-//       {/* Parte que aparece a imagem: azul e logo */}
-//       <View style={styles.imagemTopo}>
-//         <Image
-//           source={require("../../assets/img/logocomp-branca.png")}
-//           style={{ width: 200, height: 127 }}
-//         />
-//       </View>
-//       {/* Parte que aparece o conteúdo: cinza/branco */}
-//       <View style={styles.conteudo}>
-//         <View style={styles.containerInner}>
-//           <Text style={styles.titulo}>CADASTRE-SE</Text>
-//           <Text style={styles.subtitulo}>
-//             Preencha as seguintes informações:
-//             </Text>
-//             <TextInput
+  function validar(texto) {
+    if (texto.length > 14) return;
+    setValor(mask(texto));
+    if (tipo === "cnpj") {
+      setIsValid(cnpj.isValid(texto));
+    } else {
+      setIsValid(null);
+    }
 
-//             />
-//         </View>
-//       </View>
-//     </View>
-//   );
-// }
+    console.log();
+  }
+
+  function mask(texto) {
+    if (texto.length === 14) {
+      return cnpj.format(texto);
+    } else {
+      return texto;
+    }
+  }
+
+  return (
+    <View style={styles.container}>
+      {/* Parte que aparece a imagem: azul e logo */}
+      <View style={styles.imagemTopo}>
+        <Image
+          source={require("../../assets/img/logocomp-branca.png")}
+          style={{ width: 200, height: 127 }}
+        />
+      </View>
+      {/* Parte que aparece o conteúdo: cinza/branco */}
+      <View style={styles.conteudo}>
+        <View style={styles.containerInner}>
+          <Text style={styles.titulo}>CADASTRE-SE</Text>
+          <Text style={styles.subtitulo}>
+            Preencha as seguintes informações:
+          </Text>
+          <TextInput
+            placeholder="Nome da Empresa"
+            value={nomeCompleto}
+            onChangeText={setNomeCompleto}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Nome de usuário da empresa"
+            value={nomeUsu}
+            onChangeText={setNomeUsu}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="E-mail da empresa"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Senha"
+            value={senha}
+            onChangeText={setSenha}
+            style={styles.input}
+            secureTextEntry={true}
+          />
+          <TextInput
+            placeholder="Confirmar senha"
+            value={confirmSenha}
+            onChangeText={setConfirmSenha}
+            style={styles.input}
+            secureTextEntry={true}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={`Digite seu ${tipo.toUpperCase()}`}
+            value={valor}
+            onChangeText={validar}
+            error={!isValid}
+          />
+          <TextInput
+            placeholder="CEP"
+            value={zipCode}
+            onChangeText={(value) => setZipCode(cep(value))}
+            style={styles.input}
+            onBlur={retornaLogradouro}
+          />
+          <TextInput
+            placeholder="Número de WhatsApp da empresa"
+            value={whatsappUsu}
+            onChangeText={(value) => setWhatsappUsu(numeroCelular(value))}
+            style={styles.input}
+          />
+          <Button
+            textColor={"white"}
+            onPress={handleRegister}
+            style={styles.botao2}
+          >
+            Cadastrar
+          </Button>
+        </View>
+      </View>
+    </View>
+  );
+}
