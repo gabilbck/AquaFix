@@ -1447,17 +1447,10 @@
   resolved "https://registry.yarnpkg.com/@expo/ngrok-bin-linux-ia32/-/ngrok-bin-linux-ia32-2.3.40.tgz#dad55f4fd5f223b1439fba4aa66d057b04349515"
   integrity sha512-gPY5zv5Fu+TkCm5iZolXQbu7e5hc7fTllIKn/zJQxxZs/WCvSxyB5ip6vQcHiavu/kjr0HtNciPX/guXvWENkg==
 
-<<<<<<< HEAD
-"@expo/ngrok-bin-linux-x64@2.3.41":
-  version "2.3.41"
-  resolved "https://registry.npmjs.org/@expo/ngrok-bin-linux-x64/-/ngrok-bin-linux-x64-2.3.41.tgz"
-  integrity sha512-LcU3MbYHv7Sn2eFz8Yzo2rXduufOvX1/hILSirwCkH+9G8PYzpwp2TeGqVWuO+EmvtBe6NEYwgdQjJjN6I4L1A==
-=======
 "@expo/ngrok-bin-linux-x64@2.3.40":
   version "2.3.40"
   resolved "https://registry.yarnpkg.com/@expo/ngrok-bin-linux-x64/-/ngrok-bin-linux-x64-2.3.40.tgz#0038534284cf6db3e23e6cf412c855f04bd0f746"
   integrity sha512-yOuwpOmMe6RGnk9ninlM7Zg1EiF81ptFOcFmT61PDOA4gK8/ttZKTMkDQiq0DZdcXUyE0HCr83EglJZTnHIzPA==
->>>>>>> a61be3d (add)
 
 "@expo/ngrok-bin-sunos-x64@2.3.40":
   version "2.3.40"
@@ -1474,17 +1467,10 @@
   resolved "https://registry.yarnpkg.com/@expo/ngrok-bin-win32-x64/-/ngrok-bin-win32-x64-2.3.40.tgz#d497c9cb5a235f5bc04d6b9df4474e2000cc0a61"
   integrity sha512-a8xtUxX/Ftp2ho+/+VR5GCg0ttP9MNzYj58TVjfiKMkl4mVrbFVIzEinRzmy7PhiOWxqGQSCOdzEfa6C2G4nEA==
 
-<<<<<<< HEAD
-"@expo/ngrok-bin@2.3.41":
-  version "2.3.41"
-  resolved "https://registry.npmjs.org/@expo/ngrok-bin/-/ngrok-bin-2.3.41.tgz"
-  integrity sha512-BgEmO2BjA1dDLHdB2yWeiTvNhfFU7RSuDx4GWp435HGb4/IxXt8cAxXpfxN98RFiVIrfiPKufrHinPQLs3ukCg==
-=======
 "@expo/ngrok-bin@2.3.40":
   version "2.3.40"
   resolved "https://registry.yarnpkg.com/@expo/ngrok-bin/-/ngrok-bin-2.3.40.tgz#bfdbd4a32fd71275d5153f859cb4594eec665de7"
   integrity sha512-40GK1CY1QLPDHSQS7Fd36CJeZgMwtbeezkgp4tzfExVRVtWw30jOBCsM7TBB9IqEmmX7C/XwG47scMQHCnMw8A==
->>>>>>> a61be3d (add)
   optionalDependencies:
     "@expo/ngrok-bin-darwin-arm64" "2.3.40"
     "@expo/ngrok-bin-darwin-x64" "2.3.40"
@@ -1498,17 +1484,10 @@
     "@expo/ngrok-bin-win32-ia32" "2.3.40"
     "@expo/ngrok-bin-win32-x64" "2.3.40"
 
-<<<<<<< HEAD
-"@expo/ngrok@^4.1.0":
-  version "4.1.1"
-  resolved "https://registry.npmjs.org/@expo/ngrok/-/ngrok-4.1.1.tgz"
-  integrity sha512-br96pZz1frT9KkrzrIG4Y1Ih6SgOPpQs7Vo8n6p5V0oTUrjRStzTNKPM/ZCHfBgLr6KgobvJa5vBM5WjI9x7og==
-=======
 "@expo/ngrok@^2.5.0":
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/@expo/ngrok/-/ngrok-2.5.0.tgz#53bf7ed1c2291897b3fb7a6503d509250468ce41"
   integrity sha512-+Igfl5NNxH9uTZ+zSD+3B8KxMHKw8uvzLpvb1sQxJuWHaaWoPEyYmaDeGxRPGCjCE+zzK9C1NhNCeid+9CXJfA==
->>>>>>> a61be3d (add)
   dependencies:
     "@expo/ngrok-bin" "2.3.40"
     async "^0.9.0"
@@ -1604,17 +1583,10 @@
   resolved "https://registry.npmjs.org/@expo/vector-icons/-/vector-icons-13.0.0.tgz"
   integrity sha512-TI+l71+5aSKnShYclFa14Kum+hQMZ86b95SH6tQUG3qZEmLTarvWpKwqtTwQKqvlJSJrpFiSFu3eCuZokY6zWA==
 
-<<<<<<< HEAD
-"@expo/webpack-config@~19":
+"@expo/webpack-config@^19.0.0":
   version "19.0.0"
-  resolved "https://registry.npmjs.org/@expo/webpack-config/-/webpack-config-19.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/@expo/webpack-config/-/webpack-config-19.0.0.tgz#d8ce69bdb9a99089bb0672a7dc01dc96bebad390"
   integrity sha512-mX28BNyf4Cs0+4L44QQyhy5QMVfsYhOdB9Fpf3rp982KTKUsy01UFJ0irGI1jQ68jXrQn5/WU4u1pvN6DDao5Q==
-=======
-"@expo/webpack-config@^18.0.1":
-  version "18.1.3"
-  resolved "https://registry.yarnpkg.com/@expo/webpack-config/-/webpack-config-18.1.3.tgz#2f3540d4adfdbad8644848294dd43b85750f0535"
-  integrity sha512-lG2G7KmdW0y70b87Ul9A/1l1DgagSTqA3iIegxOYJCv38X7pNUcq0zIl+suBWtDV1ITkXmrfuYMPFMA1jqgtvA==
->>>>>>> a61be3d (add)
   dependencies:
     "@babel/core" "^7.20.2"
     babel-loader "^8.3.0"
@@ -1710,11 +1682,7 @@
 
 "@firebase/app-compat@0.2.19":
   version "0.2.19"
-<<<<<<< HEAD
-  resolved "https://registry.npmjs.org/@firebase/app-compat/-/app-compat-0.2.19.tgz"
-=======
   resolved "https://registry.yarnpkg.com/@firebase/app-compat/-/app-compat-0.2.19.tgz#ba0651166924fa344b4591a746ea493fdd609f13"
->>>>>>> a61be3d (add)
   integrity sha512-QkJDqYqjhvs4fTMcRVXQkP9hbo5yfoJXDWkhU4VA5Vzs8Qsp76VPzYbqx5SD5OmBy+bz/Ot1UV8qySPGI4aKuw==
   dependencies:
     "@firebase/app" "0.9.19"
@@ -1730,11 +1698,7 @@
 
 "@firebase/app@0.9.19":
   version "0.9.19"
-<<<<<<< HEAD
-  resolved "https://registry.npmjs.org/@firebase/app/-/app-0.9.19.tgz"
-=======
   resolved "https://registry.yarnpkg.com/@firebase/app/-/app-0.9.19.tgz#d2b8a4cf47eb429e441dd661c291dd7312fd69de"
->>>>>>> a61be3d (add)
   integrity sha512-t/SHyZ3xWkR77ZU9VMoobDNFLdDKQ5xqoCAn4o16gTsA1C8sJ6ZOMZ02neMOPxNHuQXVE4tA8ukilnDbnK7uJA==
   dependencies:
     "@firebase/component" "0.6.4"
@@ -1818,11 +1782,7 @@
 
 "@firebase/firestore-compat@0.3.18":
   version "0.3.18"
-<<<<<<< HEAD
-  resolved "https://registry.npmjs.org/@firebase/firestore-compat/-/firestore-compat-0.3.18.tgz"
-=======
   resolved "https://registry.yarnpkg.com/@firebase/firestore-compat/-/firestore-compat-0.3.18.tgz#f087d65cbd175e2340beb87527f24482b651e12e"
->>>>>>> a61be3d (add)
   integrity sha512-hkqv4mb1oScKbEtzfcK8Go8c0VpDWmbAvbD6B6XnphLqi27pkXgo9Rp+aSKlD7cBL29VMEekP5bEm9lSVfZpNw==
   dependencies:
     "@firebase/component" "0.6.4"
@@ -1838,11 +1798,7 @@
 
 "@firebase/firestore@4.2.0":
   version "4.2.0"
-<<<<<<< HEAD
-  resolved "https://registry.npmjs.org/@firebase/firestore/-/firestore-4.2.0.tgz"
-=======
   resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-4.2.0.tgz#637e21eadee5e8b6e75c1d5bf4741385dd1e128e"
->>>>>>> a61be3d (add)
   integrity sha512-iKZqIdOBJpJUcwY5airLX0W04TLrQSJuActOP1HG5WoIY5oyGTQE4Ml7hl5GW7mBqFieT4ojtUuDXj6MLrn1lA==
   dependencies:
     "@firebase/component" "0.6.4"
@@ -2034,11 +1990,7 @@
 
 "@firebase/webchannel-wrapper@0.10.3":
   version "0.10.3"
-<<<<<<< HEAD
-  resolved "https://registry.npmjs.org/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.10.3.tgz"
-=======
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.10.3.tgz#c894a21e8c911830e36bbbba55903ccfbc7a7e25"
->>>>>>> a61be3d (add)
   integrity sha512-+ZplYUN3HOpgCfgInqgdDAbkGGVzES1cs32JJpeqoh87SkRobGXElJx+1GZSaDqzFL+bYiX18qEcBK76mYs8uA==
 
 "@gar/promisify@^1.0.1":
@@ -2053,11 +2005,7 @@
 
 "@grpc/grpc-js@~1.9.0":
   version "1.9.3"
-<<<<<<< HEAD
-  resolved "https://registry.npmjs.org/@grpc/grpc-js/-/grpc-js-1.9.3.tgz"
-=======
   resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.9.3.tgz#811cc49966ab7ed96efa31d213e80d671fd13839"
->>>>>>> a61be3d (add)
   integrity sha512-b8iWtdrYIeT5fdZdS4Br/6h/kuk0PW5EVBUGk1amSbrpL8DlktJD43CdcCWwRdd6+jgwHhADSbL9CsNnm6EUPA==
   dependencies:
     "@grpc/proto-loader" "^0.7.8"
@@ -2318,10 +2266,10 @@
   resolved "https://registry.npmjs.org/@protobufjs/utf8/-/utf8-1.1.0.tgz"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@react-native-async-storage/async-storage@^1.19.3":
-  version "1.19.3"
-  resolved "https://registry.npmjs.org/@react-native-async-storage/async-storage/-/async-storage-1.19.3.tgz"
-  integrity sha512-CwGfoHCWdPOTPS+2fW6YRE1fFBpT9++ahLEroX5hkgwyoQ+TkmjOaUxixdEIoVua9Pz5EF2pGOIJzqOTMWfBlA==
+"@react-native-async-storage/async-storage@1.18.2":
+  version "1.18.2"
+  resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.18.2.tgz#ec8fd487a0b6c9500b43ece4b8779d1561f12e91"
+  integrity sha512-dM8AfdoeIxlh+zqgr0o5+vCTPQ0Ru1mrPzONZMsr7ufp5h+6WgNxQNza7t0r5qQ6b04AJqTlBNixTWZxqP649Q==
   dependencies:
     merge-options "^3.0.4"
 
@@ -2514,7 +2462,7 @@
   resolved "https://registry.npmjs.org/@react-native/js-polyfills/-/js-polyfills-0.72.1.tgz"
   integrity sha512-cRPZh2rBswFnGt5X5EUEPs0r+pAsXxYsifv/fgy9ZLQokuT52bPH+9xjDR+7TafRua5CttGW83wP4TntRcWNDA==
 
-"@react-native/normalize-color@^2.0.0":
+"@react-native/normalize-color@^2.0.0", "@react-native/normalize-color@^2.1.0":
   version "2.1.0"
   resolved "https://registry.npmjs.org/@react-native/normalize-color/-/normalize-color-2.1.0.tgz"
   integrity sha512-Z1jQI2NpdFJCVgpY+8Dq/Bt3d+YUi1928Q+/CZm/oh66fzM0RUl54vvuXlPJKybH4pdCZey1eDTPaLHkMPNgWA==
@@ -2841,10 +2789,10 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@~18.0.27":
-  version "18.0.38"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.38.tgz#02a23bef8848b360a0d1dceef4432c15c21c600c"
-  integrity sha512-ExsidLLSzYj4cvaQjGnQCk4HFfVT9+EZ9XZsQ8Hsrcn8QNgXtpZ3m9vSIC2MWtx7jHictK6wYhQgGh6ic58oOw==
+"@types/react@~18.2.14":
+  version "18.2.22"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.22.tgz#abe778a1c95a07fa70df40a52d7300a40b949ccb"
+  integrity sha512-60fLTOLqzarLED2O3UQImc/lsNRgG0jE/a1mPW9KjMemY0LMITWEsbS4VvZ4p6rorEHd5YKxxmMKSDK505GHpA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -4202,14 +4150,6 @@ cpf-cnpj-validator@^1.0.3:
   dependencies:
     "@hapi/joi" "^17.1.0"
 
-create-react-class@^15.7.0:
-  version "15.7.0"
-  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.7.0.tgz#7499d7ca2e69bb51d13faf59bd04f0c65a1d6c1e"
-  integrity sha512-QZv4sFWG9S5RUvkTYWbflxeZX+JG7Cz0Tn33rQBJ+WFQTqTfUTjMjiv9tnfXazjsO5r0KhPs+AqCjyrQX6h2ng==
-  dependencies:
-    loose-envify "^1.3.1"
-    object-assign "^4.1.1"
-
 cross-fetch@^3.1.5:
   version "3.1.8"
   resolved "https://registry.npmjs.org/cross-fetch/-/cross-fetch-3.1.8.tgz"
@@ -4875,10 +4815,10 @@ expo-font@~11.4.0:
   dependencies:
     fontfaceobserver "^2.1.0"
 
-expo-image@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.npmjs.org/expo-image/-/expo-image-1.5.1.tgz"
-  integrity sha512-133chFSiaiZDeHRmABo/D+j/ByhPjhRwa4X2vgok1E6I2BapJ8n6ZiXODbABNH02EDYssV4Ih71tAWpheMzl/g==
+expo-image@~1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/expo-image/-/expo-image-1.3.3.tgz#16884056a6c379d516cae7e4b0f9eb245bec81d5"
+  integrity sha512-H/w/4XGPRrOv8PsBnoVrctLKtsLYhavrhTK/SkizF3F5u81aHItBACgV8HVrh1qzPXbP40hp/Oyua/ttz61zMQ==
 
 expo-keep-awake@~12.3.0:
   version "12.3.0"
@@ -4915,10 +4855,10 @@ expo-pwa@0.0.127:
     commander "2.20.0"
     update-check "1.5.3"
 
-expo-status-bar@~1.7.1:
-  version "1.7.1"
-  resolved "https://registry.npmjs.org/expo-status-bar/-/expo-status-bar-1.7.1.tgz"
-  integrity sha512-Wkm9uCmuQQBSU+l/AekWAQ1d0FYw560yL116+OAKJDyKBOUpPURoWkFbabM1EDxv+5scTuSThr/CvsA0nsSCow==
+expo-status-bar@~1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-1.6.0.tgz#e79ffdb9a84d2e0ec9a0dc7392d9ab364fefa9cf"
+  integrity sha512-e//Oi2WPdomMlMDD3skE4+1ZarKCJ/suvcB4Jo/nO427niKug5oppcPNYO+csR6y3ZglGuypS+3pp/hJ+Xp6fQ==
 
 expo@^49.0.10:
   version "49.0.10"
@@ -5194,15 +5134,9 @@ find-yarn-workspace-root@~2.0.0:
   dependencies:
     micromatch "^4.0.2"
 
-<<<<<<< HEAD
 firebase@^10.3.1:
   version "10.4.0"
   resolved "https://registry.npmjs.org/firebase/-/firebase-10.4.0.tgz"
-=======
-firebase@^10.4.0:
-  version "10.4.0"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-10.4.0.tgz#8b3c94765d69ebe706ff02e6bb0ed48092900fa6"
->>>>>>> a61be3d (add)
   integrity sha512-3Z8WsNwA7kbcKGZ+nrTZ/ES518pk0K440ZJYD8nUNKN5hV6ll+unhUw30t1msedN6yIFjhsC/9OwT4Z0ohwO2w==
   dependencies:
     "@firebase/analytics" "0.10.0"
@@ -6570,7 +6504,7 @@ long@^5.0.0:
   resolved "https://registry.npmjs.org/long/-/long-5.2.3.tgz"
   integrity sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==
 
-loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz"
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
@@ -6677,14 +6611,11 @@ memoize-one@^5.0.0:
   resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz"
   integrity sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==
 
-<<<<<<< HEAD
 memoize-one@^6.0.0:
   version "6.0.0"
   resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-6.0.0.tgz"
   integrity sha512-rkpe71W0N0c0Xz6QD0eJETuWAJGnJ9afsl1srmwPrI+yBCkge5EycXXbYRyvL29zZVUWQCY7InPRCv3GDXuZNw==
 
-=======
->>>>>>> a61be3d (add)
 memory-cache@~0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/memory-cache/-/memory-cache-0.2.0.tgz"
@@ -7353,11 +7284,6 @@ node-stream-zip@^1.9.1:
   version "1.15.0"
   resolved "https://registry.npmjs.org/node-stream-zip/-/node-stream-zip-1.15.0.tgz"
   integrity sha512-LN4fydt9TqhZhThkZIVQnF9cwjU3qmUH9h78Mx/K7d3VvfRqqwthLwJEUOEL0QPZ0XQmNN7be5Ggit5+4dq3Bw==
-
-normalize-css-color@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/normalize-css-color/-/normalize-css-color-1.0.2.tgz#02991e97cccec6623fe573afbbf0de6a1f3e9f8d"
-  integrity sha512-jPJ/V7Cp1UytdidsPqviKEElFQJs22hUUgK5BOPHTwOonNCk7/2qOxhhqzEajmFrWJowADFfOFh1V+aWkRfy+w==
 
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
@@ -8292,27 +8218,15 @@ react-native-paper@^5.10.4:
     color "^3.1.2"
     use-latest-callback "^0.1.5"
 
-<<<<<<< HEAD
-react-native-safe-area-context@4.7.2:
-  version "4.7.2"
-  resolved "https://registry.npmjs.org/react-native-safe-area-context/-/react-native-safe-area-context-4.7.2.tgz"
-  integrity sha512-5fy/hRNJ7bI/U2SliOeKf0D80J4lXPc1NsRiNS7Xaz8YTnqlzWib1ViItkwKPfufe54YKzVBMmM32RpdzvO2gg==
+react-native-safe-area-context@4.6.3:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.6.3.tgz#f06cfea05b1c4b018aa9758667a109f619c62b55"
+  integrity sha512-3CeZM9HFXkuqiU9HqhOQp1yxhXw6q99axPWrT+VJkITd67gnPSU03+U27Xk2/cr9XrLUnakM07kj7H0hdPnFiQ==
 
-react-native-screens@~3.25.0:
-  version "3.25.0"
-  resolved "https://registry.npmjs.org/react-native-screens/-/react-native-screens-3.25.0.tgz"
-  integrity sha512-TSC2Ad0hh763I8QT6XxMsPXAagQ+RawDSdFtKRvIz9fCYr96AjRwwaqmYivbqlDywOgcRBkIVynkFtp0ThmlYw==
-=======
-react-native-safe-area-context@4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.5.0.tgz#9208313236e8f49e1920ac1e2a2c975f03aed284"
-  integrity sha512-0WORnk9SkREGUg2V7jHZbuN5x4vcxj/1B0QOcXJjdYWrzZHgLcUzYWWIUecUPJh747Mwjt/42RZDOaFn3L8kPQ==
-
-react-native-screens@~3.20.0:
-  version "3.20.0"
-  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.20.0.tgz#4d154177395e5541387d9a05bc2e12e54d2fb5b1"
-  integrity sha512-joWUKWAVHxymP3mL9gYApFHAsbd9L6ZcmpoZa6Sl3W/82bvvNVMqcfP7MeNqVCg73qZ8yL4fW+J/syusHleUgg==
->>>>>>> a61be3d (add)
+react-native-screens@~3.22.0:
+  version "3.22.1"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.22.1.tgz#b0eb0696dbf1f9a852061cc71c0f8cdb95ed8e53"
+  integrity sha512-ffzwUdVKf+iLqhWSzN5DXBm0s2w5sN0P+TaHHPAx42LT7+DT0g8PkHT1QDvxpR5vCEPSS1i3EswyVK4HCuhTYg==
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
@@ -8325,25 +8239,19 @@ react-native-vector-icons@^10.0.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-<<<<<<< HEAD
-react-native-web@~0.19.8:
-  version "0.19.8"
-  resolved "https://registry.npmjs.org/react-native-web/-/react-native-web-0.19.8.tgz"
-  integrity sha512-anqGGHowJdfkYqRxzoQj6DeetJf5hyBlahN6rwksw54gXxgjbsUOe4/PyxqvjwxYafgbVo0oow23BwpsRFdrpw==
-=======
-react-native-web@~0.18.10:
-  version "0.18.12"
-  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.18.12.tgz#d4bb3a783ece2514ba0508d7805b09c0a98f5a8e"
-  integrity sha512-fboP7yqobJ8InSr4fP+bQ3scOtSQtUoPcR+HWasH8b/fk/RO+mWcJs/8n+lewy9WTZc2D68ha7VwRDviUshEWA==
->>>>>>> a61be3d (add)
+react-native-web@~0.19.6:
+  version "0.19.9"
+  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.19.9.tgz#6ee43e6c64d886b1d739f100fed07927541ee003"
+  integrity sha512-m69arZbS6FV+BNSKE6R/NQwUX+CzxCkYM7AJlSLlS8dz3BDzlaxG8Bzqtzv/r3r1YFowhnZLBXVKIwovKDw49g==
   dependencies:
     "@babel/runtime" "^7.18.6"
-    create-react-class "^15.7.0"
+    "@react-native/normalize-color" "^2.1.0"
     fbjs "^3.0.4"
     inline-style-prefixer "^6.0.1"
-    normalize-css-color "^1.0.2"
+    memoize-one "^6.0.0"
+    nullthrows "^1.1.1"
     postcss-value-parser "^4.2.0"
-    styleq "^0.1.2"
+    styleq "^0.1.3"
 
 react-native@0.72.4:
   version "0.72.4"
@@ -9224,9 +9132,9 @@ stylehacks@^5.1.1:
     browserslist "^4.21.4"
     postcss-selector-parser "^6.0.4"
 
-styleq@^0.1.2:
+styleq@^0.1.3:
   version "0.1.3"
-  resolved "https://registry.npmjs.org/styleq/-/styleq-0.1.3.tgz"
+  resolved "https://registry.yarnpkg.com/styleq/-/styleq-0.1.3.tgz#8efb2892debd51ce7b31dc09c227ad920decab71"
   integrity sha512-3ZUifmCDCQanjeej1f6kyl/BeP/Vae5EYkQ9iJfUm/QwZvlgnZzyflqAsAWYURdtea8Vkvswu2GrC57h3qffcA==
 
 sucrase@^3.20.0:
