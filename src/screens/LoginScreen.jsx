@@ -101,7 +101,7 @@ export default function LoginScreen({ navigation }) {
               <Text>Não tem conta?</Text>
               <Button
                 textColor={"black"}
-                onPress={() => navigation.navigate("RegisterScreen")}
+                onPress={() => navigation.navigate("CadPasso1")}
               >
                 <Text style={styles.botaoPreto}>Cadastre-se!</Text>
               </Button>
