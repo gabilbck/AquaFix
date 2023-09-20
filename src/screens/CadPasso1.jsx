@@ -23,7 +23,7 @@ export default function CadPasso1({ navigation }) {
           <View style={styles.container2}>
             <Button
               textColor={"white"}
-              onPress={() => navigation.navigate("RegisterPes")}
+              onPress={() => navigation.navigate("RegisterUsu")}
               style={styles.botao2}
             >
               Quero contratar um serviço

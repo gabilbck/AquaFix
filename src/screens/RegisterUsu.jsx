@@ -5,6 +5,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { Image } from "expo-image";
 import { styles } from "../utils/styles";
@@ -14,6 +15,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
 export default function RegisterScreen({ navigation }) {
+  const [adisobre, setAdicionarSobre] = useState("");
   const [nomeUsu, setNomeUsu] = useState("");
   const [nomeCompleto, setNomeCompleto] = useState("");
   const [email, setEmail] = useState("");
@@ -26,6 +28,16 @@ export default function RegisterScreen({ navigation }) {
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
+  const addImageToFirestore = async (imageURL) => {
+    try {
+        const ref = collection(db, "usuario");
+        await addDoc(ref, { imageURL }); // Store the image URL in Firestore
+
+        console.log("Image URL added to Firestore");
+    } catch (error) {
+        console.error("Error adding image URL to Firestore: ", error);
+    }
+};
 
   function handleRegister() {
     if (senha !== confirmSenha) {
@@ -114,7 +126,9 @@ export default function RegisterScreen({ navigation }) {
         <View style={styles.conteudo}>
           <View style={styles.containerInner}>
             <Text style={styles.titulo_register}>CADASTRE-SE</Text>
-            <Text style={styles.subtitulo_register}>Para iniciar seu cadastro, preencha asseguintes informações:</Text>
+            <Text style={styles.subtitulo_register}>
+              Para iniciar seu cadastro, preencha asseguintes informações:
+            </Text>
             <TextInput
               placeholder="E-mail"
               value={email}
@@ -140,7 +154,7 @@ export default function RegisterScreen({ navigation }) {
               onChangeText={setNomeUsu}
               style={styles.input}
             />
-             <TextInput
+            <TextInput
               placeholder="Digite seu CEP"
               value={zipCode}
               onChangeText={(e) => setZipCode(formatPhoneNumberCep(e))}
@@ -154,14 +168,20 @@ export default function RegisterScreen({ navigation }) {
               onChangeText={(e) => setCpf(formatPhoneNumberCpf(e))}
               maxLength={14}
               style={styles.input}
-            />            
+            />
             <TextInput
-            placeholder="Telefone"
-            value={whatsappUsu}
-            onChangeText={(value) => setWhatsappUsu(formatPhoneNumber(value))}
-            maxLength={15}
-            style={styles.input}
-          />
+              placeholder="Adicionar Sobre"
+              value={adisobre}
+              onChangeText={setAdicionarSobre}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Telefone"
+              value={whatsappUsu}
+              onChangeText={(value) => setWhatsappUsu(formatPhoneNumber(value))}
+              maxLength={15}
+              style={styles.input}
+            />
             <Button
               textColor={"white"}
               onPress={handleRegister}

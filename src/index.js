@@ -10,7 +10,7 @@ import TabsNavigation from "./screens/HomeScreen";
 import CadPasso1 from "./screens/CadPasso1";
 import CadPasso2 from "./screens/CadPasso2";
 import RegisterAuto from "./screens/RegisterAuto";
-import RegisterPes from "./screens/RegisterPes";
+import RegisterUsu from "./screens/RegisterUsu";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -26,7 +26,7 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigation({ navigation }) {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="RegisterUsu">
+      <Stack.Navigator initialRouteName="LoginScreen">
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
@@ -57,13 +57,6 @@ export default function RootNavigation({ navigation }) {
         <Stack.Screen
           name="RegisterScreen"
           component={RegisterScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="RegisterPes"
-          component={RegisterPes}
           options={{
             headerShown: false,
           }}
