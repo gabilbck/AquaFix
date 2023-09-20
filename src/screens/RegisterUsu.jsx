@@ -90,25 +90,16 @@ export default function RegisterScreen({ navigation }) {
     return formattedValueCep;
   }
 
-  // function validar(texto){
-  //   if(texto.length > 14) return;
-  //   setCpf(cpf);
-  //   setCnpj(cnpj);
-  //   setValid(
-  //     texto.length === 11 ? cpf.isValid(texto) : cnpj.isValid(texto)
-  //   )
-  //   console.log();
-  // }
-
-  // function mask(texto){
-  //   if (texto.length === 11) {
-  //     return cpf.format(texto);
-  //   } else if (texto.length === 14) {
-  //     return cnpj.format(texto);
-  //   } else {
-  //     return texto;
-  //   }
-  // }
+  function formatPhoneNumberCpf(value) {
+    // Apply the desired phone number mask here
+    const formattedValueCep = value
+      .replace(/\D/g, "") // Remove non-numeric characters
+      .replace(/(\d{3})(\d)/, "$1.$2") // Add hyphen to the main number
+      .replace(/(\d{3})(\d)/, "$1.$2") // Add hyphen to the main number
+      .replace(/(\d{3})(\d)/, "$1-$2") // Add hyphen to the main number
+      .slice(0, 15); // Limit the length of the input
+    return formattedValueCep;
+  }
 
   return (
     // <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -125,46 +116,31 @@ export default function RegisterScreen({ navigation }) {
             <Text style={styles.titulo_register}>CADASTRE-SE</Text>
             <Text style={styles.subtitulo_register}>Para iniciar seu cadastro, preencha asseguintes informações:</Text>
             <TextInput
-              placeholder="Digite seu nome completo"
+              placeholder="E-mail"
+              value={email}
+              onChangeText={setEmail}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Senha"
+              secureTextEntry={true}
+              value={senha}
+              onChangeText={setSenha}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Nome Completo"
               value={nomeCompleto}
               onChangeText={setNomeCompleto}
               style={styles.input}
             />
             <TextInput
-              placeholder="Digite seu nome de usuário"
+              placeholder="Nome de Usuário"
               value={nomeUsu}
               onChangeText={setNomeUsu}
               style={styles.input}
             />
-            <TextInput
-              placeholder="Digite seu email"
-              value={email}
-              onChangeText={setEmail}
-              style={styles.input}
-            />
-            {/* <TextInput
-              placeholder="Digite seu CPF"
-              value={cpf}
-              onChangeText={validar}
-              maxLength={14}
-              style={styles.input}
-            />
-            {isValid ? null : (<Text style={styles.error}>CPF inválido</Text>)}
-            <TextInput
-              placeholder="Digite seu CNPJ"
-              value={cnpj}
-              onChangeText={validar}
-              maxLength={18}
-              style={styles.input}
-            /> */}
-            <TextInput
-              placeholder="Digite seu telefone"
-              value={whatsappUsu}
-              onChangeText={(value) => setWhatsappUsu(formatPhoneNumber(value))}
-              maxLength={15}
-              style={styles.input}
-            />
-            <TextInput
+             <TextInput
               placeholder="Digite seu CEP"
               value={zipCode}
               onChangeText={(e) => setZipCode(formatPhoneNumberCep(e))}
@@ -173,19 +149,19 @@ export default function RegisterScreen({ navigation }) {
               onBlur={retornaLogradouro}
             />
             <TextInput
-              placeholder="Digite sua senha"
-              secureTextEntry={true}
-              value={senha}
-              onChangeText={setSenha}
+              placeholder="Digite seu CPF"
+              value={cpf}
+              onChangeText={(e) => setCpf(formatPhoneNumberCpf(e))}
+              maxLength={14}
               style={styles.input}
-            />
+            />            
             <TextInput
-              placeholder="Confirme sua senha"
-              secureTextEntry={true}
-              value={confirmSenha}
-              onChangeText={setConfirmSenha}
-              style={styles.input}
-            />
+            placeholder="Telefone"
+            value={whatsappUsu}
+            onChangeText={(value) => setWhatsappUsu(formatPhoneNumber(value))}
+            maxLength={15}
+            style={styles.input}
+          />
             <Button
               textColor={"white"}
               onPress={handleRegister}
