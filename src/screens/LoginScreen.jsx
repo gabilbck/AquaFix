@@ -21,47 +21,58 @@ import { useState } from "react";
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [error, setError] = useState(""); // Estado para armazenar mensagens de erro
 
-  // função para lidar com o login do Usuário
+  // Função para verificar e exibir erros de login
+  function checkLoginErrors(errorCode) {
+    switch (errorCode) {
+      case "auth/wrong-password":
+        setError("Senha incorreta");
+        break;
+      case "auth/invalid-email":
+        setError("E-mail inválido");
+        break;
+      case "auth/user-not-found":
+        setError("Usuário não encontrado");
+        break;
+      default:
+        setError("Erro desconhecido");
+    }
+  }
+
+  // Função para lidar com o login do Usuário
   function handleLogin() {
+    setError(""); // Limpar mensagens de erro
+
     signInWithEmailAndPassword(auth, email, senha)
-      .then((userCredencial) => {
+      .then((userCredential) => {
         console.log("Usuário logado com sucesso!");
-        navigation.navigate("HomeScreen");
+        navigation.navigate("TabsNavigation");
       })
       .catch((error) => {
         console.log("Erro ao criar usuário", error);
-        //código de erro
+        // Código de erro
         const errorCode = error.code;
+
         if (email === "" || senha === "") {
-          console.log("Preencha todos os campos");
+          setError("Preencha todos os campos");
           return;
         }
         if (senha.length < 6) {
-          console.log("A senha deve ter no mínimo 6 caracteres");
+          setError("A senha deve ter no mínimo 6 caracteres");
           return;
         }
-        if (!email.includes("@")) {
-          console.log("E-mail inválido");
-          return;
-        }
-        if (!email.includes(".")) {
-          console.log("E-mail inválido");
+        if (!email.includes("@") || !email.includes(".")) {
+          setError("E-mail inválido");
           return;
         }
         if (email.includes(" ")) {
-          console.log("E-mail inválido");
+          setError("E-mail inválido");
           return;
         }
-        if (errorCode === "auth/invalid-email") {
-          console.log("E-mail inválido");
-        }
-        if (errorCode === "auth/user-not-found") {
-          console.log("Usuário não encontrado");
-        }
-        if (errorCode === "auth/wrong-password") {
-          console.log("Senha incorreta");
-        }
+
+        // Verificar e exibir erros específicos de autenticação
+        checkLoginErrors(errorCode);
       });
   }
 
@@ -93,6 +104,7 @@ export default function LoginScreen({ navigation }) {
             mode="disabled"
             style={styles.input}
           />
+          {error && <Text style={styles.errorText}>{error}</Text>}
           <Button onPress={handleLogin} style={styles.botao} textColor="white">
             ENTRAR
           </Button>

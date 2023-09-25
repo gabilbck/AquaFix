@@ -6,13 +6,15 @@ import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RecuperarSenha from "./screens/RecuperarSenha";
 import ProfileScreen from "./screens/ProfileScreen";
-import TabsNavigation from "./screens/HomeScreen";
 import CadPasso1 from "./screens/CadPasso1";
 import CadPasso2 from "./screens/CadPasso2";
 import RegisterAuto from "./screens/RegisterAuto";
 import RegisterPes from "./screens/RegisterPes";
 import RegisterUsu from "./screens/RegisterUsu";
 import RegisterEmp from "./screens/RegisterEmp";
+
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -28,7 +30,7 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigation({ navigation }) {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LoginScreen">
+      <Stack.Navigator initialRouteName="SplashScreen">
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
@@ -71,8 +73,8 @@ export default function RootNavigation({ navigation }) {
           }}
         />
         <Stack.Screen
-          name="HomeScreen"
-          component={HomeScreen}
+          name="TabsNavigation"
+          component={TabsNavigation}
           options={{
             headerShown: false,
           }}
@@ -117,13 +119,25 @@ export default function RootNavigation({ navigation }) {
   );
 }
 
-// const tabs = createBottomTabNavigator();
-
-// export default function TabsNavigation() {
-//     return (
-//         <tabs.Navigator>
-//             <tabs.Screen name="Home" component={HomeScreen} />
-//             <tabs.Screen name="Profile" component={ProfileScreen} />
-//         </tabs.Navigator>
-//     );
-// }
+const Tabs = createMaterialBottomTabNavigator();
+function TabsNavigation() {
+  return (
+    <Tabs.Navigator
+      initialRouteName="Feed"
+      activeColor="#e91e63"
+      labelStyle={{ fontSize: 12 }}
+      style={{ backgroundColor: "tomato" }}
+    >
+      <Tabs.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+    </Tabs.Navigator>
+  );
+}

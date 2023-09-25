@@ -1,69 +1,67 @@
-import { View } from "react-native"
-import { Text } from "react-native-paper"
+import { View } from "react-native";
+import { Text } from "react-native-paper";
 import { styles } from "../utils/styles";
-import { useEffect, useState } from "react"
-import { onAuthStateChanged } from "firebase/auth"
-import { auth, db } from "../config/firebase"
-import { collection, getDocs, query, where } from "firebase/firestore"
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../config/firebase";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { Image } from "expo-image";
+// import PubliAdmScreen from "./PubliAdmScreen";
 
 export default function HomeScreen() {
-    const [usuario, setUsuario] = useState({})
+  const [usuario, setUsuario] = useState({});
 
-    useEffect(() => {
-        const unsub = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log("Usuário UID: ", user.uid)
-                setUsuario({ uid: user.uid })
-            } else {
-                console.log("Usuário não logado")
-            }
-        })
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("Usuário UID: ", user.uid);
+        setUsuario({ uid: user.uid });
+      } else {
+        console.log("Usuário não logado");
+      }
+    });
 
-        return () => { unsub() }
-    }, [])
+    return () => {
+      unsub();
+    };
+  }, []);
 
-    useEffect(() => {
+  useEffect(() => {
+    // verifica se uid não é vazio
+    if (!usuario.uid) return;
 
-        // verifica se uid não é vazio
-        if (!usuario.uid) return
+    // referência ao documento no Firestore usando o UID do usuário
+    const usuarioRef = doc(db, "usuario", usuario.uid);
 
-        // seleciona a coleção usuarios
-        const usuariosRef = collection(db, "usuario");
+    console.log("Buscando usuário com UID: ", usuario.uid);
 
-        // começa a preparar a busca
-        const q = query(
-            usuariosRef,
-            // define a cláusula where
-            where("userUID", "==", usuario.uid)
-        )
+    // busca o documento
+    getDoc(usuarioRef)
+      .then((docSnapshot) => {
+        if (docSnapshot.exists()) {
+          // pega os dados do documento
+          const userData = docSnapshot.data();
+          setUsuario(userData);
+        } else {
+          console.log("Usuário não encontrado !!!");
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar usuário:", error);
+      });
+  }, [usuario.uid]);
 
-        // executa a busca
-        getDocs(q)
-            .then((querySnapshot) => {
-                // caso não esteja vazio
-                if (!querySnapshot.empty) {
-                    // pega o primeiro documento
-                    const userData = querySnapshot.docs[0].data()
-                    // define o usuário
-                    setUsuario(userData)
-                    // ou se preferir pode definir assim:
-                    setUsuario({
-                        nome: userData.nome_usu,
-                        telefone: userData.whatsapp_usu,
-                        email: userData.email_usu,
-                        uid: userData.uid
-                    })
-                } else {
-                    console.log("Usuário não encontrado")
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }, [usuario.uid])
+ 
 
-    return (
-      <View style={styles.container}>
+  return (
+    <View style={styles.container}>
       {/* Parte que aparece a imagem: azul e logo */}
       <View style={styles.imagemTopo}>
         <Image
@@ -75,9 +73,11 @@ export default function HomeScreen() {
       <View style={styles.conteudo}>
         <View style={styles.containerInner}>
           <Text style={styles.titulo}>Bom dia, {usuario?.nome_usu}?</Text>
-          <Text style={styles.subtitulo}>Venha conhecer as novidades do momento:</Text>
+          <Text style={styles.subtitulo}>
+            Venha conhecer as novidades do momento:
+          </Text>
         </View>
       </View>
     </View>
-    )
+  );
 }
