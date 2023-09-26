@@ -25,6 +25,7 @@ export default function RegisterEmp({ navigation }) {
   const [whatsappUsu, setWhatsappUsu] = useState("");
   // const [cnpj, setCnpj] = useState("");
   const [isValid, setIsValid] = useState(null);
+  const [erroCnpj, setErroCnpj] = useState("");
 
   function handleRegister() {
     if (senha !== confirmSenha) {
@@ -94,13 +95,13 @@ export default function RegisterEmp({ navigation }) {
     setCnpjUsu(texto);
     if (texto.length === 14) {
       if (!cnpj.isValid(texto)) {
-        console.log("CNPJ inválido");
+        setErroCnpj("CNPJ inválido");
         setIsValid(false);
         return;
       } else {
         setCnpjUsu(cnpj.format(texto));
         setIsValid(true);
-        console.log("CNPJ válido");
+        setErroCnpj("CNPJ válido");
       }
     }
 
@@ -162,6 +163,7 @@ export default function RegisterEmp({ navigation }) {
             onChangeText={validar}
             error={!isValid}
           />
+          <Text>{erroCnpj}</Text>
           <TextInput
             placeholder="CEP"
             value={zipCode}
