@@ -51,9 +51,9 @@ export const styles = StyleSheet.create({
         margin: 40,
     },
     subtitulo: {
-        fontSize: 20,
-        textAlign: 'height',
+        textAlign: 'center',
         color: '#16337E',
+        fontSize: 15,
     },
     input: {
         height: 50,

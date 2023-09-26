@@ -10,9 +10,11 @@ import {
 import { Image } from "expo-image";
 import { styles } from "../utils/styles";
 import { useState } from "react";
-import { auth, db } from "../config/firebase";
+import { auth, db, storage } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
 
 export default function RegisterUsu({ navigation }) {
   const [adisobre, setAdicionarSobre] = useState("");
@@ -21,30 +23,59 @@ export default function RegisterUsu({ navigation }) {
   const [email, setEmail] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [senha, setSenha] = useState("");
-  const [confirmSenha, setConfirmSenha] = useState("");
   const [cpf, setCpf] = useState("");
-  const [cnpj, setCnpj] = useState("");
   const [isValid, setValid] = useState(null);
   const [bio, setBio] = useState("");
-  const [photo, setPhoto] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
-  const addImageToFirestore = async (imageURL) => {
-    try {
-        const ref = collection(db, "usuario");
-        await addDoc(ref, { imageURL }); // Store the image URL in Firestore
+  const [getImage, setImage] = useState(null);
+  
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
 
-        console.log("Image URL added to Firestore");
-    } catch (error) {
-        console.error("Error adding image URL to Firestore: ", error);
-    }
-};
+        console.log(result);
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
+    const uploadImageToFirebase = async () => {
+      try {
+          const response = await fetch(getImage);
+          const blob = await response.blob();
+
+          const storageRef = ref(storage, 'foto_usu/' + Date.now())
+          ;
+          const uploadTask = uploadBytes(storageRef, blob);
+
+          await uploadTask;
+
+          const imageURL = await getDownloadURL(storageRef);
+          setImageToFirebase(imageURL);
+      } catch (error) {
+          console.error('Error uploading image: ', error);
+      }
+  };
+
+  const setImageToFirebase = async (url) => {
+      try {
+          const ref = collection(db, 'foto_usu');
+          await addDoc(ref, { url });
+
+          console.log('URL da imagem enviada a Firestore');
+          setImage(null);
+      } catch (error) {
+          console.error('Erro ao enviar a Firestore: ', error);
+          setImage(null);
+      }
+  };
 
   function handleRegister() {
-    if (senha !== confirmSenha) {
-      console.log("A senha e a confirmação de senha não correspondem");
-      return;
-    }
-
     createUserWithEmailAndPassword(auth, email, senha)
       .then((userCredential) => {
         console.log("Usuário criado com sucesso!", userCredential);
@@ -52,12 +83,12 @@ export default function RegisterUsu({ navigation }) {
 
         setDoc(doc(db, "usuario", uid), {
           adm: false,
-          bio_usu: "Olá, eu sou " + nomeUsu,
+          bio_usu: "Olá, eu sou " + adisobre,
+          tipo_conta: "",
+          profissao_usu: "",
           cep_usu: zipCode,
-          cpf_usu: "",
-          cnpj_usu: "",
+          cpf_usu: cpf,
           email_usu: email,
-          foto_usu: "",
           nome_real_usu: nomeCompleto,
           nome_usu: nomeUsu,
           senha_usu: senha,
@@ -112,6 +143,13 @@ export default function RegisterUsu({ navigation }) {
       .slice(0, 15); // Limit the length of the input
     return formattedValueCep;
   }
+
+  function Registrar(){
+    handleRegister();
+    uploadImageToFirebase();
+  }
+
+  
 
   return (
     // <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -169,6 +207,15 @@ export default function RegisterUsu({ navigation }) {
               maxLength={14}
               style={styles.input}
             />
+            {getImage ? <> 
+              <Image source={{ uri: getImage }} style={{ width: 200, height: 200, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px #16337E solid"}} />
+              </>
+              :
+              <Button onPress={pickImage} style={styles.botao} textColor="white">
+                Escolher foto
+              </Button>
+            }
+
             <TextInput
               placeholder="Adicionar Sobre"
               value={adisobre}
@@ -184,7 +231,7 @@ export default function RegisterUsu({ navigation }) {
             />
             <Button
               textColor={"white"}
-              onPress={handleRegister}
+              onPress={Registrar}
               style={styles.botao}
             >
               REGISTRAR
