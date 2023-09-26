@@ -1,7 +1,7 @@
-import { View } from "react-native";
-import { Text } from "react-native-paper";
+import React, { useEffect, useState } from "react";
+import { View, TextInput, ScrollView } from "react-native";
+import { Text, Button, Card } from "react-native-paper";
 import { styles } from "../utils/styles";
-import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../config/firebase";
 import {
@@ -11,12 +11,50 @@ import {
   getDocs,
   query,
   where,
+  addDoc,
 } from "firebase/firestore";
 import { Image } from "expo-image";
-// import PubliAdmScreen from "./PubliAdmScreen";
 
 export default function HomeScreen() {
   const [usuario, setUsuario] = useState({});
+  const [titulo, setTitulo] = useState("");
+  const [texto, setTexto] = useState("");
+  const [link, setLink] = useState("");
+  const [publicacoes, setPublicacoes] = useState([]);
+
+  const handleCadastro = async () => {
+    if (titulo && texto && link) {
+      try {
+        // Adicione os dados ao Firestore
+        const docRef = await addDoc(collection(db, "publi_adm"), {
+          titulo_puli_adm: titulo,
+          texto,
+          link,
+        });
+        console.log("Documento cadastrado com ID: ", docRef.id);
+        // Limpe os campos após o cadastro
+        setTitulo("");
+        setTexto("");
+        setLink("");
+        // Recarregue as publicações após o cadastro
+        carregarPublicacoes();
+      } catch (error) {
+        console.error("Erro ao cadastrar documento: ", error);
+      }
+    } else {
+      console.warn("Preencha todos os campos.");
+    }
+  };
+
+  const carregarPublicacoes = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "publi_adm"));
+      const publicacoesData = querySnapshot.docs.map((doc) => doc.data());
+      setPublicacoes(publicacoesData);
+    } catch (error) {
+      console.error("Erro ao buscar publicações: ", error);
+    }
+  };
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -28,37 +66,12 @@ export default function HomeScreen() {
       }
     });
 
+    carregarPublicacoes();
+
     return () => {
       unsub();
     };
   }, []);
-
-  useEffect(() => {
-    // verifica se uid não é vazio
-    if (!usuario.uid) return;
-
-    // referência ao documento no Firestore usando o UID do usuário
-    const usuarioRef = doc(db, "usuario", usuario.uid);
-
-    console.log("Buscando usuário com UID: ", usuario.uid);
-
-    // busca o documento
-    getDoc(usuarioRef)
-      .then((docSnapshot) => {
-        if (docSnapshot.exists()) {
-          // pega os dados do documento
-          const userData = docSnapshot.data();
-          setUsuario(userData);
-        } else {
-          console.log("Usuário não encontrado !!!");
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar usuário:", error);
-      });
-  }, [usuario.uid]);
-
- 
 
   return (
     <View style={styles.container}>
@@ -71,14 +84,52 @@ export default function HomeScreen() {
       </View>
       {/* Parte que aparece o conteúdo: cinza/branco */}
       <View style={styles.conteudo}>
+        <ScrollView>
         <View style={styles.containerInner}>
           <Text style={styles.titulo}>Bom dia, {usuario?.nome_usu}?</Text>
           <Text style={styles.subtitulo}>
             Venha conhecer as novidades do momento:
           </Text>
 
-          
+          {/* Formulário de cadastro */}
+          <TextInput
+            placeholder="Título"
+            value={titulo}
+            onChangeText={(text) => setTitulo(text)}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Texto"
+            value={texto}
+            onChangeText={(text) => setTexto(text)}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Link"
+            value={link}
+            onChangeText={(text) => setLink(text)}
+            style={styles.input}
+          />
+          <Button onPress={handleCadastro} style={styles.botao} textColor="white">
+            PUBLICAR
+          </Button>
+
+          {/* Lista de publicações */}
+          <View>
+            {publicacoes.map((publicacao, index) => (
+              <Card key={index} style={styles.card}>
+                <Card.Title title={publicacao.titulo_puli_adm} />
+                <Card.Content>
+                  <Text>{publicacao.texto}</Text>
+                </Card.Content>
+                <Card.Actions>
+                  <Button onPress={() => Linking.openURL(publicacao.link)}>Acessar</Button>
+                </Card.Actions>
+              </Card>
+            ))}
+          </View>
         </View>
+        </ScrollView>
       </View>
     </View>
   );
