@@ -27,6 +27,7 @@ export default function RegisterEmp({ navigation }) {
   // const [cnpj, setCnpj] = useState("");
   const [isValid, setIsValid] = useState(null);
   const [erroCnpj, setErroCnpj] = useState("");
+  const [servicosUsu, setServicosUsu] = useState("");
 
   function handleRegister() {
     if (senha !== confirmSenha) {
@@ -50,6 +51,7 @@ export default function RegisterEmp({ navigation }) {
           nome_usu: nomeUsu,
           senha_usu: senha,
           whatsapp_usu: whatsappUsu,
+          servisos_usu: servicosUsu,
         }).then(() => {
           console.log("Cadastrado!");
           navigation.navigate("LoginScreen");
@@ -178,6 +180,12 @@ export default function RegisterEmp({ navigation }) {
               placeholder="Número de WhatsApp da empresa"
               value={whatsappUsu}
               onChangeText={(value) => setWhatsappUsu(numeroCelular(value))}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Serviços oferecidos (separe por vírugla)"
+              value={servicosUsu}
+              onChangeText={setServicosUsu}
               style={styles.input}
             />
 
