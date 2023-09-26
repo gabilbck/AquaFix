@@ -1,6 +1,6 @@
-import { View } from "react-native";
+import { View, TextInput } from "react-native";
 import { Image } from "expo-image";
-import { Button, Text, TextInput } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { styles } from "../utils/styles";
 // import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 // import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -11,6 +11,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { cnpj } from "cpf-cnpj-validator";
+import { ScrollView } from "react-native-web";
 
 export default function RegisterEmp({ navigation }) {
   const [nomeUsu, setNomeUsu] = useState("");
@@ -109,83 +110,107 @@ export default function RegisterEmp({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      {/* Parte que aparece a imagem: azul e logo */}
-      <View style={styles.imagemTopo}>
-        <Image
-          source={require("../../assets/img/logocomp-branca.png")}
-          style={{ width: 200, height: 127 }}
-        />
-      </View>
-      {/* Parte que aparece o conteúdo: cinza/branco */}
-      <View style={styles.conteudo}>
-        <View style={styles.containerInner}>
-          <Text style={styles.titulo}>CADASTRE-SE</Text>
-          <Text style={styles.subtitulo}>
-            Preencha as seguintes informações:
-          </Text>
-          <TextInput
-            placeholder="Nome da Empresa"
-            value={nomeCompleto}
-            onChangeText={setNomeCompleto}
-            style={styles.input}
+    <ScrollView>
+      <View style={styles.container}>
+        {/* Parte que aparece a imagem: azul e logo */}
+        <View style={styles.imagemTopo}>
+          <Image
+            source={require("../../assets/img/logocomp-branca.png")}
+            style={{ width: 200, height: 127 }}
           />
-          <TextInput
-            placeholder="Nome de usuário da empresa"
-            value={nomeUsu}
-            onChangeText={setNomeUsu}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="E-mail da empresa"
-            value={email}
-            onChangeText={setEmail}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Senha"
-            value={senha}
-            onChangeText={setSenha}
-            style={styles.input}
-            secureTextEntry={true}
-          />
-          <TextInput
-            placeholder="Confirmar senha"
-            value={confirmSenha}
-            onChangeText={setConfirmSenha}
-            style={styles.input}
-            secureTextEntry={true}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder={`Digite seu CNPJ`}
-            value={cnpjUsu}
-            onChangeText={validar}
-            error={!isValid}
-          />
-          <Text>{erroCnpj}</Text>
-          <TextInput
-            placeholder="CEP"
-            value={zipCode}
-            onChangeText={(value) => setZipCode(cep(value))}
-            style={styles.input}
-            onBlur={retornaLogradouro}
-          />
-          <TextInput
-            placeholder="Número de WhatsApp da empresa"
-            value={whatsappUsu}
-            onChangeText={(value) => setWhatsappUsu(numeroCelular(value))}
-            style={styles.input}
-          />
-          <Button
-            textColor={"white"}
-            onPress={handleRegister}
-            style={styles.botao2}
-          >
-            Cadastrar
-          </Button>
+        </View>
+        {/* Parte que aparece o conteúdo: cinza/branco */}
+
+        <View style={styles.conteudo}>
+          <View style={styles.containerInner}>
+            <Text style={styles.titulo}>CADASTRE-SE</Text>
+            <Text style={styles.subtitulo}>
+              Preencha as seguintes informações:
+            </Text>
+            <TextInput
+              placeholder="Nome da Empresa"
+              value={nomeCompleto}
+              onChangeText={setNomeCompleto}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Nome de usuário da empresa"
+              value={nomeUsu}
+              onChangeText={setNomeUsu}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="E-mail da empresa"
+              value={email}
+              onChangeText={setEmail}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Senha"
+              value={senha}
+              onChangeText={setSenha}
+              style={styles.input}
+              secureTextEntry={true}
+            />
+            <TextInput
+              placeholder="Confirmar senha"
+              value={confirmSenha}
+              onChangeText={setConfirmSenha}
+              style={styles.input}
+              secureTextEntry={true}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder={`Digite seu CNPJ`}
+              value={cnpjUsu}
+              onChangeText={validar}
+              error={!isValid}
+            />
+            <Text>{erroCnpj}</Text>
+            <TextInput
+              placeholder="CEP"
+              value={zipCode}
+              onChangeText={(value) => setZipCode(cep(value))}
+              style={styles.input}
+              onBlur={retornaLogradouro}
+            />
+            <TextInput
+              placeholder="Número de WhatsApp da empresa"
+              value={whatsappUsu}
+              onChangeText={(value) => setWhatsappUsu(numeroCelular(value))}
+              style={styles.input}
+            />
+
+            <Button
+              onPress={handleRegister}
+              style={styles.botao}
+              textColor="white"
+            >
+              CADASTRAR
+            </Button>
+            <View style={styles.linha}>
+              <View style={styles.coluna}>
+                <Text>Escolheu a opção errada?</Text>
+                <Button
+                  textColor={"black"}
+                  onPress={() => navigation.navigate("CadPasso2")}
+                >
+                  <Text style={styles.botaoPreto}>Voltar ao passo anterior</Text>
+                </Button>
+              </View>
+              <View style={styles.coluna}>
+                <Text>Já tem uma conta?</Text>
+                <Button
+                  textColor={"black"}
+                  onPress={() => navigation.navigate("LoginScreen")}
+                >
+                  <Text style={styles.botaoPreto}>Entrar agora!</Text>
+                </Button>
+              </View>
+            </View>
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }

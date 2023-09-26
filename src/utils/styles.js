@@ -104,6 +104,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'stretch',
         justifyContent: 'space-between',
+        paddingBottom: 50,
     },
     coluna: {
         flex: 1,
