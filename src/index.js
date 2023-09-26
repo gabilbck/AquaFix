@@ -9,12 +9,13 @@ import ProfileScreen from "./screens/ProfileScreen";
 import CadPasso1 from "./screens/CadPasso1";
 import CadPasso2 from "./screens/CadPasso2";
 import RegisterAuto from "./screens/RegisterAuto";
-import RegisterPes from "./screens/RegisterPes";
 import RegisterUsu from "./screens/RegisterUsu";
 import RegisterEmp from "./screens/RegisterEmp";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import PesquisaScreen from "./screens/PesquisaScreen";
+import PerfilScreen from "./screens/PerfilScreen";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -114,6 +115,20 @@ export default function RootNavigation({ navigation }) {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="PesquisaScreen"
+          component={PesquisaScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="PerfilScreen"
+          component={PerfilScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -135,6 +150,26 @@ function TabsNavigation() {
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+       <Tabs.Screen
+        name="PesquisaScreen"
+        component={PesquisaScreen}
+        options={{
+          tabBarLabel: "Pesquise",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="magnify" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="PerfilScreen"
+        component={PerfilScreen}
+        options={{
+          tabBarLabel: "Perfil",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account" color={color} size={26} />
           ),
         }}
       />

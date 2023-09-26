@@ -76,6 +76,8 @@ export default function HomeScreen() {
           <Text style={styles.subtitulo}>
             Venha conhecer as novidades do momento:
           </Text>
+
+          
         </View>
       </View>
     </View>
