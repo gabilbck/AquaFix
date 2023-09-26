@@ -2,14 +2,15 @@ import { View } from "react-native";
 import { Image } from "expo-image";
 import { Button, Text, TextInput } from "react-native-paper";
 import { styles } from "../utils/styles";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import InputCCValidator from "../components/InputCPFValidator";
+// import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+// import { MaterialCommunityIcons } from "@expo/vector-icons";
+// import InputCCValidator from "../components/InputCPFValidator";
 import { useState } from "react";
-import InputCNPJValidator from "../components/InputCNPJValidator";
+// import InputCNPJValidator from "../components/InputCNPJValidator";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { cnpj } from "cpf-cnpj-validator";
 
 export default function RegisterEmp({ navigation }) {
   const [nomeUsu, setNomeUsu] = useState("");
@@ -22,7 +23,7 @@ export default function RegisterEmp({ navigation }) {
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
-  const [valor, setValor] = useState("");
+  // const [cnpj, setCnpj] = useState("");
   const [isValid, setIsValid] = useState(null);
 
   function handleRegister() {
@@ -89,22 +90,21 @@ export default function RegisterEmp({ navigation }) {
 
   function validar(texto) {
     if (texto.length > 14) return;
-    setValor(mask(texto));
-    if (tipo === "cnpj") {
-      setIsValid(cnpj.isValid(texto));
-    } else {
-      setIsValid(null);
-    }
 
-    console.log();
-  }
-
-  function mask(texto) {
+    setCnpjUsu(texto);
     if (texto.length === 14) {
-      return cnpj.format(texto);
-    } else {
-      return texto;
+      if (!cnpj.isValid(texto)) {
+        console.log("CNPJ inválido");
+        setIsValid(false);
+        return;
+      } else {
+        setCnpjUsu(cnpj.format(texto));
+        setIsValid(true);
+        console.log("CNPJ válido");
+      }
     }
+
+    console.log(texto);
   }
 
   return (
@@ -157,8 +157,8 @@ export default function RegisterEmp({ navigation }) {
           />
           <TextInput
             style={styles.input}
-            placeholder={`Digite seu ${tipo.toUpperCase()}`}
-            value={valor}
+            placeholder={`Digite seu CNPJ`}
+            value={cnpjUsu}
             onChangeText={validar}
             error={!isValid}
           />
