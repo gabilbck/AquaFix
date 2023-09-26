@@ -52,6 +52,7 @@ export default function RegisterEmp({ navigation }) {
           senha_usu: senha,
           whatsapp_usu: whatsappUsu,
           servisos_usu: servicosUsu,
+          tipo_conta: "empresa",
         }).then(() => {
           console.log("Cadastrado!");
           navigation.navigate("LoginScreen");
