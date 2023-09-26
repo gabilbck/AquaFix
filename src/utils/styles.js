@@ -32,6 +32,11 @@ export const styles = StyleSheet.create({
         alignItems: "center",
         paddingVertical: 40,
     },
+    usuTopo: { 
+        alignItems: "center",
+        paddingVertical: 40,
+        width: "100%",
+    },
     conteudo: { //CONTEÚDO ESCRITO COM BOTOES TEXTOS ETC => para cadastros
         backgroundColor: "#F4F4F4",
         borderTopLeftRadius: 40,

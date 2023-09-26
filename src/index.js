@@ -16,6 +16,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PesquisaScreen from "./screens/PesquisaScreen";
 import PerfilScreen from "./screens/PerfilScreen";
+import EditUsu from "./screens/EditUsu";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -170,6 +171,16 @@ function TabsNavigation() {
           tabBarLabel: "Perfil",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Configurações"
+        component={EditUsu}
+        options={{
+          tabBarLabel: "Configurações",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="cog" color={color} size={26} />
           ),
         }}
       />
