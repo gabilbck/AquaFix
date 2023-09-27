@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { View, TextInput } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { auth } from "../config/firebase";
-import { confirmPasswordReset, sendPasswordResetEmail } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { styles } from "../utils/styles";
 
 export default function RecuperarSenha({ navigation }) {
