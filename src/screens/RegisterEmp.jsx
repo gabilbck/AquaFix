@@ -4,7 +4,7 @@ import { Button, Text } from "react-native-paper";
 import { styles } from "../utils/styles";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db, storage } from "../config/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { cnpj } from "cpf-cnpj-validator";
 import * as ImagePicker from "expo-image-picker";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -26,6 +26,8 @@ export default function RegisterEmp({ navigation }) {
   const [servicosUsu, setServicosUsu] = useState("");
   const [getImage, setImage] = useState(null);
   const [erroSenha, setErroSenha] = useState("");
+  const [erroEmail, setErroEmail] = useState("");
+  const [erroUser, setErroUser] = useState("");
 
   // const storage = getStorage(); // Initialize Firebase Storage
 
@@ -39,7 +41,7 @@ export default function RegisterEmp({ navigation }) {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setImage(result.uri);
     }
   };
@@ -69,6 +71,26 @@ export default function RegisterEmp({ navigation }) {
 
   const setImageToFirebase = async (url) => {
     try {
+      // Check if email is already registered
+      const emailQuery = query(collection(db, "usuarios"), where("email_usu", "==", email));
+      const emailQuerySnapshot = await getDocs(emailQuery);
+
+      if (!emailQuerySnapshot.empty) {
+        console.error("E-mail já cadastrado");
+        setErroEmail("E-mail já cadastrado");
+        return;
+      }
+
+      // Check if username is already registered
+      const usernameQuery = query(collection(db, "usuarios"), where("nome_usu", "==", nomeUsu));
+      const usernameQuerySnapshot = await getDocs(usernameQuery);
+
+      if (!usernameQuerySnapshot.empty) {
+        console.error("Nome de usuário já cadastrado");
+        setErroUser("Nome de usuário já cadastrado");
+        return;
+      }
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -78,7 +100,7 @@ export default function RegisterEmp({ navigation }) {
 
       const uid = userCredential.user.uid;
 
-      await setDoc(doc(db, "usuario", uid), {
+      await setDoc(doc(db, "usuarios", uid), {
         adm: false,
         bio_usu: "Olá, eu sou " + nomeUsu,
         cep_usu: zipCode,
@@ -101,7 +123,7 @@ export default function RegisterEmp({ navigation }) {
       console.error("Erro ao criar usuário", error);
       // Handle error codes
     }
-  };
+  }
 
   function retornaLogradouro() {
     const url = `https://viacep.com.br/ws/${zipCode}/json/`;
@@ -188,12 +210,14 @@ export default function RegisterEmp({ navigation }) {
               onChangeText={setNomeUsu}
               style={styles.input}
             />
+            <Text>{erroUser}</Text>
             <TextInput
               placeholder="E-mail da empresa"
               value={email}
               onChangeText={setEmail}
               style={styles.input}
             />
+            <Text>{erroEmail}</Text>
             <TextInput
               placeholder="Senha"
               value={senha}
