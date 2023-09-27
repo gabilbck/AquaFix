@@ -10,13 +10,14 @@ import CadPasso1 from "./screens/CadPasso1";
 import CadPasso2 from "./screens/CadPasso2";
 import RegisterAuto from "./screens/RegisterAuto";
 import RegisterUsu from "./screens/RegisterUsu";
-import RegisterEmp from "./screens/RegisterEmp";
+
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PesquisaScreen from "./screens/PesquisaScreen";
 import PerfilScreen from "./screens/PerfilScreen";
 import EditUsu from "./screens/EditUsu";
+import RegisterEmp from "./screens/RegisterEmp";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -154,7 +155,7 @@ function TabsNavigation() {
           ),
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="PesquisaScreen"
         component={PesquisaScreen}
         options={{
