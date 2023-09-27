@@ -166,7 +166,7 @@ function TabsNavigation() {
         options={{
           tabBarLabel: "Pesquise",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="Pesquisar" color={color} size={26} />
+            <MaterialCommunityIcons name="magnify" color={color} size={26} />
           ),
         }}
       />
@@ -176,7 +176,7 @@ function TabsNavigation() {
         options={{
           tabBarLabel: "Perfil",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="Perfil" color={color} size={26} />
+            <MaterialCommunityIcons name="account" color={color} size={26} />
           ),
         }}
       />
@@ -186,7 +186,7 @@ function TabsNavigation() {
         options={{
           tabBarLabel: "Configurações",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="Configurações" color={color} size={26} />
+            <MaterialCommunityIcons name="cog" color={color} size={26} />
           ),
         }}
       />
