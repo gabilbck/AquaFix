@@ -32,12 +32,22 @@ export default function RegisterEmp({ navigation }) {
   const [servicosUsu, setServicosUsu] = useState("");
   const [getImage, setImage] = useState(null);
   const [erroSenha, setErroSenha] = useState("");
+  const [imageSelected, setImageSelected] = useState(false);
+  const [erroImage, setErroImage] = useState("");
 
   function handleRegister() {
     if (senha !== confirmSenha) {
       setErroSenha("As senhas não correspondem");
       return;
     }
+
+    if (!imageSelected) {
+    // Se a imagem não foi selecionada, exiba uma mensagem de erro ou tome a ação apropriada.
+    // Por exemplo, você pode definir um estado de erro para exibir uma mensagem de erro na interface do usuário.
+    // Ou você pode impedir o envio do formulário até que a imagem seja selecionada.
+    setErroImage("Selecione uma imagem antes de cadastrar.");
+    return;
+  }
 
     createUserWithEmailAndPassword(auth, email, senha)
       .then((userCredential) => {
@@ -122,11 +132,10 @@ export default function RegisterEmp({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
-
+  
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      setImageSelected(true); // Defina como true quando uma imagem for selecionada
     }
   };
 
@@ -262,6 +271,7 @@ export default function RegisterEmp({ navigation }) {
                 Escolher foto
               </Button>
             )}
+            <Text>{erroImage}</Text>
 
             <Button
               onPress={handleRegister}
