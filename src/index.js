@@ -11,7 +11,6 @@ import CadPasso2 from "./screens/CadPasso2";
 import RegisterAuto from "./screens/RegisterAuto";
 import RegisterUsu from "./screens/RegisterUsu";
 
-
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PesquisaScreen from "./screens/PesquisaScreen";
@@ -141,9 +140,14 @@ function TabsNavigation() {
   return (
     <Tabs.Navigator
       initialRouteName="Feed"
-      activeColor="#e91e63"
+      activeColor="white"
+      inactiveColor="white"
+      selectedLabelStyle={{ backgroundColor: "white" }}
       labelStyle={{ fontSize: 12 }}
-      style={{ backgroundColor: "tomato" }}
+      style={{ backgroundColor: "white" }}
+      barStyle={{
+        backgroundColor: "#16337E",
+      }}
     >
       <Tabs.Screen
         name="HomeScreen"
@@ -152,6 +156,7 @@ function TabsNavigation() {
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
+            
           ),
         }}
       />
@@ -161,7 +166,7 @@ function TabsNavigation() {
         options={{
           tabBarLabel: "Pesquise",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={26} />
+            <MaterialCommunityIcons name="Pesquisar" color={color} size={26} />
           ),
         }}
       />
@@ -171,7 +176,7 @@ function TabsNavigation() {
         options={{
           tabBarLabel: "Perfil",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" color={color} size={26} />
+            <MaterialCommunityIcons name="Perfil" color={color} size={26} />
           ),
         }}
       />
@@ -181,7 +186,7 @@ function TabsNavigation() {
         options={{
           tabBarLabel: "Configurações",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="cog" color={color} size={26} />
+            <MaterialCommunityIcons name="Configurações" color={color} size={26} />
           ),
         }}
       />
