@@ -27,15 +27,15 @@ export default function RegisterEmp({ navigation }) {
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
-  // const [cnpj, setCnpj] = useState("");
   const [isValid, setIsValid] = useState(null);
   const [erroCnpj, setErroCnpj] = useState("");
   const [servicosUsu, setServicosUsu] = useState("");
   const [getImage, setImage] = useState(null);
+  const [erroSenha, setErroSenha] = useState("");
 
   function handleRegister() {
     if (senha !== confirmSenha) {
-      console.log("A senha e a confirmação de senha não correspondem");
+      setErroSenha("As senhas não correspondem");
       return;
     }
 
@@ -212,6 +212,7 @@ const setImageToFirebase = async (url) => {
               style={styles.input}
               secureTextEntry={true}
             />
+            <Text>{erroSenha}</Text>
             <TextInput
               style={styles.input}
               placeholder={`Digite seu CNPJ`}
@@ -243,7 +244,7 @@ const setImageToFirebase = async (url) => {
               <Image source={{ uri: getImage }} style={{ width: 200, height: 200, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px #16337E solid"}} />
               </>
               :
-              <Button onPress={pickImage} style={styles.botao} textColor="white">
+              <Button onPress={pickImage} style={styles.botao2} textColor="white">
                 Escolher foto
               </Button>
             }
