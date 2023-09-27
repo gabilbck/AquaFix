@@ -55,6 +55,22 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 40,
     },
+    titulo2: {
+        fontSize: 17,
+        textAlign: 'left',
+
+        color: '#16337E',
+        fontWeight: 'bold',
+
+    },
+    subtitulo2: {
+        marginTop: 5,
+        fontSize: 17,
+        textAlign: 'left',
+
+        color: '#16337E',
+        marginBottom: 25,
+    },
     subtitulo: {
         textAlign: 'center',
         color: '#16337E',
@@ -101,6 +117,18 @@ export const styles = StyleSheet.create({
         marginVertical: 10,
         width: "100%",
         paddingHorizontal: 30,
+    },
+    botaovermelho: {
+        marginTop: 15,
+        fontSize: 17,
+        padding: 4,
+        backgroundColor: '#e82c3c',
+        borderRadius: 5,
+        color: 'white',
+        textDecorationColor: 'white',
+        alignSelf: 'left',
+        marginVertical: 40,
+        width: "50%",
     },
     botaoPreto:{
         fontWeight: 'bold',
