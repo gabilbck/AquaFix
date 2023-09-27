@@ -5,50 +5,123 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { Image } from "expo-image";
 import { styles } from "../utils/styles";
 import { useState } from "react";
-import { auth, db } from "../config/firebase";
+import { auth, db, storage } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
+import React from "react";
+import PickerSelect from "react-native-picker-select";
 
 export default function RegisterAuto({ navigation }) {
-  const [nomeUsu, setNomeUsu] = useState("");
+  const [adisobre, setAdicionarSobre] = useState("");
+  const [nomeEmp_auto, setnomeEmp_auto] = useState("");
   const [nomeCompleto, setNomeCompleto] = useState("");
   const [email, setEmail] = useState("");
+  const [selectedNeighborhood, setSelectedNeighborhood] = useState(null);
   const [zipCode, setZipCode] = useState("");
   const [senha, setSenha] = useState("");
-  const [confirmSenha, setConfirmSenha] = useState("");
   const [cpf, setCpf] = useState("");
-  const [cnpj, setCnpj] = useState("");
   const [isValid, setValid] = useState(null);
   const [bio, setBio] = useState("");
-  const [photo, setPhoto] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
+  const [getImage, setImage] = useState(null);
+  
+  const neighborhoods = [
+    { label: 'Adhemar Garcia', value: 'adhemar_garcia' },
+    { label: 'América', value: 'america' },
+    { label: 'Anita Garibaldi', value: 'anita_garibaldi' },
+    { label: 'Atiradores', value: 'atiradores' },
+    { label: 'Boa Vista', value: 'boa_vista' },
+    { label: 'Bom Retiro', value: 'bom_retiro' },
+    { label: 'Bucarein', value: 'bucarein' },
+    { label: 'Centro', value: 'centro' },
+    { label: 'Comasa', value: 'comasa' },
+    { label: 'Costa e Silva', value: 'costa_e_silva' },
+    { label: 'Floresta', value: 'floresta' },
+    { label: 'Glória', value: 'gloria' },
+    { label: 'Iririú', value: 'iririu' },
+    { label: 'Itaum', value: 'itaum' },
+    { label: 'João Costa', value: 'joao_costa' },
+    { label: 'Jardim Sofia', value: 'jardim_sofia' },
+    { label: 'Morro do Meio', value: 'morro_do_meio' },
+    { label: 'Paranaguamirim', value: 'paranaguamirim' },
+    { label: 'Pirabeiraba', value: 'pirabeiraba' },
+    { label: 'Saguaçu', value: 'saguacu' },
+    { label: 'Santo Antônio', value: 'santo_antonio' },
+    { label: 'Vila Nova', value: 'vila_nova' },
+    // Adicione mais bairros conforme necessário
+  ];
+  
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
+    const uploadImageToFirebase = async () => {
+      try {
+          const response = await fetch(getImage);
+          const blob = await response.blob();
+
+          const storageRef = ref(storage, 'foto_usu/' + Date.now())
+          ;
+          const uploadTask = uploadBytes(storageRef, blob);
+
+          await uploadTask;
+
+          const imageURL = await getDownloadURL(storageRef);
+          setImageToFirebase(imageURL);
+      } catch (error) {
+          console.error('Error uploading image: ', error);
+      }
+  };
+
+  const setImageToFirebase = async (url) => {
+      try {
+          const ref = collection(db, 'foto_usu');
+          await addDoc(ref, { url });
+
+          console.log('URL da imagem enviada a Firestore');
+          setImage(null);
+      } catch (error) {
+          console.error('Erro ao enviar a Firestore: ', error);
+          setImage(null);
+      }
+  };
 
   function handleRegister() {
-    if (senha !== confirmSenha) {
-      console.log("A senha e a confirmação de senha não correspondem");
-      return;
-    }
-
     createUserWithEmailAndPassword(auth, email, senha)
       .then((userCredential) => {
-        console.log("Usuário criado com sucesso!", userCredential);
+        console.log("Empresa registrada com sucesso!", userCredential);
         const uid = userCredential.user.uid;
 
         setDoc(doc(db, "usuario", uid), {
           adm: false,
-          bio_usu: "Olá, eu sou " + nomeUsu,
-          cep_usu: zipCode,
-          cpf_usu: "",
-          cnpj_usu: "",
-          email_usu: email,
-          foto_usu: "",
+          bio_usu: "Olá, eu sou " + adisobre,
+          tipo_conta: "",
+          profissao_usu: "",
+          cep_auto: zipCode,
+          cpf_auto: cpf,
+          email_auto: email,
           nome_real_usu: nomeCompleto,
-          nome_usu: nomeUsu,
-          senha_usu: senha,
+          nomeEmp_auto: nomeEmp_auto,
+          senha_auto: senha,
           whatsapp_usu: whatsappUsu,
         }).then(() => {
           console.log("Cadastrado!");
@@ -90,25 +163,23 @@ export default function RegisterAuto({ navigation }) {
     return formattedValueCep;
   }
 
-  // function validar(texto){
-  //   if(texto.length > 14) return;
-  //   setCpf(cpf);
-  //   setCnpj(cnpj);
-  //   setValid(
-  //     texto.length === 11 ? cpf.isValid(texto) : cnpj.isValid(texto)
-  //   )
-  //   console.log();
-  // }
+  function formatPhoneNumberCpf(value) {
+    // Apply the desired phone number mask here
+    const formattedValueCep = value
+      .replace(/\D/g, "") // Remove non-numeric characters
+      .replace(/(\d{3})(\d)/, "$1.$2") // Add hyphen to the main number
+      .replace(/(\d{3})(\d)/, "$1.$2") // Add hyphen to the main number
+      .replace(/(\d{3})(\d)/, "$1-$2") // Add hyphen to the main number
+      .slice(0, 15); // Limit the length of the input
+    return formattedValueCep;
+  }
 
-  // function mask(texto){
-  //   if (texto.length === 11) {
-  //     return cpf.format(texto);
-  //   } else if (texto.length === 14) {
-  //     return cnpj.format(texto);
-  //   } else {
-  //     return texto;
-  //   }
-  // }
+  function Registrar(){
+    handleRegister();
+    uploadImageToFirebase();
+  }
+
+  
 
   return (
     // <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -122,29 +193,16 @@ export default function RegisterAuto({ navigation }) {
         </View>
         <View style={styles.conteudo}>
           <View style={styles.containerInner}>
-            <Text style={styles.titulo_register}>REGISTRE-SE</Text>
-            <Text style={styles.subtitulo_register}>Para iniciar seu cadastro, preencha as seguintes informações:</Text>
+            <Text style={styles.titulo_register}>CADASTRE-SE</Text>
+            <Text style={styles.subtitulo_register}>
+              Para iniciar seu cadastro, preencha asseguintes informações:
+            </Text>
             <TextInput
               placeholder="E-mail"
               value={email}
               onChangeText={setEmail}
               style={styles.input}
             />
-            {/* <TextInput
-              placeholder="Digite seu CPF"
-              value={cpf}
-              onChangeText={validar}
-              maxLength={14}
-              style={styles.input}
-            />
-            {isValid ? null : (<Text style={styles.error}>CPF inválido</Text>)}
-            <TextInput
-              placeholder="Digite seu CNPJ"
-              value={cnpj}
-              onChangeText={validar}
-              maxLength={18}
-              style={styles.input}
-            /> */}
             <TextInput
               placeholder="Senha"
               secureTextEntry={true}
@@ -152,13 +210,69 @@ export default function RegisterAuto({ navigation }) {
               onChangeText={setSenha}
               style={styles.input}
             />
-            <Text style={styles.textos_register}>Agora, preencha o restante das seguintes informações:</Text>
             <TextInput
-              placeholder="Digite seu nome completo"
+              placeholder="Nome da empresa"
               value={nomeCompleto}
               onChangeText={setNomeCompleto}
               style={styles.input}
             />
+            <TextInput
+              placeholder="Serviço que será prestado"
+              value={nomeEmp_auto}
+              onChangeText={setnomeEmp_auto}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Digite seu CPF"
+              value={cpf}
+              onChangeText={(e) => setCpf(formatPhoneNumberCpf(e))}
+              maxLength={14}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Digite seu CEP"
+              value={zipCode}
+              onChangeText={(e) => setZipCode(formatPhoneNumberCep(e))}
+              maxLength={9}
+              style={styles.input}
+              onBlur={retornaLogradouro}
+            />
+            <PickerSelect
+        placeholder={{ label: 'Selecione um bairro', value: null }}
+        items={neighborhoods}
+        onValueChange={(value) => setSelectedNeighborhood(value)}
+        style={{ inputIOS: styles.input, inputAndroid: styles.input }}
+        value={selectedNeighborhood}
+      />
+            {getImage ? <> 
+              <Image source={{ uri: getImage }} style={{ width: 200, height: 200, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px #16337E solid"}} />
+              </>
+              :
+              <Button onPress={pickImage} style={styles.botao} textColor="white">
+                Escolher foto
+              </Button>
+            }
+
+            <TextInput
+              placeholder="Adicionar Sobre"
+              value={adisobre}
+              onChangeText={setAdicionarSobre}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Telefone"
+              value={whatsappUsu}
+              onChangeText={(value) => setWhatsappUsu(formatPhoneNumber(value))}
+              maxLength={15}
+              style={styles.input}
+            />
+            <Button
+              textColor={"white"}
+              onPress={Registrar}
+              style={styles.botao}
+            >
+              REGISTRAR
+            </Button>
           </View>
         </View>
       </ScrollView>
