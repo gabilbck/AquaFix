@@ -72,7 +72,7 @@ export default function RegisterEmp({ navigation }) {
   const setImageToFirebase = async (url) => {
     try {
       // Check if email is already registered
-      const emailQuery = query(collection(db, "usuarios"), where("email_usu", "==", email));
+      const emailQuery = query(collection(db, "usuario"), where("email_usu", "==", email));
       const emailQuerySnapshot = await getDocs(emailQuery);
 
       if (!emailQuerySnapshot.empty) {
@@ -82,7 +82,7 @@ export default function RegisterEmp({ navigation }) {
       }
 
       // Check if username is already registered
-      const usernameQuery = query(collection(db, "usuarios"), where("nome_usu", "==", nomeUsu));
+      const usernameQuery = query(collection(db, "usuario"), where("nome_usu", "==", nomeUsu));
       const usernameQuerySnapshot = await getDocs(usernameQuery);
 
       if (!usernameQuerySnapshot.empty) {
@@ -100,7 +100,7 @@ export default function RegisterEmp({ navigation }) {
 
       const uid = userCredential.user.uid;
 
-      await setDoc(doc(db, "usuarios", uid), {
+      await setDoc(doc(db, "usuario", uid), {
         adm: false,
         bio_usu: "Olá, eu sou " + nomeUsu,
         cep_usu: zipCode,
@@ -176,6 +176,30 @@ export default function RegisterEmp({ navigation }) {
   const Registrar = () => {
     if (senha !== confirmSenha) {
       setErroSenha("As senhas não correspondem");
+      return;
+    }
+    if (senha.length < 6) {
+      setErroSenha("A senha deve ter no mínimo 6 caracteres");
+      return;
+    }
+    if (senha.length > 20) {
+      setErroSenha("A senha deve ter no máximo 20 caracteres");
+      return;
+    }
+    if (nomeUsu.length < 2) {
+      setErroUser("O nome de usuário deve ter no mínimo 2 caracteres");
+      return;
+    }
+    if (nomeUsu.length > 20) {
+      setErroUser("O nome de usuário deve ter no máximo 20 caracteres");
+      return;
+    }
+    if (nomeCompleto.length < 2) {
+      setErroUser("O nome completo deve ter no mínimo 2 caracteres");
+      return;
+    }
+    if (nomeCompleto.length > 50) {
+      setErroUser("O nome completo deve ter no máximo 50 caracteres");
       return;
     }
 
