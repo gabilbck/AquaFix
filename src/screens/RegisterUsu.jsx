@@ -25,10 +25,18 @@ export default function RegisterUsu({ navigation }) {
   const [senha, setSenha] = useState("");
   const [cpf, setCpf] = useState("");
   const [isValid, setValid] = useState(null);
-  const [bio, setBio] = useState("");
+  const [bio_usu, setBio] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
   const [getImage, setImage] = useState(null);
-  
+  const [emailError, setEmailError] = useState("");
+  const [senhaError, setSenhaError] = useState("");
+  const [nomeUsuError, setNomeUsuError] = useState("");
+  const [nomeCompletoError, setNomeCompletoError] = useState("");
+  const [zipCodeError, setZipCodeError] = useState("");
+  const [cpfError, setCpfError] = useState("");
+  const [whatsappUsuError, setWhatsappUsuError] = useState("");
+  const [adisobreError, setAdicionarSobreError] = useState("");
+
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -60,6 +68,61 @@ export default function RegisterUsu({ navigation }) {
       } catch (error) {
           console.error('Error uploading image: ', error);
       }
+  };
+
+  const handleEmailChange = (text) => {
+    setEmailError("");
+  };
+  const handleSenhalChange = (text) => {
+    setSenhaError("");
+  };
+  const handleNomeUsuChange = (text) => {
+    setNomeUsuError("");
+  };
+  const handleNomeCompletoChange = (text) => {
+    setNomeCompletoError("");
+  };
+  const handleZipCodeChange = (text) => {
+    setZipCodeError("");
+  };
+  const handleCpfChange = (text) => {
+    setCpfError("");
+  };
+  const handleWhatsappUsuChange = (text) => {
+    setWhatsappUsuError("");
+  };
+  const handleAdicionarSobreChange = (text) => {
+    setAdicionarSobreError("");
+  };
+
+
+  const handleSubmit = () => {
+    if (!email) {
+      setEmailError("O campo de e-mail é obrigatório.");
+    } else {
+      handleRegister();
+        }
+    if (!senha) {
+      setSenhaError("O campo de senha é obrigatório.");
+    }
+    if (!nomeUsu) {
+      setNomeUsuError("O campo de nome de usuário é obrigatório.");
+    }
+    if (!nomeCompleto) {
+      setNomeCompletoError("O campo de nome completo é obrigatório.");
+    }
+    if (!zipCode) {
+      setZipCodeError("O campo de CEP é obrigatório.");
+    }
+    if (!cpf) {
+      setCpfError("O campo de CPF é obrigatório.");
+    }
+    if (!whatsappUsu) {
+      setWhatsappUsuError("O campo de telefone é obrigatório.");
+    }
+    if (!adisobre) {
+      setAdicionarSobreError("O campo de adicionar sobre é obrigatório.");
+    }
   };
 
   const setImageToFirebase = async (url) => {
@@ -151,8 +214,6 @@ export default function RegisterUsu({ navigation }) {
     uploadImageToFirebase();
   }
 
-  
-
   return (
     // <KeyboardAvoidingView style={styles.container} behavior="padding">
     <View style={styles.container}>
@@ -172,28 +233,32 @@ export default function RegisterUsu({ navigation }) {
             <TextInput
               placeholder="E-mail"
               value={email}
-              onChangeText={setEmail}
-              style={styles.input}
-            />
+              onChangeText={handleEmailChange}
+              style={styles.input}           
+              />
+            {emailError && <Text style={{ color: "red" }}>{emailError}</Text>}
             <TextInput
               placeholder="Senha"
               secureTextEntry={true}
               value={senha}
-              onChangeText={setSenha}
+              onChangeText={handleSenhalChange}
               style={styles.input}
             />
+            {senhaError && <Text style={{ color: "red" }}>{senhaError}</Text>}
             <TextInput
               placeholder="Nome Completo"
               value={nomeCompleto}
               onChangeText={setNomeCompleto}
               style={styles.input}
             />
+            {nomeCompletoError && <Text style={{ color: "red" }}>{nomeCompletoError}</Text>}
             <TextInput
               placeholder="Nome de Usuário"
               value={nomeUsu}
-              onChangeText={setNomeUsu}
+              onChangeText={handleNomeUsuChange}
               style={styles.input}
             />
+            {nomeUsuError && <Text style={{ color: "red" }}>{nomeUsuError}</Text>}
             <TextInput
               placeholder="Digite seu CEP"
               value={zipCode}
@@ -221,9 +286,10 @@ export default function RegisterUsu({ navigation }) {
             <TextInput
               placeholder="Adicionar Sobre"
               value={adisobre}
-              onChangeText={setAdicionarSobre}
+              onChangeText={handleAdicionarSobreChange}
               style={styles.input}
             />
+            {adisobreError && <Text style={{ color: "red" }}>{adisobreError}</Text>}
             <TextInput
               placeholder="Telefone"
               value={whatsappUsu}
@@ -231,13 +297,14 @@ export default function RegisterUsu({ navigation }) {
               maxLength={15}
               style={styles.input}
             />
+            {whatsappUsuError && <Text style={{ color: "red" }}>{whatsappUsuError}</Text>}
             <Button
               textColor={"white"}
-              onPress={Registrar}
+              onPress={handleSubmit}
               style={styles.botao}
             >
               REGISTRAR
-            </Button>
+          </Button>
           </View>
         </View>
       </ScrollView>
