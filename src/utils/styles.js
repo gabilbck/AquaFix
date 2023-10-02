@@ -163,4 +163,24 @@ export const styles = StyleSheet.create({
         marginBottom: 20,
         marginTop: 20,
     },
+
+
+
+
+    card: {
+        backgroundColor: "white",
+        marginVertical: 10,
+        elevation: 2,
+        borderRadius: 8, // Adicione bordas arredondadas aos cards
+      },
+    
+      cardTitle: {
+        fontSize: 16,
+        fontWeight: "bold",
+      },
+    
+      cardButton: {
+        marginLeft: 10,
+        justifyContent: "flex-end",
+      },
 });
