@@ -1,63 +1,71 @@
 import React, { useState, useEffect } from "react";
-import { View, TextInput, Button, Text, StyleSheet, FlatList } from "react-native";
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import {
+  View,
+  TextInput,
+  Button,
+  Text,
+  StyleSheet,
+  FlatList,
+} from "react-native";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../config/firebase";
+import { styles } from "../utils/styles";
+import { Image } from "expo-image";
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore(firebaseApp);
-
-export default function PesquisaScreen() {
+export default function PesquisaScreen({ navigation }) {
   const [palavraChave, setPalavraChave] = useState("");
   const [resultadoPesquisa, setResultadoPesquisa] = useState([]);
 
-  const handlePesquisa = async () => {
-    try {
-      const usuarioRef = collection(db, "usuario");
-      const buscaServico = query(usuarioRef, where('servicos_usu', '==', palavraChave));
-      const resultadoSnapshot = await getDocs(buscaServico);
+  async function buscarServico() {
+    const usuarioRef = collection(db, "usuario");
+    const buscaServico = query(
+      usuarioRef,
+      where("servicos_usu", "==", palavraChave)
+    );
+    const resultadoSnapshot = await getDocs(buscaServico);
 
-      const listaServicos = resultadoSnapshot.docs.map(doc => doc.data());
-      setResultadoPesquisa(listaServicos);
-    } catch (error) {
-      console.error("Erro ao buscar serviço:", error);
-    }
-  };
+    const listaServicos = resultadoSnapshot.docs.map((doc) => doc.data());
+    console.log(listaServicos);
+    setResultadoPesquisa(listaServicos);
+  }
+
+  useEffect(() => {
+    buscarServico();
+  }, [palavraChave]);
 
   return (
     <View style={styles.container}>
-    {/* Parte que aparece a imagem: azul e logo */}
-    <View style={styles.imagemTopo}>
-      <Image
-        source={require("../../assets/img/logocomp-branca.png")}
-        style={{ width: 200, height: 127 }}
-      />
-    </View>
-    {/* Parte que aparece o conteúdo: cinza/branco */}
-    <View style={styles.conteudo}>
-      <View style={styles.containerInner}>
-        {/* CONTEÚDO */}
-        <TextInput
-          placeholder="Faça sua busca" 
-          value={busca} 
-          onChangeText={setBusca}
-          style={styles.input}
-          mode="flat"
+      {/* Parte que aparece a imagem: azul e logo */}
+      <View style={styles.imagemTopo}>
+        <Image
+          source={require("../../assets/img/logocomp-branca.png")}
+          style={{ width: 200, height: 127 }}
         />
       </View>
+      {/* Parte que aparece o conteúdo: cinza/branco */}
+      <View style={styles.conteudo}>
+        <View style={styles.containerInner}>
+          {/* CONTEÚDO */}
+          <TextInput
+            placeholder="Faça sua busca"
+            value={palavraChave}
+            onChangeText={setPalavraChave}
+            style={styles.input}
+            />
+          <FlatList
+            data={resultadoPesquisa}
+            renderItem={({ item }) => (
+              <View>
+                <Text>{item.nom_usu}</Text>
+                <Text>{item.servicos_usu}</Text>
+              </View>
+            )}
+          />
+        </View>
+      </View>
     </View>
-  </View>
-  )
+  );
 }
-
 
 /*
   

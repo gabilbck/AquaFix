@@ -110,7 +110,7 @@ export default function RegisterEmp({ navigation }) {
         nome_usu: nomeUsu,
         senha_usu: senha,
         whatsapp_usu: whatsappUsu,
-        servisos_usu: servicosUsu,
+        servicos_usu: servicosUsu,
         tipo_conta: "empresa",
       });
 
