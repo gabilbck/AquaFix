@@ -39,6 +39,9 @@ export default function PesquisaScreen({ navigation }) {
     const listaServicos = resultadoSnapshot.docs.map((doc) => doc.data());
     console.log(listaServicos);
     setResultadoPesquisa(listaServicos);
+    if (palavraChave === "") {
+      setResultadoPesquisa([]);
+    }
   }
 
   useEffect(() => {

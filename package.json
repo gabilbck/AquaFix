@@ -39,7 +39,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-vector-icons": "^10.0.0",
     "react-native-web": "~0.19.6",
-    "react-native-webview": "^13.6.0"
+    "react-native-webview": "^13.6.0",
+    "unidecode": "^0.1.8"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17"
