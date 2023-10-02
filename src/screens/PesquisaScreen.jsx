@@ -7,8 +7,17 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  startAt,
+  endAt,
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+} from "firebase/firestore";
 import { db } from "../config/firebase";
+
 import { styles } from "../utils/styles";
 import { Image } from "expo-image";
 
@@ -20,8 +29,11 @@ export default function PesquisaScreen({ navigation }) {
     const usuarioRef = collection(db, "usuario");
     const buscaServico = query(
       usuarioRef,
-      where("servicos_usu", "==", palavraChave)
+      orderBy("servicos_usu"),
+      startAt(palavraChave),
+      endAt(palavraChave + "\uf8ff")
     );
+
     const resultadoSnapshot = await getDocs(buscaServico);
 
     const listaServicos = resultadoSnapshot.docs.map((doc) => doc.data());
@@ -51,7 +63,7 @@ export default function PesquisaScreen({ navigation }) {
             value={palavraChave}
             onChangeText={setPalavraChave}
             style={styles.input}
-            />
+          />
           <FlatList
             data={resultadoPesquisa}
             renderItem={({ item }) => (
