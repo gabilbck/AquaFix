@@ -17,6 +17,7 @@ import PesquisaScreen from "./screens/PesquisaScreen";
 import PerfilScreen from "./screens/PerfilScreen";
 import EditUsu from "./screens/EditUsu";
 import RegisterEmp from "./screens/RegisterEmp";
+import RegisterUsu2 from "./screens/RegisterUsu2";
 
 import { createTheme } from "@react-navigation/material-bottom-tabs";
 
@@ -132,6 +133,13 @@ export default function RootNavigation({ navigation }) {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="EditUsu"
+          component={EditUsu}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -183,16 +191,6 @@ function TabsNavigation() {
           tabBarLabel: "Perfil",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="Configurações"
-        component={EditUsu}
-        options={{
-          tabBarLabel: "Configurações",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="cog" color={color} size={26} />
           ),
         }}
       />

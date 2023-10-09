@@ -84,6 +84,7 @@ export default function PerfilScreen() {
         {/* Parte que aparece o conteúdo: cinza/branco */}
         <View style={styles.conteudo}>
           <View style={styles.containerInner}>
+            
             <Text style={styles.titulo2}>Nome: </Text>
             <Text style={styles.subtitulo2}>{usuario?.nome_real_usu}</Text>
             <Text style={styles.titulo2}>Apelido: </Text>
@@ -92,6 +93,14 @@ export default function PerfilScreen() {
             <Text style={styles.subtitulo2}>{usuario?.email_usu}</Text>
             <Text style={styles.titulo2}>Biografia: </Text>
             <Text style={styles.subtitulo2}>{usuario?.bio_usu}</Text>
+            <Text style={styles.titulo2}>Você deseja editar o seu perfil? </Text>
+            <Button
+            style={styles.botaoedit}
+            labelStyle={{ color: "white", fontSize: 15 }}
+            onPress={() => navigation.navigate("EditUsu")}
+            >
+              EDITAR PERFIL
+            </Button>
             <Text style={styles.titulo2}>Você deseja sair da conta? </Text>
             <Button
               style={styles.botaovermelho}
