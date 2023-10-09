@@ -24,7 +24,6 @@ export default function HomeScreen() {
   const [publicacoes, setPublicacoes] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
-
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -55,6 +54,13 @@ export default function HomeScreen() {
         if (docSnapshot.exists()) {
           // pega os dados do documento
           const userData = docSnapshot.data();
+
+          console.log("Usuário encontrado: ", userData);
+
+          // precisa veriricar se user.adm é do FIRESTORE
+          setIsAdmin(userData.adm === true ? true : false); // Defina como true se for um administrador
+          console.log("Usuário é admin: ", userData.adm);
+          console.log("Usuário é: ", userData);
           setUsuario(userData);
         } else {
           console.log("Usuário não encontrado !!!");
@@ -65,14 +71,13 @@ export default function HomeScreen() {
       });
   }, [usuario.uid]);
 
-
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log("Usuário UID: ", user.uid);
         setUsuario({ uid: user.uid, nome_usu: user.displayName }); // Defina o nome do usuário aqui
         // Verifique se o usuário é um administrador (defina isso de acordo com sua lógica)
-        setIsAdmin(user.adm === true); // Defina como true se for um administrador
+        const usuarioRef = doc(db, "usuario", user.uid);
       } else {
         console.log("Usuário não logado");
         // Se não estiver logado, defina isAdmin como false
@@ -88,7 +93,6 @@ export default function HomeScreen() {
   }, []);
 
   const handleCadastro = async () => {
-
     if (titulo && texto && link) {
       try {
         // Gere um ID personalizado para a publicação
@@ -146,7 +150,8 @@ export default function HomeScreen() {
             <Text style={styles.subtitulo}>
               Venha conhecer as novidades do momento:
             </Text>
-
+            {isAdmin && (
+              <View>
                 <TextInput
                   placeholder="Título"
                   value={titulo}
@@ -172,27 +177,34 @@ export default function HomeScreen() {
                 >
                   PUBLICAR
                 </Button>
-           
+              </View>
+            )}
             {/* Lista de publicações */}
             <View>
               {publicacoes.map((publicacao, index) => (
-                <Card key={publicacao.id} style={styles.card}>
-                  <Card.Title
-                    title={publicacao.titulo_puli_adm}
-                    style={styles.cardTitle}
-                  />
-                  <Card.Content>
-                    <Text>{publicacao.texto}</Text>
-                  </Card.Content>
-                  <Card.Actions>
-                    <Button
-                      style={styles.cardButton}
-                      onPress={() => Linking.openURL(publicacao.link)}
-                    >
-                      Acessar
-                    </Button>
-                  </Card.Actions>
-                </Card>
+                <View key={index}>
+                  <Card key={publicacao.id} style={styles.card}>
+                    <Card.Title
+                      title={publicacao.titulo_puli_adm}
+                      fontWeight="bold"
+                      style={{
+                        fontSize: 25,
+                        fontWeight: "bold",
+                      }}
+                    />
+                    <Card.Content>
+                      <Text>{publicacao.texto}</Text>
+                    </Card.Content>
+                    <Card.Actions>
+                      <Button
+                        style={styles.cardButton}
+                        onPress={() => Linking.openURL(publicacao.link)}
+                      >
+                        Acessar
+                      </Button>
+                    </Card.Actions>
+                  </Card>
+                </View>
               ))}
             </View>
           </View>

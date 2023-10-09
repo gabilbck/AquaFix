@@ -54,7 +54,7 @@ export default function RegisterEmp({ navigation }) {
       const storageRef = ref(storage, "foto_usu/" + Date.now());
       const uploadTask = uploadBytesResumable(storageRef, blob);
 
-      // Listen to upload progress if needed
+      
       // uploadTask.on("state_changed", (snapshot) => {
       //   const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       //   console.log(`Upload is ${progress}% done`);

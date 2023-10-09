@@ -18,6 +18,8 @@ import PerfilScreen from "./screens/PerfilScreen";
 import EditUsu from "./screens/EditUsu";
 import RegisterEmp from "./screens/RegisterEmp";
 
+import { createTheme } from "@react-navigation/material-bottom-tabs";
+
 /**
  * @auth Gabrieli Eduarda Lembeck
  * @since 1.0.0
@@ -136,18 +138,23 @@ export default function RootNavigation({ navigation }) {
 }
 
 const Tabs = createMaterialBottomTabNavigator();
+
 function TabsNavigation() {
   return (
     <Tabs.Navigator
       initialRouteName="Feed"
+      // tabBarColor="blue"
+      // tabBarActiveTextColor="white"
       activeColor="white"
       inactiveColor="white"
       selectedLabelStyle={{ backgroundColor: "white" }}
-      labelStyle={{ fontSize: 12 }}
-      style={{ backgroundColor: "white" }}
+      // labelStyle={{ fontSize: 12 }}
+      // style={{ backgroundColor: "white" }}
       barStyle={{
         backgroundColor: "#16337E",
       }}
+      shifting={true}
+      tabBarColor="white"
     >
       <Tabs.Screen
         name="HomeScreen"
@@ -156,7 +163,6 @@ function TabsNavigation() {
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
-            
           ),
         }}
       />

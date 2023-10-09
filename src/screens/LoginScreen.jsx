@@ -103,8 +103,9 @@ export default function LoginScreen({ navigation }) {
             onChangeText={setSenha}
             mode="disabled"
             style={styles.input}
+            error={error}
           />
-          {error && <Text style={styles.errorText}>{error}</Text>}
+          <View>{error && <Text style={styles.errorText}>{error}</Text>}</View>
           <Button onPress={handleLogin} style={styles.botao} textColor="white">
             ENTRAR
           </Button>
