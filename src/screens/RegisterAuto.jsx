@@ -1,11 +1,9 @@
-import { Button, RadioButton } from "react-native-paper";
+import { Button } from "react-native-paper";
 import {
   Text,
   View,
   TextInput,
-  KeyboardAvoidingView,
   ScrollView,
-  TouchableOpacity,
 } from "react-native";
 import { Image } from "expo-image";
 import { styles } from "../utils/styles";
@@ -15,6 +13,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import PickerSelect from "react-native-picker-select";
+import * as ImagePicker from "expo-image-picker";
 
 export default function RegisterAuto({ navigation }) {
   const [adisobre, setAdicionarSobre] = useState("");
@@ -28,9 +27,11 @@ export default function RegisterAuto({ navigation }) {
   const [bio, setBio] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
   const [getImage, setImage] = useState(null);
-  
+  const [selectedNeighborhood, setSelectedNeighborhood] = useState("");
+
   const neighborhoods = [
     { label: 'Adhemar Garcia', value: 'adhemar_garcia' },
+    { label: 'Aventureiro', value: 'aventureiro' },
     { label: 'América', value: 'america' },
     { label: 'Anita Garibaldi', value: 'anita_garibaldi' },
     { label: 'Atiradores', value: 'atiradores' },
@@ -45,11 +46,13 @@ export default function RegisterAuto({ navigation }) {
     { label: 'Iririú', value: 'iririu' },
     { label: 'Itaum', value: 'itaum' },
     { label: 'João Costa', value: 'joao_costa' },
+    { label: 'Jardim Iririú', value: 'jardim_iririu' },
     { label: 'Jardim Sofia', value: 'jardim_sofia' },
     { label: 'Morro do Meio', value: 'morro_do_meio' },
     { label: 'Paranaguamirim', value: 'paranaguamirim' },
     { label: 'Pirabeiraba', value: 'pirabeiraba' },
     { label: 'Saguaçu', value: 'saguacu' },
+    { label: 'São Marcos', value: 'sao_marcos' },
     { label: 'Santo Antônio', value: 'santo_antonio' },
     { label: 'Vila Nova', value: 'vila_nova' },
     // Adicione mais bairros conforme necessário
@@ -118,8 +121,9 @@ export default function RegisterAuto({ navigation }) {
           nome_real_usu: nomeCompleto,
           nome_usu: nomeUsu,
           senha_usu: senha,
-          tipo_conta: "Cliente",
+          tipo_conta: "Autônomo",
           whatsapp_usu: whatsappUsu,
+          foto_usu: getImage,
         }).then(() => {
           console.log("Cadastrado!");
           navigation.navigate("LoginScreen");
@@ -175,8 +179,6 @@ export default function RegisterAuto({ navigation }) {
     handleRegister();
     uploadImageToFirebase();
   }
-
-  
 
   return (
     // <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -235,12 +237,13 @@ export default function RegisterAuto({ navigation }) {
               style={styles.input}
             />
             <PickerSelect
-        placeholder={{ label: 'Selecione um bairro', value: null }}
-        items={neighborhoods}
-        onValueChange={(value) => setSelectedNeighborhood(value)}
-        style={{ inputIOS: styles.input, inputAndroid: styles.input }}
-        value={selectedNeighborhood}
-      />
+              placeholder={{ label: "Selecione seu bairro", value: "" }}
+              onValueChange={(value) => setSelectedNeighborhood(value)}
+              items={neighborhoods}
+              style={styles.input}
+              value={selectedNeighborhood}
+            />
+
             {getImage ? <> 
               <Image source={{ uri: getImage }} style={{ width: 200, height: 200, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px #16337E solid"}} />
               </>

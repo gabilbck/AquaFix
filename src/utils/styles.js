@@ -99,6 +99,18 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
     marginVertical: 12,
   },
+  SelectPicker: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    color: '#333',
+    paddingRight: 30, // para acomodar a seta do seletor
+    marginBottom: 10,
+  },
+
   botao: {
     fontSize: 17,
     padding: 4,
