@@ -145,6 +145,18 @@ export const styles = StyleSheet.create({
     marginVertical: 40,
     width: "50%",
   },
+  botaoedit: {
+    marginTop: 15,
+    fontSize: 17,
+    padding: 4,
+    backgroundColor: "#16337E",
+    borderRadius: 5,
+    color: "white",
+    textDecorationColor: "white",
+    alignSelf: "left",
+    marginVertical: 40,
+    width: "50%",
+  },
   botaoPreto: {
     fontWeight: "bold",
   },

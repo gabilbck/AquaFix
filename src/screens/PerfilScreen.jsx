@@ -63,12 +63,13 @@ export default function PerfilScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}
+      >
         {/* Parte que aparece a imagem: azul e logo */}
         <View style={styles.usuTopo}>
           <Image
             source={usuario.foto_usu}
-            style={{ width: 105, height: 105, color: "white" }}
+            style={{ width: 105, height: 105, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px white solid"}}
           />
           <Text
             style={{
@@ -93,7 +94,15 @@ export default function PerfilScreen() {
             <Text style={styles.subtitulo2}>{usuario?.email_usu}</Text>
             <Text style={styles.titulo2}>Biografia: </Text>
             <Text style={styles.subtitulo2}>{usuario?.bio_usu}</Text>
+            <Text style={styles.titulo2}>Telefone para contato:</Text>
+            <Text style={styles.subtitulo2}>{usuario?.whatsapp_usu}</Text>
+            <Text style={styles.titulo2}>Serviços que você oferece:</Text>
+            <Text style={styles.subtitulo2}>{usuario?.servicos_usu}</Text>
+            <Text style={styles.titulo2}>Redes sociais:</Text>
+            
+            <Image></Image>
             <Text style={styles.titulo2}>Você deseja editar o seu perfil? </Text>
+            
             <Button
             style={styles.botaoedit}
             labelStyle={{ color: "white", fontSize: 15 }}
