@@ -92,7 +92,9 @@ export default function RegisterUsu({ navigation }) {
           nome_real_usu: nomeCompleto,
           nome_usu: nomeUsu,
           senha_usu: senha,
+          tipo_conta: "Cliente",
           whatsapp_usu: whatsappUsu,
+          foto_usu: getImage,
         }).then(() => {
           console.log("Cadastrado!");
           navigation.navigate("LoginScreen");
@@ -242,4 +244,6 @@ export default function RegisterUsu({ navigation }) {
     </View>
     // </KeyboardAvoidingView>
   );
+
+  
 }

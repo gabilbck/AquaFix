@@ -14,16 +14,13 @@ import { auth, db, storage } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import * as ImagePicker from "expo-image-picker";
-import React from "react";
 import PickerSelect from "react-native-picker-select";
 
 export default function RegisterAuto({ navigation }) {
   const [adisobre, setAdicionarSobre] = useState("");
-  const [nomeEmp_auto, setnomeEmp_auto] = useState("");
+  const [nomeUsu, setNomeUsu] = useState("");
   const [nomeCompleto, setNomeCompleto] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedNeighborhood, setSelectedNeighborhood] = useState(null);
   const [zipCode, setZipCode] = useState("");
   const [senha, setSenha] = useState("");
   const [cpf, setCpf] = useState("");
@@ -57,7 +54,6 @@ export default function RegisterAuto({ navigation }) {
     { label: 'Vila Nova', value: 'vila_nova' },
     // Adicione mais bairros conforme necessário
   ];
-  
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -108,7 +104,7 @@ export default function RegisterAuto({ navigation }) {
   function handleRegister() {
     createUserWithEmailAndPassword(auth, email, senha)
       .then((userCredential) => {
-        console.log("Empresa registrada com sucesso!", userCredential);
+        console.log("Usuário criado com sucesso!", userCredential);
         const uid = userCredential.user.uid;
 
         setDoc(doc(db, "usuario", uid), {
@@ -116,12 +112,13 @@ export default function RegisterAuto({ navigation }) {
           bio_usu: "Olá, eu sou " + adisobre,
           tipo_conta: "",
           profissao_usu: "",
-          cep_auto: zipCode,
-          cpf_auto: cpf,
-          email_auto: email,
+          cep_usu: zipCode,
+          cpf_usu: cpf,
+          email_usu: email,
           nome_real_usu: nomeCompleto,
-          nomeEmp_auto: nomeEmp_auto,
-          senha_auto: senha,
+          nome_usu: nomeUsu,
+          senha_usu: senha,
+          tipo_conta: "Cliente",
           whatsapp_usu: whatsappUsu,
         }).then(() => {
           console.log("Cadastrado!");
@@ -211,22 +208,15 @@ export default function RegisterAuto({ navigation }) {
               style={styles.input}
             />
             <TextInput
-              placeholder="Nome da empresa"
+              placeholder="Nome Completo"
               value={nomeCompleto}
               onChangeText={setNomeCompleto}
               style={styles.input}
             />
             <TextInput
-              placeholder="Serviço que será prestado"
-              value={nomeEmp_auto}
-              onChangeText={setnomeEmp_auto}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Digite seu CPF"
-              value={cpf}
-              onChangeText={(e) => setCpf(formatPhoneNumberCpf(e))}
-              maxLength={14}
+              placeholder="Nome de Usuário"
+              value={nomeUsu}
+              onChangeText={setNomeUsu}
               style={styles.input}
             />
             <TextInput
@@ -236,6 +226,13 @@ export default function RegisterAuto({ navigation }) {
               maxLength={9}
               style={styles.input}
               onBlur={retornaLogradouro}
+            />
+            <TextInput
+              placeholder="Digite seu CPF"
+              value={cpf}
+              onChangeText={(e) => setCpf(formatPhoneNumberCpf(e))}
+              maxLength={14}
+              style={styles.input}
             />
             <PickerSelect
         placeholder={{ label: 'Selecione um bairro', value: null }}

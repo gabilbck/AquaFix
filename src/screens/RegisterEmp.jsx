@@ -112,6 +112,7 @@ export default function RegisterEmp({ navigation }) {
         whatsapp_usu: whatsappUsu,
         servicos_usu: servicosUsu,
         tipo_conta: "empresa",
+        foto_usu: getImage,
       });
 
       // Upload the image to Firestore here

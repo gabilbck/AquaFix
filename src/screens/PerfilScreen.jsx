@@ -67,7 +67,7 @@ export default function PerfilScreen() {
         {/* Parte que aparece a imagem: azul e logo */}
         <View style={styles.usuTopo}>
           <Image
-            source={require("../../assets/img/usuiconbranco.png")}
+            source={usuario.foto_usu}
             style={{ width: 105, height: 105, color: "white" }}
           />
           <Text
