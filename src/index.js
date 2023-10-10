@@ -17,7 +17,6 @@ import PesquisaScreen from "./screens/PesquisaScreen";
 import PerfilScreen from "./screens/PerfilScreen";
 import EditUsu from "./screens/EditUsu";
 import RegisterEmp from "./screens/RegisterEmp";
-import RegisterUsu2 from "./screens/RegisterUsu2";
 
 import { createTheme } from "@react-navigation/material-bottom-tabs";
 
