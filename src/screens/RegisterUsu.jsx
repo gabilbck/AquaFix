@@ -70,61 +70,6 @@ export default function RegisterUsu({ navigation }) {
       }
   };
 
-  const handleEmailChange = (text) => {
-    setEmailError("");
-  };
-  const handleSenhalChange = (text) => {
-    setSenhaError("");
-  };
-  const handleNomeUsuChange = (text) => {
-    setNomeUsuError("");
-  };
-  const handleNomeCompletoChange = (text) => {
-    setNomeCompletoError("");
-  };
-  const handleZipCodeChange = (text) => {
-    setZipCodeError("");
-  };
-  const handleCpfChange = (text) => {
-    setCpfError("");
-  };
-  const handleWhatsappUsuChange = (text) => {
-    setWhatsappUsuError("");
-  };
-  const handleAdicionarSobreChange = (text) => {
-    setAdicionarSobreError("");
-  };
-
-
-  const handleSubmit = () => {
-    if (!email) {
-      setEmailError("O campo de e-mail é obrigatório.");
-    } else {
-      handleRegister();
-        }
-    if (!senha) {
-      setSenhaError("O campo de senha é obrigatório.");
-    }
-    if (!nomeUsu) {
-      setNomeUsuError("O campo de nome de usuário é obrigatório.");
-    }
-    if (!nomeCompleto) {
-      setNomeCompletoError("O campo de nome completo é obrigatório.");
-    }
-    if (!zipCode) {
-      setZipCodeError("O campo de CEP é obrigatório.");
-    }
-    if (!cpf) {
-      setCpfError("O campo de CPF é obrigatório.");
-    }
-    if (!whatsappUsu) {
-      setWhatsappUsuError("O campo de telefone é obrigatório.");
-    }
-    if (!adisobre) {
-      setAdicionarSobreError("O campo de adicionar sobre é obrigatório.");
-    }
-  };
-
   const setImageToFirebase = async (url) => {
       try {
           const ref = collection(db, 'foto_usu');
@@ -138,7 +83,55 @@ export default function RegisterUsu({ navigation }) {
       }
   };
 
-  function handleRegister() {
+  function Register() {
+    if (email == '') {
+      setEmailError("Prencha o campo email");
+    }else{
+      setEmailError("");
+    }
+
+    if (senha == '') {
+      setSenhaError("Prencha o campo senha");
+    }else{
+      setSenhaError("");
+    }
+    
+    if (nomeCompleto == '') {
+      setNomeCompletoError("Prencha o campo nome completo");
+    }else{
+      setNomeCompletoError("");
+    }
+
+    if (nomeUsu == '') {
+      setNomeUsuError("Prencha o campo nome de usuário");
+    }else{
+      setNomeUsuError("");
+    }
+    
+    if (zipCode == '') {
+      setZipCodeError("Prencha o campo CEP");
+    }else{
+      setZipCodeError("");
+    }
+    
+    if (cpf == '') {
+      setCpfError("Prencha o campo CPF");
+    }else{
+      setCpfError("");
+    }
+    
+    if (adisobre == '') {
+      setAdicionarSobreError("Prencha o campo sobre");
+    }else{
+      setAdicionarSobreError("");
+    }
+    
+    if (whatsappUsu == '') {
+      setWhatsappUsuError("Prencha o campo telefone");
+    }else{
+      setWhatsappUsuError("");
+    }
+
     createUserWithEmailAndPassword(auth, email, senha)
       .then((userCredential) => {
         console.log("Usuário criado com sucesso!", userCredential);
@@ -233,32 +226,32 @@ export default function RegisterUsu({ navigation }) {
             <TextInput
               placeholder="E-mail"
               value={email}
-              onChangeText={handleEmailChange}
+              onChangeText={setEmail}
               style={styles.input}           
               />
-            {emailError && <Text style={{ color: "red" }}>{emailError}</Text>}
+              <Text>{emailError}</Text>
             <TextInput
               placeholder="Senha"
               secureTextEntry={true}
               value={senha}
-              onChangeText={handleSenhalChange}
+              onChangeText={setSenha}
               style={styles.input}
             />
-            {senhaError && <Text style={{ color: "red" }}>{senhaError}</Text>}
+            <Text>{senhaError}</Text>
             <TextInput
               placeholder="Nome Completo"
               value={nomeCompleto}
               onChangeText={setNomeCompleto}
               style={styles.input}
             />
-            {nomeCompletoError && <Text style={{ color: "red" }}>{nomeCompletoError}</Text>}
+            <Text>{nomeCompletoError}</Text>
             <TextInput
               placeholder="Nome de Usuário"
               value={nomeUsu}
-              onChangeText={handleNomeUsuChange}
+              onChangeText={setNomeUsu}
               style={styles.input}
             />
-            {nomeUsuError && <Text style={{ color: "red" }}>{nomeUsuError}</Text>}
+            <Text>{nomeUsuError}</Text>
             <TextInput
               placeholder="Digite seu CEP"
               value={zipCode}
@@ -267,6 +260,7 @@ export default function RegisterUsu({ navigation }) {
               style={styles.input}
               onBlur={retornaLogradouro}
             />
+            <Text>{zipCodeError}</Text>
             <TextInput
               placeholder="Digite seu CPF"
               value={cpf}
@@ -274,6 +268,7 @@ export default function RegisterUsu({ navigation }) {
               maxLength={14}
               style={styles.input}
             />
+            <Text>{cpfError}</Text>
             {getImage ? <> 
               <Image source={{ uri: getImage }} style={{ width: 200, height: 200, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px #16337E solid"}} />
               </>
@@ -286,10 +281,10 @@ export default function RegisterUsu({ navigation }) {
             <TextInput
               placeholder="Adicionar Sobre"
               value={adisobre}
-              onChangeText={handleAdicionarSobreChange}
+              onChangeText={setAdicionarSobre}
               style={styles.input}
             />
-            {adisobreError && <Text style={{ color: "red" }}>{adisobreError}</Text>}
+            <Text>{adisobreError}</Text>
             <TextInput
               placeholder="Telefone"
               value={whatsappUsu}
@@ -297,10 +292,10 @@ export default function RegisterUsu({ navigation }) {
               maxLength={15}
               style={styles.input}
             />
-            {whatsappUsuError && <Text style={{ color: "red" }}>{whatsappUsuError}</Text>}
+            <Text>{whatsappUsuError}</Text>
             <Button
               textColor={"white"}
-              onPress={handleSubmit}
+              onPress={Register}
               style={styles.botao}
             >
               REGISTRAR

@@ -272,7 +272,7 @@ export default function RegisterEmp({ navigation }) {
               onChangeText={setNomeUsu}
               style={styles.input}
             />
-            <Text>{erroUser}</Text>
+            <Text>{ }</Text>
             <TextInput
               placeholder="E-mail da empresa"
               value={email}
