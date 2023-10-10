@@ -96,7 +96,7 @@ export default function PerfilScreen() {
             <Text style={styles.subtitulo2}>{usuario?.bio_usu}</Text>
             <Text style={styles.titulo2}>Telefone para contato:</Text>
             <Text style={styles.subtitulo2}>{usuario?.whatsapp_usu}</Text>
-            <Text style={styles.titulo2}>Serviços que você oferece:</Text>
+            <Text style={styles.titulo2}>Serviços que você oferece:</Text> {/* <------- faz tratamento desse caraio */}
             <Text style={styles.subtitulo2}>{usuario?.servicos_usu}</Text>
             <Text style={styles.titulo2}>Redes sociais:</Text>
             
