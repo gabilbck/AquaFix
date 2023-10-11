@@ -9,7 +9,6 @@ import CadPasso1 from "./screens/CadPasso1";
 import CadPasso2 from "./screens/CadPasso2";
 import RegisterAuto from "./screens/RegisterAuto";
 import RegisterUsu from "./screens/RegisterUsu";
-
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PesquisaScreen from "./screens/PesquisaScreen";

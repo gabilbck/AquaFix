@@ -1,10 +1,5 @@
 import { Button } from "react-native-paper";
-import {
-  Text,
-  View,
-  TextInput,
-  ScrollView,
-} from "react-native";
+import { Text, View, TextInput, ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { styles } from "../utils/styles";
 import { useState } from "react";
@@ -12,7 +7,6 @@ import { auth, db, storage } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import PickerSelect from "react-native-picker-select";
 import * as ImagePicker from "expo-image-picker";
 
 export default function RegisterAuto({ navigation }) {
@@ -22,89 +16,123 @@ export default function RegisterAuto({ navigation }) {
   const [email, setEmail] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [senha, setSenha] = useState("");
+  const [confirmSenha, setConfirmSenha] = useState("");
   const [cpf, setCpf] = useState("");
   const [isValid, setValid] = useState(null);
   const [bio, setBio] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
   const [getImage, setImage] = useState(null);
-  const [selectedNeighborhood, setSelectedNeighborhood] = useState("");
+  const [logradouro, setLogradouro] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [senhaError, setSenhaError] = useState("");
+  const [nomeUsuError, setNomeUsuError] = useState("");
+  const [nomeCompletoError, setNomeCompletoError] = useState("");
+  const [zipCodeError, setZipCodeError] = useState("");
+  const [cpfError, setCpfError] = useState("");
+  const [erroSenha, setErroSenha] = useState("");
+  const [whatsappUsuError, setWhatsappUsuError] = useState("");
+  const [adisobreError, setAdicionarSobreError] = useState("");
 
-  const neighborhoods = [
-    { label: 'Adhemar Garcia', value: 'adhemar_garcia' },
-    { label: 'Aventureiro', value: 'aventureiro' },
-    { label: 'América', value: 'america' },
-    { label: 'Anita Garibaldi', value: 'anita_garibaldi' },
-    { label: 'Atiradores', value: 'atiradores' },
-    { label: 'Boa Vista', value: 'boa_vista' },
-    { label: 'Bom Retiro', value: 'bom_retiro' },
-    { label: 'Bucarein', value: 'bucarein' },
-    { label: 'Centro', value: 'centro' },
-    { label: 'Comasa', value: 'comasa' },
-    { label: 'Costa e Silva', value: 'costa_e_silva' },
-    { label: 'Floresta', value: 'floresta' },
-    { label: 'Glória', value: 'gloria' },
-    { label: 'Iririú', value: 'iririu' },
-    { label: 'Itaum', value: 'itaum' },
-    { label: 'João Costa', value: 'joao_costa' },
-    { label: 'Jardim Iririú', value: 'jardim_iririu' },
-    { label: 'Jardim Sofia', value: 'jardim_sofia' },
-    { label: 'Morro do Meio', value: 'morro_do_meio' },
-    { label: 'Paranaguamirim', value: 'paranaguamirim' },
-    { label: 'Pirabeiraba', value: 'pirabeiraba' },
-    { label: 'Saguaçu', value: 'saguacu' },
-    { label: 'São Marcos', value: 'sao_marcos' },
-    { label: 'Santo Antônio', value: 'santo_antonio' },
-    { label: 'Vila Nova', value: 'vila_nova' },
-    // Adicione mais bairros conforme necessário
-  ];
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
+    console.log(result);
 
-        console.log(result);
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
-        if (!result.canceled) {
-            setImage(result.assets[0].uri);
-        }
-    };
+  const uploadImageToFirebase = async () => {
+    try {
+      const response = await fetch(getImage);
+      const blob = await response.blob();
 
-    const uploadImageToFirebase = async () => {
-      try {
-          const response = await fetch(getImage);
-          const blob = await response.blob();
+      const storageRef = ref(storage, "foto_usu/" + Date.now());
+      const uploadTask = uploadBytes(storageRef, blob);
 
-          const storageRef = ref(storage, 'foto_usu/' + Date.now())
-          ;
-          const uploadTask = uploadBytes(storageRef, blob);
+      await uploadTask;
 
-          await uploadTask;
-
-          const imageURL = await getDownloadURL(storageRef);
-          setImageToFirebase(imageURL);
-      } catch (error) {
-          console.error('Error uploading image: ', error);
-      }
+      const imageURL = await getDownloadURL(storageRef);
+      setImageToFirebase(imageURL);
+    } catch (error) {
+      console.error("Error uploading image: ", error);
+    }
   };
 
   const setImageToFirebase = async (url) => {
-      try {
-          const ref = collection(db, 'foto_usu');
-          await addDoc(ref, { url });
+    try {
+      const ref = collection(db, "usuario");
+      await addDoc(ref, { url });
 
-          console.log('URL da imagem enviada a Firestore');
-          setImage(null);
-      } catch (error) {
-          console.error('Erro ao enviar a Firestore: ', error);
-          setImage(null);
-      }
+      console.log("URL da imagem enviada a Firestore");
+      setImage(null);
+    } catch (error) {
+      console.error("Erro ao enviar a Firestore: ", error);
+      setImage(null);
+    }
   };
 
-  function handleRegister() {
+  function Register() {
+    if (senha !== confirmSenha) {
+      setErroSenha("As senhas não correspondem");
+    } else {
+      setErroSenha("");
+    }
+  
+    if (email == "") {
+      setEmailError("Prencha o campo email");
+    } else {
+      setEmailError("");
+    }
+
+    if (senha == "") {
+      setSenhaError("Prencha o campo senha");
+    } else {
+      setSenhaError("");
+    }
+
+    if (nomeCompleto == "") {
+      setNomeCompletoError("Prencha o campo nome completo");
+    } else {
+      setNomeCompletoError("");
+    }
+
+    if (nomeUsu == "") {
+      setNomeUsuError("Prencha o campo nome de usuário");
+    } else {
+      setNomeUsuError("");
+    }
+
+    if (zipCode == "") {
+      setZipCodeError("Prencha o campo CEP");
+    } else {
+      setZipCodeError("");
+    }
+
+    if (cpf == "") {
+      setCpfError("Prencha o campo CPF");
+    } else {
+      setCpfError("");
+    }
+
+    if (adisobre == "") {
+      setAdicionarSobreError("Prencha o campo sobre");
+    } else {
+      setAdicionarSobreError("");
+    }
+
+    if (whatsappUsu == "") {
+      setWhatsappUsuError("Prencha o campo telefone");
+    } else {
+      setWhatsappUsuError("");
+    }
+
     createUserWithEmailAndPassword(auth, email, senha)
       .then((userCredential) => {
         console.log("Usuário criado com sucesso!", userCredential);
@@ -113,7 +141,6 @@ export default function RegisterAuto({ navigation }) {
         setDoc(doc(db, "usuario", uid), {
           adm: false,
           bio_usu: "Olá, eu sou " + adisobre,
-          tipo_conta: "",
           profissao_usu: "",
           cep_usu: zipCode,
           cpf_usu: cpf,
@@ -141,7 +168,7 @@ export default function RegisterAuto({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data.logradouro);
-        return data.logradouro;
+        setLogradouro(data.logradouro); // Atualiza o estado com o logradouro
       });
   }
 
@@ -175,7 +202,7 @@ export default function RegisterAuto({ navigation }) {
     return formattedValueCep;
   }
 
-  function Registrar(){
+  function Registrar() {
     handleRegister();
     uploadImageToFirebase();
   }
@@ -202,6 +229,7 @@ export default function RegisterAuto({ navigation }) {
               onChangeText={setEmail}
               style={styles.input}
             />
+            <Text style={styles.textErr}>{emailError}</Text>
             <TextInput
               placeholder="Senha"
               secureTextEntry={true}
@@ -210,17 +238,27 @@ export default function RegisterAuto({ navigation }) {
               style={styles.input}
             />
             <TextInput
+              placeholder="Confirmar senha"
+              value={confirmSenha}
+              onChangeText={setConfirmSenha}
+              style={styles.input}
+              secureTextEntry={true}
+            />
+            <Text style={styles.textErr}>{erroSenha}</Text>
+            <TextInput
               placeholder="Nome Completo"
               value={nomeCompleto}
               onChangeText={setNomeCompleto}
               style={styles.input}
             />
+            <Text style={styles.textErr}>{nomeCompletoError}</Text>
             <TextInput
               placeholder="Nome de Usuário"
               value={nomeUsu}
               onChangeText={setNomeUsu}
               style={styles.input}
             />
+            <Text style={styles.textErr}>{nomeUsuError}</Text>
             <TextInput
               placeholder="Digite seu CEP"
               value={zipCode}
@@ -229,6 +267,10 @@ export default function RegisterAuto({ navigation }) {
               style={styles.input}
               onBlur={retornaLogradouro}
             />
+            <Text style={styles.textErr}>{zipCodeError}</Text>
+            {/* Mostra o logradouro abaixo do TextInput do CEP */}
+            {logradouro ? <Text>{logradouro}</Text> : null}
+            <Text>{retornaLogradouro}</Text>
             <TextInput
               placeholder="Digite seu CPF"
               value={cpf}
@@ -236,29 +278,40 @@ export default function RegisterAuto({ navigation }) {
               maxLength={14}
               style={styles.input}
             />
-            <PickerSelect
-              placeholder={{ label: "Selecione seu bairro", value: "" }}
-              onValueChange={(value) => setSelectedNeighborhood(value)}
-              items={neighborhoods}
-              style={styles.input}
-              value={selectedNeighborhood}
-            />
+            <Text style={styles.textErr}>{cpfError}</Text>
 
-            {getImage ? <> 
-              <Image source={{ uri: getImage }} style={{ width: 200, height: 200, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px #16337E solid"}} />
+            {getImage ? (
+              <>
+                <Image
+                  source={{ uri: getImage }}
+                  style={{
+                    width: 200,
+                    height: 200,
+                    borderRadius: "50%",
+                    alignSelf: "center",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    border: "4px #16337E solid",
+                  }}
+                />
               </>
-              :
-              <Button onPress={pickImage} style={styles.botao} textColor="white">
+            ) : (
+              <Button
+                onPress={pickImage}
+                style={styles.botao}
+                textColor="white"
+              >
                 Escolher foto
               </Button>
-            }
+            )}
 
             <TextInput
               placeholder="Adicionar Sobre"
               value={adisobre}
               onChangeText={setAdicionarSobre}
               style={styles.input}
-            />
+              />
+            <Text style={styles.textErr}>{adisobreError}</Text>
             <TextInput
               placeholder="Telefone"
               value={whatsappUsu}
@@ -266,11 +319,8 @@ export default function RegisterAuto({ navigation }) {
               maxLength={15}
               style={styles.input}
             />
-            <Button
-              textColor={"white"}
-              onPress={Registrar}
-              style={styles.botao}
-            >
+            <Text style={styles.textErr}>{whatsappUsuError}</Text>
+            <Button textColor={"white"} onPress={Register} style={styles.botao}>
               REGISTRAR
             </Button>
           </View>

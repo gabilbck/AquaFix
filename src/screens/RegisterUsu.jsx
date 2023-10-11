@@ -140,7 +140,6 @@ export default function RegisterUsu({ navigation }) {
         setDoc(doc(db, "usuario", uid), {
           adm: false,
           bio_usu: "Olá, eu sou " + adisobre,
-          tipo_conta: "",
           profissao_usu: "",
           cep_usu: zipCode,
           cpf_usu: cpf,
