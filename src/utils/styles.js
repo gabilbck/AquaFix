@@ -208,4 +208,13 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-end",
     backgroundColor: "#16337E",
   },
+
+  textErr: {
+    color: 'red',
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 6,
+    textAlign: 'center',
+  },
+  
 });

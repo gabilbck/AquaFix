@@ -105,7 +105,7 @@ export default function LoginScreen({ navigation }) {
             style={styles.input}
             error={error}
           />
-          <View>{error && <Text style={styles.errorText}>{error}</Text>}</View>
+          <View>{error && <Text style={styles.textErr}>{error}</Text>}</View>
           <Button onPress={handleLogin} style={styles.botao} textColor="white">
             ENTRAR
           </Button>
