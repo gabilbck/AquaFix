@@ -169,7 +169,7 @@ export default function EditProfile({ navigation }) {
           </Text>
           {/* Name Input */}
           <TextInput
-            placeholder="Name"
+            placeholder="Nome"
             value={name}
             onChangeText={setName}
             style={styles.input}
@@ -193,7 +193,7 @@ export default function EditProfile({ navigation }) {
 
           {/* Password Input */}
           <TextInput
-            placeholder="Password"
+            placeholder="Senha"
             secureTextEntry={true}
             value={password}
             onChangeText={setPassword}
