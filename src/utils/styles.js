@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   },
   usuTopo: {
     alignItems: "center",
-    paddingVertical: 40,
+    paddingVertical: 30,
     width: "100%",
   },
   conteudo: {

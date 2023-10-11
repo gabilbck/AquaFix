@@ -69,14 +69,14 @@ export default function PerfilScreen() {
         <View style={styles.usuTopo}>
           <Image
             source={usuario.foto_usu}
-            style={{ width: 105, height: 105, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px white solid"}}
+            style={{ width: 103, height: 103, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px white solid"}}
           />
           <Text
             style={{
               fontSize: 15,
               fontWeight: "bold",
               color: "white",
-              marginTop: 5,
+              marginTop: 7,
             }}
           >
             {usuario.nome_usu}

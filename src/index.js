@@ -5,7 +5,6 @@ import HomeScreen from "./screens/HomeScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RecuperarSenha from "./screens/RecuperarSenha";
-import ProfileScreen from "./screens/ProfileScreen";
 import CadPasso1 from "./screens/CadPasso1";
 import CadPasso2 from "./screens/CadPasso2";
 import RegisterAuto from "./screens/RegisterAuto";
@@ -86,13 +85,6 @@ export default function RootNavigation({ navigation }) {
         <Stack.Screen
           name="RecuperarSenha"
           component={RecuperarSenha}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="ProfileScreen"
-          component={ProfileScreen}
           options={{
             headerShown: false,
           }}
