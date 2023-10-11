@@ -128,14 +128,14 @@ export default function EditProfile({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.imagemTopo}>
+      <View style={styles.imagemTopo}> 
         {getImage ? (
           <>
             <Image
               source={{ uri: getImage }}
               style={{
-                width: 200,
-                height: 200,
+                width: 100,
+                height: 100,
                 borderRadius: "50%",
                 alignSelf: "center",
                 marginTop: 10,
@@ -163,6 +163,10 @@ export default function EditProfile({ navigation }) {
       </View>
       <View style={styles.conteudo}>
         <View style={styles.containerInner}>
+          <Text style={styles.titulo_register}>EDITAR INFORMAÇÕES</Text>
+          <Text style={styles.subtitulo_register}>
+            Edite e atualize as informações que desejar:
+          </Text>
           {/* Name Input */}
           <TextInput
             placeholder="Name"
