@@ -24,29 +24,38 @@ import { Image } from "expo-image";
 export default function PesquisaScreen({ navigation }) {
   const [palavraChave, setPalavraChave] = useState("");
   const [resultadoPesquisa, setResultadoPesquisa] = useState([]);
+  const [busca, setBusca] = useState("");
+  const [resultado, setResultado] = useState([]);
 
   async function buscarServico() {
     const usuarioRef = collection(db, "usuario");
-    const buscaServico = query(
-      usuarioRef,
-      orderBy("servicos_usu"),
-      startAt(palavraChave),
-      endAt(palavraChave + "\uf8ff")
-    );
-
+    const buscaServico = query(usuarioRef, where('servicos_usu', '||', 'servicos_usu1', '||', 'servicos_usu2', '==', busca));
     const resultadoSnapshot = await getDocs(buscaServico);
 
-    const listaServicos = resultadoSnapshot.docs.map((doc) => doc.data());
-    console.log(listaServicos);
-    setResultadoPesquisa(listaServicos);
-    if (palavraChave === "") {
-      setResultadoPesquisa([]);
-    }
+    const listaUsuarios = resultadoSnapshot.docs.map(doc => doc.data());
+    console.log(listaUsuarios);
+    setResultado(listaUsuarios);
+    // const usuarioRef = collection(db, "usuario");
+    // const buscaServico = query(
+    //   usuarioRef,
+    //   orderBy("servicos_usu"),
+    //   startAt(palavraChave),
+    //   endAt(palavraChave + "\uf8ff")
+    // );
+
+    // const resultadoSnapshot = await getDocs(buscaServico);
+
+    // const listaServicos = resultadoSnapshot.docs.map((doc) => doc.data());
+    // console.log(listaServicos);
+    // setResultadoPesquisa(listaServicos);
+    // if (palavraChave === "") {
+    //   setResultadoPesquisa([]);
+    // }
   }
 
   useEffect(() => {
     buscarServico();
-  }, [palavraChave]);
+  }, [busca]);
 
   return (
     <View style={styles.container}>
@@ -63,16 +72,17 @@ export default function PesquisaScreen({ navigation }) {
           {/* CONTEÚDO */}
           <TextInput
             placeholder="Faça sua busca"
-            value={palavraChave}
-            onChangeText={setPalavraChave}
+            value={busca}
+            onChangeText={setBusca}
             style={styles.input}
           />
           <FlatList
-            data={resultadoPesquisa}
+            data={resultado}
             renderItem={({ item }) => (
               <View>
-                <Text>{item.nom_usu}</Text>
+                <Text>{item.nome_usu}</Text>
                 <Text>{item.servicos_usu}</Text>
+                <Text>{item.bio_usu}</Text>
               </View>
             )}
           />
@@ -81,16 +91,3 @@ export default function PesquisaScreen({ navigation }) {
     </View>
   );
 }
-
-/*
-  
-  Apocalipse 6:1-8 
-
-   Vi quando o Cordeiro abriu o primeiro dos sete selos. Então ouvi um dos quatro seres viventes dizer com voz de trovão: "Venha!"
-   Olhei, e diante de mim estava um cavalo branco! Seu cavaleiro tinha um arco e foi-lhe dada uma coroa, e ele saiu vencendo e para vencer.
-   Quando o Cordeiro abriu o segundo selo, ouvi o segundo ser vivente dizer: "Venha!"
-   Então saiu outro cavalo, vermelho. Seu cavaleiro recebeu poder para tirar a paz da terra e fazer os homens se matarem uns aos outros. Foi-lhe dada uma grande espada.
-   Quando o Cordeiro abriu o terceiro selo, ouvi o terceiro ser vivente dizer: "Venha!" Olhei, e diante de mim estava um cavalo preto! Seu cavaleiro tinha uma balança na mão.
-   Ouvi então o que parecia ser uma voz no meio dos quatro seres viventes, dizendo: "Uma medida de trigo por um denário, e três medidas de cevada por um denário; mas não danifique o vinho nem o azeite."
-   Quando o Cordeiro abriu o quarto selo, ouvi a voz do quarto ser vivente dizer: "Venha!" Olhei, e diante de mim estava um cavalo amarelo! Seu cavaleiro chamava-se Morte, e o Inferno o seguia de perto. Foi-lhes dado poder sobre a quarta parte da terra para matar pela espada, pela fome, pela peste e pelas feras da terra.
-*/

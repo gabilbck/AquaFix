@@ -4,7 +4,14 @@ import { Button, Text } from "react-native-paper";
 import { styles } from "../utils/styles";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db, storage } from "../config/firebase";
-import { collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { cnpj } from "cpf-cnpj-validator";
 import * as ImagePicker from "expo-image-picker";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -24,10 +31,13 @@ export default function RegisterEmp({ navigation }) {
   const [isValid, setIsValid] = useState(null);
   const [erroCnpj, setErroCnpj] = useState("");
   const [servicosUsu, setServicosUsu] = useState("");
+  const [servicosUsu1, setServicosUsu1] = useState("");
+  const [servicosUsu2, setServicosUsu2] = useState("");
   const [getImage, setImage] = useState(null);
   const [erroSenha, setErroSenha] = useState("");
   const [erroEmail, setErroEmail] = useState("");
   const [erroUser, setErroUser] = useState("");
+  const [erroServico, setErroServico] = useState("Hum");
 
   // const storage = getStorage(); // Initialize Firebase Storage
 
@@ -54,7 +64,6 @@ export default function RegisterEmp({ navigation }) {
       const storageRef = ref(storage, "foto_usu/" + Date.now());
       const uploadTask = uploadBytesResumable(storageRef, blob);
 
-      
       // uploadTask.on("state_changed", (snapshot) => {
       //   const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       //   console.log(`Upload is ${progress}% done`);
@@ -72,7 +81,10 @@ export default function RegisterEmp({ navigation }) {
   const setImageToFirebase = async (url) => {
     try {
       // Check if email is already registered
-      const emailQuery = query(collection(db, "usuario"), where("email_usu", "==", email));
+      const emailQuery = query(
+        collection(db, "usuario"),
+        where("email_usu", "==", email)
+      );
       const emailQuerySnapshot = await getDocs(emailQuery);
 
       if (!emailQuerySnapshot.empty) {
@@ -82,7 +94,10 @@ export default function RegisterEmp({ navigation }) {
       }
 
       // Check if username is already registered
-      const usernameQuery = query(collection(db, "usuario"), where("nome_usu", "==", nomeUsu));
+      const usernameQuery = query(
+        collection(db, "usuario"),
+        where("nome_usu", "==", nomeUsu)
+      );
       const usernameQuerySnapshot = await getDocs(usernameQuery);
 
       if (!usernameQuerySnapshot.empty) {
@@ -111,6 +126,8 @@ export default function RegisterEmp({ navigation }) {
         senha_usu: senha,
         whatsapp_usu: whatsappUsu,
         servicos_usu: servicosUsu,
+        servicos_usu1: servicosUsu1,
+        servicos_usu2: servicosUsu2,
         tipo_conta: "empresa",
         foto_usu: getImage,
       });
@@ -124,7 +141,7 @@ export default function RegisterEmp({ navigation }) {
       console.error("Erro ao criar usuário", error);
       // Handle error codes
     }
-  }
+  };
 
   function retornaLogradouro() {
     const url = `https://viacep.com.br/ws/${zipCode}/json/`;
@@ -203,7 +220,27 @@ export default function RegisterEmp({ navigation }) {
       setErroUser("O nome completo deve ter no máximo 50 caracteres");
       return;
     }
-
+    if (email === "") {
+      setErroEmail("Preencha o campo e-mail");
+      return;
+    }
+    if (!email.includes("@") || !email.includes(".")) {
+      setErroEmail("E-mail inválido");
+      return;
+    }
+    if (email.includes(" ")) {
+      setErroEmail("E-mail inválido");
+      return;
+    }
+    const checkServicosPreenchidos = () => {
+      const servicosList = [servicosUsu, servicosUsu1, servicosUsu2];
+      
+      if (servicosList.every(servico => servico === "")) {
+        setErroServico("Preencha pelo menos um serviço");
+      } else {
+        setErroServico("");
+      }
+    };
     setImageToFirebase(); // Upload the image before registering the user
   };
   return (
@@ -279,10 +316,23 @@ export default function RegisterEmp({ navigation }) {
               onChangeText={(value) => setWhatsappUsu(numeroCelular(value))}
               style={styles.input}
             />
+            <Text>{erroServico}</Text>
             <TextInput
-              placeholder="Serviços oferecidos (separe por vírugla)"
+              placeholder="Serviço 1"
               value={servicosUsu}
               onChangeText={setServicosUsu}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Serviço 2"
+              value={servicosUsu1}
+              onChangeText={setServicosUsu1}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Serviço 3"
+              value={servicosUsu2}
+              onChangeText={setServicosUsu2}
               style={styles.input}
             />
             {getImage ? (
