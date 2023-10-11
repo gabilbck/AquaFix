@@ -11,14 +11,9 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { styles } from "../utils/styles";
 import { auth, db, storage } from "../config/firebase";
-import {
-  doc,
-  getDoc,
-  updateDoc,
-  collection,
-  addDoc,
-} from "firebase/firestore";
+import { doc, getDoc, updateDoc, collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { Button } from "react-native-paper";
 
 export default function EditProfile({ navigation }) {
   const [name, setName] = useState("");
@@ -124,91 +119,122 @@ export default function EditProfile({ navigation }) {
       })
       .catch((error) => {
         console.error("Error updating profile: ", error);
-        Alert.alert("Error", "Unable to update your profile. Please try again.");
+        Alert.alert(
+          "Error",
+          "Unable to update your profile. Please try again."
+        );
       });
   }
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.usuTopo}>
-          {getImage ? (
+      <View style={styles.imagemTopo}>
+        {getImage ? (
+          <>
             <Image
               source={{ uri: getImage }}
-              style={{ width: 105, height: 105, borderRadius: 50 }}
+              style={{
+                width: 200,
+                height: 200,
+                borderRadius: "50%",
+                alignSelf: "center",
+                marginTop: 10,
+                marginBottom: 10,
+                border: "4px #16337E solid",
+              }}
             />
-          ) : (
-            <TouchableOpacity onPress={pickImage} style={styles.botao}>
-              <Text style={styles.botaoText}>Escolher foto</Text>
-            </TouchableOpacity>
-          )}
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "bold",
-              color: "white",
-              marginTop: 5,
+          </>
+        ) : (
+          <Button onPress={pickImage} style={styles.botao} textColor="white">
+            Escolher foto
+          </Button>
+        )}
+
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "bold",
+            color: "white",
+            marginTop: 5,
+          }}
+        >
+          {name}
+        </Text>
+      </View>
+      <View style={styles.conteudo}>
+        <View style={styles.containerInner}>
+          {/* Name Input */}
+          <TextInput
+            placeholder="Name"
+            value={name}
+            onChangeText={setName}
+            style={styles.input}
+          />
+
+          {/* Email Input */}
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+          />
+
+          {/* Bio Input */}
+          <TextInput
+            placeholder="Bio"
+            value={bio}
+            onChangeText={setBio}
+            style={styles.input}
+          />
+
+          {/* Password Input */}
+          <TextInput
+            placeholder="Password"
+            secureTextEntry={true}
+            value={password}
+            onChangeText={setPassword}
+            style={styles.input}
+          />
+
+          {/* WhatsApp Input */}
+          <TextInput
+            placeholder="WhatsApp"
+            value={whatsapp}
+            onChangeText={setWhatsapp}
+            style={styles.input}
+          />
+
+          {/* Update Button */}
+          <Button
+            style={styles.botaoedit}
+            labelStyle={{ color: "white", fontSize: 15 }}
+            onPress={() => {
+              handleUpdateProfile();
+              uploadImageToFirebase();
             }}
           >
-            {name}
-          </Text>
+            SALVAR
+          </Button>
         </View>
-        <View style={styles.conteudo}>
-          <View style={styles.containerInner}>
-            {/* Name Input */}
-            <TextInput
-              placeholder="Name"
-              value={name}
-              onChangeText={setName}
-              style={styles.input}
-            />
-
-            {/* Email Input */}
-            <TextInput
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-              style={styles.input}
-            />
-
-            {/* Bio Input */}
-            <TextInput
-              placeholder="Bio"
-              value={bio}
-              onChangeText={setBio}
-              style={styles.input}
-            />
-
-            {/* Password Input */}
-            <TextInput
-              placeholder="Password"
-              secureTextEntry={true}
-              value={password}
-              onChangeText={setPassword}
-              style={styles.input}
-            />
-
-            {/* WhatsApp Input */}
-            <TextInput
-              placeholder="WhatsApp"
-              value={whatsapp}
-              onChangeText={setWhatsapp}
-              style={styles.input}
-            />
-
-            {/* Update Button */}
-            <TouchableOpacity
-              onPress={() => {
-                handleUpdateProfile();
-                uploadImageToFirebase();
-              }}
-              style={styles.botao}
-            >
-              <Text style={styles.botaoText}>Atualizar Perfil</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+      </View>
     </View>
   );
 }
+
+/* 
+<View style={styles.container}>
+      {/* Parte que aparece a imagem: azul e logo }
+      <View style={styles.imagemTopo}>
+        <Image
+          source={require("../../assets/img/logocomp-branca.png")}
+          style={{ width: 200, height: 127 }}
+        />
+      </View>
+      {/* Parte que aparece o conteúdo: cinza/branco }
+      <View style={styles.conteudo}>
+        <View style={styles.containerInner}>
+          {/* CONTEÚDO }
+        </View>
+      </View>
+    </View>
+*/
