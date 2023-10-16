@@ -110,7 +110,9 @@ export default function PerfilScreen() {
               <Text style={styles.subtitulo2}>Nenhum serviço cadastrado</Text>
             )}
             <Text style={styles.titulo2}>Redes sociais:</Text>
-            <Image></Image>
+            <Image
+            source={require("../../assets/img/instagram.png")}
+            ></Image>
             <Text style={styles.titulo2}>Você deseja editar o seu perfil? </Text>
             <Button
               style={styles.botaoedit}
