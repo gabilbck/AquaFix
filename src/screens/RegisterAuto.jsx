@@ -22,6 +22,7 @@ export default function RegisterAuto({ navigation }) {
   const [bio, setBio] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
   const [getImage, setImage] = useState(null);
+  const [ErrImage, setErrImage] = useState("");
   const [logradouro, setLogradouro] = useState("");
   const [emailError, setEmailError] = useState("");
   const [senhaError, setSenhaError] = useState("");
@@ -79,7 +80,7 @@ export default function RegisterAuto({ navigation }) {
   };
 
   function Register() {
-    if (senha !== confirmSenha) {
+    if (senha !== confirmSenha || senha == "" || confirmSenha == "") {
       setErroSenha("As senhas não correspondem");
     } else {
       setErroSenha("");
@@ -91,16 +92,16 @@ export default function RegisterAuto({ navigation }) {
       setEmailError("");
     }
 
-    if (senha == "") {
-      setSenhaError("Prencha o campo senha");
-    } else {
-      setSenhaError("");
-    }
-
     if (nomeCompleto == "") {
       setNomeCompletoError("Prencha o campo nome completo");
     } else {
       setNomeCompletoError("");
+    }
+
+    if (getImage == null){
+      setErrImage("Escolha uma imagem");
+    } else{
+      setErrImage("");
     }
 
     if (nomeUsu == "") {
@@ -304,7 +305,7 @@ export default function RegisterAuto({ navigation }) {
                 Escolher foto
               </Button>
             )}
-
+            <Text style={styles.textErr}>{ErrImage}</Text>
             <TextInput
               placeholder="Adicionar Sobre"
               value={adisobre}
@@ -324,6 +325,28 @@ export default function RegisterAuto({ navigation }) {
               REGISTRAR
             </Button>
           </View>
+          <View style={styles.linha}>
+              <View style={styles.coluna}>
+                <Text>Escolheu a opção errada?</Text>
+                <Button
+                  textColor={"black"}
+                  onPress={() => navigation.navigate("CadPasso2")}
+                >
+                  <Text style={styles.botaoPreto}>
+                    Voltar ao passo anterior
+                  </Text>
+                </Button>
+              </View>
+              <View style={styles.coluna}>
+                <Text>Já tem uma conta?</Text>
+                <Button
+                  textColor={"black"}
+                  onPress={() => navigation.navigate("LoginScreen")}
+                >
+                  <Text style={styles.botaoPreto}>Entrar agora!</Text>
+                </Button>
+              </View>
+            </View>
         </View>
       </ScrollView>
     </View>
