@@ -63,13 +63,21 @@ export default function PerfilScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}
-      >
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         {/* Parte que aparece a imagem: azul e logo */}
         <View style={styles.usuTopo}>
           <Image
             source={usuario.foto_usu}
-            style={{ width: 103, height: 103, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px white solid"}}
+            style={{
+              width: 103,
+              height: 103,
+              borderRadius: 50,
+              alignSelf: "center",
+              marginTop: 10,
+              marginBottom: 10,
+              borderColor: "white",
+              borderWidth: 4
+            }}
           />
           <Text
             style={{
@@ -85,9 +93,8 @@ export default function PerfilScreen() {
         {/* Parte que aparece o conteúdo: cinza/branco */}
         <View style={styles.conteudo}>
           <View style={styles.containerInner}>
-            
             <Text style={styles.titulo2}>Nome: </Text>
-            <Text style={styles.subtitulo2}>{usuario?.nome_real_usu}</Text>
+            <Text style={styles.subtitulo2}>{usuario?.nome_completo}</Text>
             <Text style={styles.titulo2}>Apelido: </Text>
             <Text style={styles.subtitulo2}>{usuario?.nome_usu}</Text>
             <Text style={styles.titulo2}>Email: </Text>
@@ -96,17 +103,19 @@ export default function PerfilScreen() {
             <Text style={styles.subtitulo2}>{usuario?.bio_usu}</Text>
             <Text style={styles.titulo2}>Telefone para contato:</Text>
             <Text style={styles.subtitulo2}>{usuario?.whatsapp_usu}</Text>
-            <Text style={styles.titulo2}>Serviços que você oferece:</Text> {/* <------- faz tratamento desse caraio */}
-            <Text style={styles.subtitulo2}>{usuario?.servicos_usu}</Text>
+            <Text style={styles.titulo2}>Serviços que você oferece:</Text>
+            {usuario?.servicos_usu ? (
+              <Text style={styles.subtitulo2}>{usuario.servicos_usu}</Text>
+            ) : (
+              <Text style={styles.subtitulo2}>Nenhum serviço cadastrado</Text>
+            )}
             <Text style={styles.titulo2}>Redes sociais:</Text>
-            
             <Image></Image>
             <Text style={styles.titulo2}>Você deseja editar o seu perfil? </Text>
-            
             <Button
-            style={styles.botaoedit}
-            labelStyle={{ color: "white", fontSize: 15 }}
-            onPress={() => navigation.navigate("EditUsu")}
+              style={styles.botaoedit}
+              labelStyle={{ color: "white", fontSize: 15 }}
+              onPress={() => navigation.navigate("EditUsu")}
             >
               EDITAR PERFIL
             </Button>
@@ -114,7 +123,7 @@ export default function PerfilScreen() {
             <Button
               style={styles.botaovermelho}
               labelStyle={{ color: "white", fontSize: 15 }}
-              onPress={handleSignOut} // Call handleSignOut when the button is pressed
+              onPress={handleSignOut}
             >
               SAIR DA CONTA
             </Button>
