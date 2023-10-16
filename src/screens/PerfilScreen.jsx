@@ -110,7 +110,7 @@ export default function PerfilScreen() {
               <Text style={styles.subtitulo2}>Nenhum serviço cadastrado</Text>
             )}
             <Text style={styles.titulo2}>Redes sociais:</Text>
-            <Image source={require("../../assets/img/whatsapp.png")} height={200} width={200} />
+            <Image source={require("../../assets/img/whatsapp.png")} style={{ width: 50, height: 50, padding: 20 }} />
             <Text style={styles.titulo2}>Você deseja editar o seu perfil? </Text>
             <Button
               style={styles.botaoedit}
