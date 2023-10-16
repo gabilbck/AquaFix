@@ -37,7 +37,10 @@ export default function RegisterEmp({ navigation }) {
   const [erroSenha, setErroSenha] = useState("");
   const [erroEmail, setErroEmail] = useState("");
   const [erroUser, setErroUser] = useState("");
-  const [erroServico, setErroServico] = useState("Hum");
+  const [erroServico, setErroServico] = useState("");
+  const [erroCep, setErroCep] = useState("");
+  const [erroWhatsapp, setErroWhatsapp] = useState("");
+  const [erroUserComp, setErroUserComp] = useState("");
 
   // const storage = getStorage(); // Initialize Firebase Storage
 
@@ -192,8 +195,42 @@ export default function RegisterEmp({ navigation }) {
   }
 
   const Registrar = () => {
+    const checkServicosPreenchidos = () => {
+      const servicosList = [servicosUsu, servicosUsu1, servicosUsu2];
+      
+      if (servicosList.every(servico => servico === "")) {
+        setErroServico("Preencha pelo menos um serviço");
+      } else {
+        setErroServico("");
+      }
+    };
+    if (checkServicosPreenchidos()) return;
     if (senha !== confirmSenha) {
       setErroSenha("As senhas não correspondem");
+      return;
+    }
+    if (senha.length == 0) {
+      setErroSenha("Preencha o campo senha");
+      return;
+    }
+    if (email === "") {
+      setErroEmail("Preencha o campo e-mail");
+      return;
+    }
+    if (cnpjUsu === "") {
+      setErroCnpj("Preencha o campo CNPJ");
+      return;
+    }
+    if (nomeUsu === "") {
+      setErroUser("Preencha o campo nome de usuário");
+      return;
+    }
+    if (nomeCompleto === "") {
+      setErroUserComp("Preencha o campo nome completo");
+      return;
+    }
+    if (zipCode === "") {
+      setErroCep("Preencha o campo CEP");
       return;
     }
     if (senha.length < 6) {
@@ -220,10 +257,6 @@ export default function RegisterEmp({ navigation }) {
       setErroUser("O nome completo deve ter no máximo 50 caracteres");
       return;
     }
-    if (email === "") {
-      setErroEmail("Preencha o campo e-mail");
-      return;
-    }
     if (!email.includes("@") || !email.includes(".")) {
       setErroEmail("E-mail inválido");
       return;
@@ -232,15 +265,7 @@ export default function RegisterEmp({ navigation }) {
       setErroEmail("E-mail inválido");
       return;
     }
-    const checkServicosPreenchidos = () => {
-      const servicosList = [servicosUsu, servicosUsu1, servicosUsu2];
-      
-      if (servicosList.every(servico => servico === "")) {
-        setErroServico("Preencha pelo menos um serviço");
-      } else {
-        setErroServico("");
-      }
-    };
+    
     setImageToFirebase(); // Upload the image before registering the user
   };
   return (
