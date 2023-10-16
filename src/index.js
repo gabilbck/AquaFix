@@ -16,8 +16,6 @@ import PerfilScreen from "./screens/PerfilScreen";
 import EditUsu from "./screens/EditUsu";
 import RegisterEmp from "./screens/RegisterEmp";
 
-import { createTheme } from "@react-navigation/material-bottom-tabs";
-
 /**
  * @auth Gabrieli Eduarda Lembeck
  * @since 1.0.0
