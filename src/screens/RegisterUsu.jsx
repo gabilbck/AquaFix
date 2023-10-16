@@ -21,6 +21,7 @@ export default function RegisterUsu({ navigation }) {
   const [nomeUsu, setNomeUsu] = useState("");
   const [nomeCompleto, setNomeCompleto] = useState("");
   const [email, setEmail] = useState("");
+  const [ConfSenha, setConfSenha] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [senha, setSenha] = useState("");
   const [cpf, setCpf] = useState("");
@@ -36,6 +37,7 @@ export default function RegisterUsu({ navigation }) {
   const [cpfError, setCpfError] = useState("");
   const [whatsappUsuError, setWhatsappUsuError] = useState("");
   const [adisobreError, setAdicionarSobreError] = useState("");
+  const [ConfSenhaError, setConfSenhaError] = useState("");
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -72,7 +74,7 @@ export default function RegisterUsu({ navigation }) {
 
   const setImageToFirebase = async (url) => {
       try {
-          const ref = collection(db, 'foto_usu');
+          const ref = collection(db, 'usuario');
           await addDoc(ref, { url });
 
           console.log('URL da imagem enviada a Firestore');
@@ -84,6 +86,12 @@ export default function RegisterUsu({ navigation }) {
   };
 
   function Register() {
+
+    if (senha !== ConfSenha) {
+      setErroSenha("As senhas não correspondem");
+      return;
+    }
+
     if (email == '') {
       setEmailError("Prencha o campo email");
     }else{
@@ -112,6 +120,12 @@ export default function RegisterUsu({ navigation }) {
       setZipCodeError("Prencha o campo CEP");
     }else{
       setZipCodeError("");
+    }
+
+    if (ConfSenha == '') {
+      setConfSenhaError("Prencha o campo confirmar senha");
+    }else{
+      setConfSenhaError("");
     }
     
     if (cpf == '') {
@@ -228,7 +242,7 @@ export default function RegisterUsu({ navigation }) {
               onChangeText={setEmail}
               style={styles.input}           
               />
-              <Text>{emailError}</Text>
+              <Text style={styles.textErr} >{emailError}</Text>
             <TextInput
               placeholder="Senha"
               secureTextEntry={true}
@@ -236,21 +250,29 @@ export default function RegisterUsu({ navigation }) {
               onChangeText={setSenha}
               style={styles.input}
             />
-            <Text>{senhaError}</Text>
+            <Text style={styles.textErr} >{senhaError}</Text>
+            <TextInput
+              placeholder="Confirmar Senha"
+              secureTextEntry={true}
+              value={ConfSenha}
+              onChangeText={setConfSenha}
+              style={styles.input}
+            />
+            <Text style={styles.textErr} >{ConfSenhaError}</Text>
             <TextInput
               placeholder="Nome Completo"
               value={nomeCompleto}
               onChangeText={setNomeCompleto}
               style={styles.input}
             />
-            <Text>{nomeCompletoError}</Text>
+            <Text style={styles.textErr} >{nomeCompletoError}</Text>
             <TextInput
               placeholder="Nome de Usuário"
               value={nomeUsu}
               onChangeText={setNomeUsu}
               style={styles.input}
             />
-            <Text>{nomeUsuError}</Text>
+            <Text style={styles.textErr} >{nomeUsuError}</Text>
             <TextInput
               placeholder="Digite seu CEP"
               value={zipCode}
@@ -259,7 +281,7 @@ export default function RegisterUsu({ navigation }) {
               style={styles.input}
               onBlur={retornaLogradouro}
             />
-            <Text>{zipCodeError}</Text>
+            <Text style={styles.textErr} >{zipCodeError}</Text>
             <TextInput
               placeholder="Digite seu CPF"
               value={cpf}
@@ -267,7 +289,7 @@ export default function RegisterUsu({ navigation }) {
               maxLength={14}
               style={styles.input}
             />
-            <Text>{cpfError}</Text>
+            <Text style={styles.textErr} >{cpfError}</Text>
             {getImage ? <> 
               <Image source={{ uri: getImage }} style={{ width: 200, height: 200, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px #16337E solid"}} />
               </>
@@ -283,7 +305,7 @@ export default function RegisterUsu({ navigation }) {
               onChangeText={setAdicionarSobre}
               style={styles.input}
             />
-            <Text>{adisobreError}</Text>
+            <Text style={styles.textErr} >{adisobreError}</Text>
             <TextInput
               placeholder="Telefone"
               value={whatsappUsu}
@@ -291,7 +313,7 @@ export default function RegisterUsu({ navigation }) {
               maxLength={15}
               style={styles.input}
             />
-            <Text>{whatsappUsuError}</Text>
+            <Text style={styles.textErr} >{whatsappUsuError}</Text>
             <Button
               textColor={"white"}
               onPress={Register}
@@ -299,6 +321,28 @@ export default function RegisterUsu({ navigation }) {
             >
               REGISTRAR
           </Button>
+          <View style={styles.linha}>
+              <View style={styles.coluna}>
+                <Text>Escolheu a opção errada?</Text>
+                <Button
+                  textColor={"black"}
+                  onPress={() => navigation.navigate("CadPasso2")}
+                >
+                  <Text style={styles.botaoPreto}>
+                    Voltar ao passo anterior
+                  </Text>
+                </Button>
+              </View>
+              <View style={styles.coluna}>
+                <Text>Já tem uma conta?</Text>
+                <Button
+                  textColor={"black"}
+                  onPress={() => navigation.navigate("LoginScreen")}
+                >
+                  <Text style={styles.botaoPreto}>Entrar agora!</Text>
+                </Button>
+              </View>
+            </View>
           </View>
         </View>
       </ScrollView>
