@@ -3,15 +3,13 @@ import {
   Text,
   View,
   TextInput,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
   Image,
+  Pressable,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { styles } from "../utils/styles";
 import { auth, db, storage } from "../config/firebase";
-import { doc, getDoc, updateDoc, collection, addDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Button } from "react-native-paper";
 
@@ -21,7 +19,7 @@ export default function EditProfile({ navigation }) {
   const [bio, setBio] = useState("");
   const [password, setPassword] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
-  const [getImage, setImage] = useState(null);
+  const [imageUri, setImageUri] = useState(null); // Store the image URI
 
   const user = auth.currentUser;
 
@@ -38,6 +36,7 @@ export default function EditProfile({ navigation }) {
             setEmail(userData.email_usu);
             setBio(userData.bio_usu);
             setWhatsapp(userData.whatsapp_usu);
+            setImageUri(userData.foto_usu); // Set the image URI
           }
         } catch (error) {
           console.error("Error fetching user profile data: ", error);
@@ -58,29 +57,37 @@ export default function EditProfile({ navigation }) {
       });
 
       if (!result.cancelled) {
-        setImage(result.uri);
+        setImageUri(result.uri); // Store the image URI
       }
     } catch (error) {
       console.error("Error picking image: ", error);
-      Alert.alert("Error", "Unable to pick an image. Please try again.");
     }
   };
 
-  /**
-   * author: Amandaaa
-   */
-  
-  const setImageToFirebase = async (url) => {
+  const uploadImageToFirebase = async () => {
     try {
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+
+      const storageRef = ref(storage, "foto_usu/" + user.uid); // Use the user's UID as the image path
+      const uploadTask = uploadBytes(storageRef, blob);
+
+      await uploadTask;
+
+      const imageURL = await getDownloadURL(storageRef);
+
+      // Update the user's profile image URL in Firestore
       const userDocRef = doc(db, "usuario", user.uid);
-      await updateDoc(userDocRef, { foto_usu: url });
-      console.log("URL da imagem salva no Firestore");
-      setImage(null); // Limpa a imagem após o upload bem-sucedido
+      await updateDoc(userDocRef, {
+        foto_usu: imageURL,
+      });
+
+      console.log("Profile image updated successfully.");
+      navigation.goBack(); // Navigate back to the previous screen
     } catch (error) {
-      console.error("Erro ao salvar no Firestore: ", error);
-      Alert.alert("Erro", "Não foi possível salvar a URL da imagem no Firestore.");
+      console.error("Error uploading image: ", error);
     }
-  };
+  }
 
   function handleUpdateProfile() {
     // Update the user's profile data in Firestore with the new values
@@ -102,37 +109,29 @@ export default function EditProfile({ navigation }) {
         console.log("Profile updated successfully.");
         navigation.goBack(); // Navigate back to the previous screen
       })
-      .catch((error) => {
-        console.error("Error updating profile: ", error);
-        Alert.alert(
-          "Error",
-          "Unable to update your profile. Please try again."
-        );
-      });
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.imagemTopo}> 
-        {getImage ? (
-          <>
-            <Image
-              source={{ uri: getImage }}
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: "50%",
-                alignSelf: "center",
-                marginTop: 10,
-                marginBottom: 10,
-                border: "4px #16337E solid",
-              }}
-            />
-          </>
+      <View style={styles.imagemTopo}>
+        {imageUri ? (
+          <Pressable onPress={pickImage} style={styles.botaoedit}>
+            <Text style={styles.botaoText}>Escolher foto</Text>
+          </Pressable>
         ) : (
-          <Button onPress={pickImage} style={styles.botao} textColor="white">
-            Escolher foto
-          </Button>
+          <Image
+            source={{ uri: imageUri }}
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 50,
+              alignSelf: "center",
+              marginTop: 10,
+              marginBottom: 10,
+              borderWidth: 4,
+              borderColor: "#16337E",
+            }}
+          />
         )}
 
         <Text
@@ -152,6 +151,7 @@ export default function EditProfile({ navigation }) {
           <Text style={styles.subtitulo_register}>
             Edite e atualize as informações que desejar:
           </Text>
+
           {/* Name Input */}
           <TextInput
             placeholder="Nome"
@@ -195,6 +195,15 @@ export default function EditProfile({ navigation }) {
 
           {/* Update Button */}
           <Button
+            style={styles.botaoedit}
+            labelStyle={{ color: "white", fontSize: 15 }}
+            onPress={() => {
+              handleUpdateProfile();
+              uploadImageToFirebase();
+            }}
+          >
+            SALVAR
+          </Button><Button
             style={styles.botao3}
             labelStyle={{ color: "white", fontSize: 15 }}
             onPress={() => {

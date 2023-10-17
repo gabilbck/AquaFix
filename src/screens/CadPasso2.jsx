@@ -25,7 +25,7 @@ export default function CadPasso2({ navigation }) {
           <View style={styles.container2}>
             <Button
               textColor={"white"}
-              onPress={() => navigation.navigate("RegisterUsu")}
+              onPress={() => navigation.navigate("RegisterAuto")}
               style={styles.botao2}
             >
               Sou Autônomo
