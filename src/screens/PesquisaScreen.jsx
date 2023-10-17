@@ -15,26 +15,35 @@ import {
   where,
   getDocs,
   orderBy,
+  doc,
+  getFirestore,
 } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { app, db } from "../config/firebase";
 
 import { styles } from "../utils/styles";
 import { Image } from "expo-image";
 
 export default function PesquisaScreen({ navigation }) {
-  const [palavraChave, setPalavraChave] = useState("");
   const [resultadoPesquisa, setResultadoPesquisa] = useState([]);
   const [busca, setBusca] = useState("");
   const [resultado, setResultado] = useState([]);
 
   async function buscarServico() {
     const usuarioRef = collection(db, "usuario");
-    const buscaServico = query(usuarioRef, where('servicos_usu', '||', 'servicos_usu1', '||', 'servicos_usu2', '==', busca));
+    const buscaServico = query(
+      usuarioRef,
+      where("servicos_usu", "==", busca),
+      where("servicos_usu1", "==", busca),
+      where("servicos_usu2", "==", busca),
+      orderBy("servicos_usu"),
+      startAt(busca + "\uf8ff"),
+      endAt(busca + "\uf8ff")
+    );
     const resultadoSnapshot = await getDocs(buscaServico);
-
-    const listaUsuarios = resultadoSnapshot.docs.map(doc => doc.data());
+    const listaUsuarios = resultadoSnapshot.docs.map((doc) => doc.data());
     console.log(listaUsuarios);
     setResultado(listaUsuarios);
+
     // const usuarioRef = collection(db, "usuario");
     // const buscaServico = query(
     //   usuarioRef,
