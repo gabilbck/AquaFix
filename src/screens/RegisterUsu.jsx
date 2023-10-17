@@ -87,18 +87,19 @@ export default function RegisterUsu({ navigation }) {
 
   function Register() {
 
-    if (senha !== ConfSenha) {
-      setErroSenha("As senhas não correspondem");
-      return;
+    if (senha !== ConfSenha || senha == "" || ConfSenha == "") {
+      setSenhaError("As senhas não correspondem");
+    } else {
+      setSenhaError("");
     }
-
+  
     if (email == '') {
       setEmailError("Prencha o campo email");
     }else{
       setEmailError("");
     }
 
-    if (senha == '') {
+    if (senha == "") {
       setSenhaError("Prencha o campo senha");
     }else{
       setSenhaError("");
@@ -250,6 +251,7 @@ export default function RegisterUsu({ navigation }) {
               onChangeText={setSenha}
               style={styles.input}
             />
+
             <Text style={styles.textErr} >{senhaError}</Text>
             <TextInput
               placeholder="Confirmar Senha"
