@@ -250,5 +250,15 @@ export const styles = StyleSheet.create({
     marginTop: 6,
     textAlign: 'center',
   },
+  socialMediaContainer: {
+    flexDirection: "row", 
+    justifyContent: "left", 
+    marginTop: 12,
+    marginBottom: 12,
+  },
+  socialMediaIcon: {
+    alignItems: "left",
+  },
+  
   
 });

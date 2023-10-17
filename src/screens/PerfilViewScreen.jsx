@@ -8,7 +8,7 @@ import { auth, db } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation from React Navigation
 
-export default function PerfilScreen() {
+export default function PerfilViewScreen() {
   const [usuario, setUsuario] = useState({});
   const navigation = useNavigation(); // Initialize navigation
 
@@ -141,25 +141,6 @@ export default function PerfilScreen() {
                 />
               </View>
             </View>
-
-            <Text style={styles.titulo2}>
-              Você deseja editar o seu perfil?{" "}
-            </Text>
-            <Button
-              style={styles.botaoedit}
-              labelStyle={{ color: "white", fontSize: 15 }}
-              onPress={() => navigation.navigate("EditUsu")}
-            >
-              EDITAR PERFIL
-            </Button>
-            <Text style={styles.titulo2}>Você deseja sair da conta? </Text>
-            <Button
-              style={styles.botaovermelho}
-              labelStyle={{ color: "white", fontSize: 15 }}
-              onPress={handleSignOut}
-            >
-              SAIR DA CONTA
-            </Button>
           </View>
         </View>
       </ScrollView>

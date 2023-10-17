@@ -16,6 +16,9 @@ import PerfilScreen from "./screens/PerfilScreen";
 import EditUsu from "./screens/EditUsu";
 import RegisterEmp from "./screens/RegisterEmp";
 
+
+import PerfilViewScreen from "./screens/PerfilViewScreen";
+
 /**
  * @auth Gabrieli Eduarda Lembeck
  * @since 1.0.0
@@ -179,6 +182,16 @@ function TabsNavigation() {
           tabBarLabel: "Perfil",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="PerfilViewScreen"
+        component={PerfilViewScreen}
+        options={{
+          tabBarLabel: "Ver Perfil",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account-alert" color={color} size={26} />
           ),
         }}
       />
