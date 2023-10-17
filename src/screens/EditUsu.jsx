@@ -115,7 +115,7 @@ export default function EditProfile({ navigation }) {
     <View style={styles.container}>
       <View style={styles.imagemTopo}>
         {imageUri ? (
-          <Pressable onPress={pickImage} style={styles.botaoedit}>
+          <Pressable onPress={pickImage} style={styles.botao3}>
             <Text style={styles.botaoText}>Escolher foto</Text>
           </Pressable>
         ) : (
@@ -196,15 +196,6 @@ export default function EditProfile({ navigation }) {
           {/* Update Button */}
           <Button
             style={styles.botaoedit}
-            labelStyle={{ color: "white", fontSize: 15 }}
-            onPress={() => {
-              handleUpdateProfile();
-              uploadImageToFirebase();
-            }}
-          >
-            SALVAR
-          </Button><Button
-            style={styles.botao3}
             labelStyle={{ color: "white", fontSize: 15 }}
             onPress={() => {
               handleUpdateProfile();
