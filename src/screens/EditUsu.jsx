@@ -66,34 +66,19 @@ export default function EditProfile({ navigation }) {
     }
   };
 
-  const uploadImageToFirebase = async () => {
-    try {
-      const response = await fetch(getImage);
-      const blob = await response.blob();
-
-      const storageRef = ref(storage, "foto_usu/" + Date.now());
-      const uploadTask = uploadBytes(storageRef, blob);
-
-      await uploadTask;
-
-      const imageURL = await getDownloadURL(storageRef);
-      setImageToFirebase(imageURL);
-    } catch (error) {
-      console.error("Error uploading image: ", error);
-      Alert.alert("Error", "Unable to upload the image. Please try again.");
-    }
-  };
-
+  /**
+   * author: Amandaaa
+   */
+  
   const setImageToFirebase = async (url) => {
     try {
-      const ref = collection(db, "foto_usu");
-      await addDoc(ref, { url });
-
-      console.log("URL da imagem enviada a Firestore");
-      setImage(null);
+      const userDocRef = doc(db, "usuario", user.uid);
+      await updateDoc(userDocRef, { foto_usu: url });
+      console.log("URL da imagem salva no Firestore");
+      setImage(null); // Limpa a imagem após o upload bem-sucedido
     } catch (error) {
-      console.error("Erro ao enviar a Firestore: ", error);
-      Alert.alert("Error", "Unable to save the image URL in Firestore.");
+      console.error("Erro ao salvar no Firestore: ", error);
+      Alert.alert("Erro", "Não foi possível salvar a URL da imagem no Firestore.");
     }
   };
 
@@ -210,7 +195,7 @@ export default function EditProfile({ navigation }) {
 
           {/* Update Button */}
           <Button
-            style={styles.botaoedit}
+            style={styles.botao3}
             labelStyle={{ color: "white", fontSize: 15 }}
             onPress={() => {
               handleUpdateProfile();
@@ -219,6 +204,13 @@ export default function EditProfile({ navigation }) {
           >
             SALVAR
           </Button>
+          <Button
+              style={styles.botaovermelho2}
+              labelStyle={{ color: "white", fontSize: 15 }}
+              onPress={() => navigation.navigate("PerfilScreen")}
+            >
+              CANCELAR
+            </Button>
         </View>
       </View>
     </View>
