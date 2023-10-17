@@ -41,6 +41,8 @@ export default function RegisterEmp({ navigation }) {
   const [erroCep, setErroCep] = useState("");
   const [erroWhatsapp, setErroWhatsapp] = useState("");
   const [erroUserComp, setErroUserComp] = useState("");
+  const [instagramUsu, setInstagramUsu] = useState("");
+  const [linkedinUsu, setLinkedinUsu] = useState("");
 
   // const storage = getStorage(); // Initialize Firebase Storage
 
@@ -133,6 +135,8 @@ export default function RegisterEmp({ navigation }) {
         servicos_usu2: servicosUsu2,
         tipo_conta: "empresa",
         foto_usu: getImage,
+        instagram_usu: instagramUsu,
+        linkedin_usu: linkedinUsu,
       });
 
       // Upload the image to Firestore here
@@ -265,6 +269,14 @@ export default function RegisterEmp({ navigation }) {
       setErroEmail("E-mail inválido");
       return;
     }
+    if (instagramUsu.length === "") {
+      setInstagramUsu("");
+      return;
+    }
+    if (linkedinUsu.length === "") {
+      setLinkedinUsu("");
+      return;
+    }
     
     setImageToFirebase(); // Upload the image before registering the user
   };
@@ -358,6 +370,18 @@ export default function RegisterEmp({ navigation }) {
               placeholder="Serviço 3"
               value={servicosUsu2}
               onChangeText={setServicosUsu2}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Link do Instagram"
+              value={instagramUsu}
+              onChangeText={setInstagramUsu}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Link do LinkedIn"
+              value={linkedinUsu}
+              onChangeText={setLinkedinUsu}
               style={styles.input}
             />
             {getImage ? (
