@@ -1,19 +1,17 @@
-import { Button, RadioButton } from "react-native-paper";
+import { Button } from "react-native-paper";
 import {
   Text,
   View,
   TextInput,
-  KeyboardAvoidingView,
   ScrollView,
-  TouchableOpacity,
 } from "react-native";
 import { Image } from "expo-image";
 import { styles } from "../utils/styles";
 import { useState } from "react";
 import { auth, db, storage } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, collection, addDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc, setDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 
 export default function RegisterUsu({ navigation }) {
@@ -21,24 +19,23 @@ export default function RegisterUsu({ navigation }) {
   const [nomeUsu, setNomeUsu] = useState("");
   const [nomeCompleto, setNomeCompleto] = useState("");
   const [email, setEmail] = useState("");
-  const [ConfSenha, setConfSenha] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [senha, setSenha] = useState("");
   const [cpf, setCpf] = useState("");
+  const [confirmSenha, setConfirmSenha] = useState("");
   const [isValid, setValid] = useState(null);
   const [bio_usu, setBio] = useState("");
   const [whatsappUsu, setWhatsappUsu] = useState("");
   const [getImage, setImage] = useState(null);
-  const [emailError, setEmailError] = useState("");
-  const [senhaError, setSenhaError] = useState("");
+  const [ErrImage, setErrImage] = useState("");
+  const [erroEmail, setErroEmail] = useState(""); //erroEmail
   const [nomeUsuError, setNomeUsuError] = useState("");
   const [nomeCompletoError, setNomeCompletoError] = useState("");
   const [zipCodeError, setZipCodeError] = useState("");
   const [cpfError, setCpfError] = useState("");
+  const [erroSenha, setErroSenha] = useState("");
   const [whatsappUsuError, setWhatsappUsuError] = useState("");
   const [adisobreError, setAdicionarSobreError] = useState("");
-  const [ConfSenhaError, setConfSenhaError] = useState("");
-
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -73,19 +70,70 @@ export default function RegisterUsu({ navigation }) {
   };
 
   const setImageToFirebase = async (url) => {
-      try {
-          const ref = collection(db, 'usuario');
-          await addDoc(ref, { url });
+    try {
+      // Check if email is already registered
+      const emailQuery = query(
+        collection(db, "usuario"),
+        where("email_usu", "==", email)
+      );
+      const emailQuerySnapshot = await getDocs(emailQuery);
 
-          console.log('URL da imagem enviada a Firestore');
-          setImage(null);
-      } catch (error) {
-          console.error('Erro ao enviar a Firestore: ', error);
-          setImage(null);
+      if (!emailQuerySnapshot.empty) {
+        console.error("E-mail já cadastrado");
+        setErroEmail("E-mail já cadastrado");
+        return;
       }
+
+      // Check if username is already registered
+      const usernameQuery = query(
+        collection(db, "usuario"),
+        where("nome_usu", "==", nomeUsu)
+      );
+      const usernameQuerySnapshot = await getDocs(usernameQuery);
+
+      if (!usernameQuerySnapshot.empty) {
+        console.error("Nome de usuário já cadastrado");
+        setErroUser("Nome de usuário já cadastrado");
+        return;
+      }
+
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        senha
+      );
+      console.log("Usuário criado com sucesso!", userCredential);
+
+      const uid = userCredential.user.uid;
+
+      await setDoc(doc(db, "usuario", uid), {
+        adm: false,
+          bio_usu: "Olá, eu sou " + adisobre,
+          profissao_usu: "",
+          cep_usu: zipCode,
+          cpf_usu: cpf,
+          email_usu: email,
+          nome_real_usu: nomeCompleto,
+          nome_usu: nomeUsu,
+          senha_usu: senha,
+          tipo_conta: "Cliente",
+          whatsapp_usu: whatsappUsu,
+          foto_usu: getImage,
+        }).then(() => {
+          console.log("Cadastrado!");
+          navigation.navigate("LoginScreen");
+        });
+        await uploadImageToFirebase();
+
+      console.log("Cadastrado!");
+      navigation.navigate("LoginScreen");
+    } catch (error) {
+      console.error("Erro ao criar usuário", error);
+      // Handle error codes
+    }
   };
 
-  function Register() {
+  /*function Register() {
 
     if (senha !== ConfSenha || senha == "" || ConfSenha == "") {
       setSenhaError("As senhas não correspondem");
@@ -145,36 +193,69 @@ export default function RegisterUsu({ navigation }) {
       setWhatsappUsuError("Prencha o campo telefone");
     }else{
       setWhatsappUsuError("");
-    }
+    } */
 
-    createUserWithEmailAndPassword(auth, email, senha)
-      .then((userCredential) => {
-        console.log("Usuário criado com sucesso!", userCredential);
-        const uid = userCredential.user.uid;
-
-        setDoc(doc(db, "usuario", uid), {
-          adm: false,
-          bio_usu: "Olá, eu sou " + adisobre,
-          profissao_usu: "",
-          cep_usu: zipCode,
-          cpf_usu: cpf,
-          email_usu: email,
-          nome_real_usu: nomeCompleto,
-          nome_usu: nomeUsu,
-          senha_usu: senha,
-          tipo_conta: "Cliente",
-          whatsapp_usu: whatsappUsu,
-          foto_usu: getImage,
-        }).then(() => {
-          console.log("Cadastrado!");
-          navigation.navigate("LoginScreen");
-        });
-      })
-      .catch((error) => {
-        console.log("Erro ao criar usuário", error);
-        // Handle error codes
-      });
-  }
+    const Registrar = () => {
+      if (email === "") {
+        setErroEmail("Preencha o campo e-mail");
+        return;
+      }
+  
+      if (!email.includes("@") || !email.includes(".")) {
+        setErroEmail("E-mail inválido");
+        return;
+      }
+      if (email.includes(" ")) {
+        setErroEmail("E-mail inválido");
+        return;
+      }
+      if (senha !== confirmSenha) {
+        setErroSenha("As senhas não correspondem");
+        return;
+      }
+  
+      if (senha == "") {
+        setErroSenha("Preencha o campo senha");
+        return;
+      }
+  
+      if (nomeCompleto == "") {
+        setNomeCompletoError("Preencha o campo nome completo");
+        return;
+      }
+      
+      if (nomeUsu == "") {
+        setNomeUsuError("Preencha o campo nome de usuário");
+        return;
+      }
+      
+      if (zipCode == "") {
+        setZipCodeError("Preencha o campo CEP");
+        return;
+      }
+      
+      if (cpf == "") {
+        setCpfError("Preencha o campo CPF");
+        return;
+      }
+  
+      if (getImage == null){
+        setErrImage("Escolha uma imagem");
+        return;
+      }
+  
+      if (adisobre == "") {
+        setAdicionarSobreError("Preencha o campo sobre");
+        return;
+      }
+  
+      if (whatsappUsu == "") {
+        setWhatsappUsuError("Preencha o campo telefone");
+        return;
+      }
+  
+      setImageToFirebase();
+    };
 
   function retornaLogradouro() {
     const url = `https://viacep.com.br/ws/${zipCode}/json/`;
@@ -216,11 +297,6 @@ export default function RegisterUsu({ navigation }) {
     return formattedValueCep;
   }
 
-  function Registrar(){
-    handleRegister();
-    uploadImageToFirebase();
-  }
-
   return (
     // <KeyboardAvoidingView style={styles.container} behavior="padding">
     <View style={styles.container}>
@@ -243,7 +319,7 @@ export default function RegisterUsu({ navigation }) {
               onChangeText={setEmail}
               style={styles.input}           
               />
-              <Text style={styles.textErr} >{emailError}</Text>
+              <Text style={styles.textErr} >{erroEmail}</Text>
             <TextInput
               placeholder="Senha"
               secureTextEntry={true}
@@ -251,16 +327,14 @@ export default function RegisterUsu({ navigation }) {
               onChangeText={setSenha}
               style={styles.input}
             />
-
-            <Text style={styles.textErr} >{senhaError}</Text>
             <TextInput
               placeholder="Confirmar Senha"
               secureTextEntry={true}
-              value={ConfSenha}
-              onChangeText={setConfSenha}
+              value={confirmSenha}
+              onChangeText={setConfirmSenha}
               style={styles.input}
             />
-            <Text style={styles.textErr} >{ConfSenhaError}</Text>
+            <Text style={styles.textErr} >{erroSenha}</Text>
             <TextInput
               placeholder="Nome Completo"
               value={nomeCompleto}
@@ -300,7 +374,7 @@ export default function RegisterUsu({ navigation }) {
                 Escolher foto
               </Button>
             }
-
+            <Text style={styles.textErr}>{ErrImage}</Text>
             <TextInput
               placeholder="Adicionar Sobre"
               value={adisobre}
@@ -318,7 +392,7 @@ export default function RegisterUsu({ navigation }) {
             <Text style={styles.textErr} >{whatsappUsuError}</Text>
             <Button
               textColor={"white"}
-              onPress={Register}
+              onPress={Registrar}
               style={styles.botao}
             >
               REGISTRAR
