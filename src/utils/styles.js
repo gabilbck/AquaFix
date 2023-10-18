@@ -260,5 +260,15 @@ export const styles = StyleSheet.create({
     alignItems: "left",
   },
   
+  tipoconta: {
+    padding: 10,
+    width: 80,
+    borderRadius: 100,
+    backgroundColor: "#16337E",
+    color: "white",
+    textAlign: "center",
+    marginBottom: 15,
+    fontWeight: 'bold',
+  }
   
 });

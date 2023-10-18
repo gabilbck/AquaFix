@@ -1,16 +1,16 @@
-import React from "react";
-import { Image, View, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, View, ScrollView, TouchableOpacity } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { styles } from "../utils/styles";
-import { useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation from React Navigation
+import { useNavigation } from "@react-navigation/native";
+import { Linking } from "react-native";
 
 export default function PerfilScreen() {
   const [usuario, setUsuario] = useState({});
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -28,21 +28,21 @@ export default function PerfilScreen() {
   }, []);
 
   useEffect(() => {
-    // verifica se uid não é vazio
     if (!usuario.uid) return;
 
-    // referência ao documento no Firestore usando o UID do usuário
     const usuarioRef = doc(db, "usuario", usuario.uid);
 
     console.log("Buscando usuário com UID: ", usuario.uid);
 
-    // busca o documento
     getDoc(usuarioRef)
       .then((docSnapshot) => {
         if (docSnapshot.exists()) {
-          // pega os dados do documento
           const userData = docSnapshot.data();
           setUsuario(userData);
+
+          if (userData.whatsapp_usu) {
+            userData.whatsapp_usu = extractCleanPhoneNumber(userData.whatsapp_usu);
+          }
         } else {
           console.log("Usuário não encontrado !!!");
         }
@@ -54,17 +54,51 @@ export default function PerfilScreen() {
 
   const handleSignOut = async () => {
     try {
-      await signOut(auth); // Sign the user out
-      navigation.navigate("LoginScreen"); // Navigate to the LoginScreen
+      await signOut(auth);
+      navigation.navigate("LoginScreen");
     } catch (error) {
       console.error("Erro ao sair da conta:", error);
     }
   };
 
+  const openWhatsAppChat = () => {
+    if (usuario.whatsapp_usu) {
+      const whatsappNumber = usuario.whatsapp_usu;
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
+      Linking.openURL(whatsappUrl)
+        .then((data) => {
+          console.log("WhatsApp chat opened");
+        })
+        .catch((error) => {
+          console.error("Error opening WhatsApp chat", error);
+        });
+    } else {
+      console.warn("User has not registered a WhatsApp number");
+    }
+  };
+
+  const openSocialMediaLink = (url) => {
+    if (url) {
+      Linking.openURL(url)
+        .then((data) => {
+          console.log("Redirecionado para a rede social");
+        })
+        .catch((error) => {
+          console.error("Erro ao abrir o link da rede social", error);
+        });
+    } else {
+      console.warn("O usuário não cadastrou um link para a rede social");
+    }
+  };
+
+  const extractCleanPhoneNumber = (phoneNumber) => {
+    const cleanedNumber = phoneNumber.replace(/\D/g, "");
+    return cleanedNumber;
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        {/* Parte que aparece a imagem: azul e logo */}
         <View style={styles.usuTopo}>
           <Image
             source={usuario.foto_usu}
@@ -90,9 +124,9 @@ export default function PerfilScreen() {
             {usuario.nome_usu}
           </Text>
         </View>
-        {/* Parte que aparece o conteúdo: cinza/branco */}
         <View style={styles.conteudo}>
           <View style={styles.containerInner}>
+            <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
             <Text style={styles.titulo2}>Nome: </Text>
             <Text style={styles.subtitulo2}>{usuario?.nome_real_usu}</Text>
             <Text style={styles.titulo2}>Apelido: </Text>
@@ -104,44 +138,46 @@ export default function PerfilScreen() {
             <Text style={styles.titulo2}>Telefone para contato:</Text>
             <Text style={styles.subtitulo2}>{usuario?.whatsapp_usu}</Text>
             <Text style={styles.titulo2}>Serviços que você oferece:</Text>
-            {usuario?.servicos_usu ? (
-              <Text style={styles.subtitulo2}>{usuario.servicos_usu}</Text>
-            ) : (
-              <Text style={styles.subtitulo2}>Nenhum serviço cadastrado</Text>
-            )}
+            <Text style={styles.subtitulo2}>{usuario?.servicos_usu}</Text>
             <Text style={styles.titulo2}>Redes sociais:</Text>
             <View style={styles.socialMediaContainer}>
-              <View style={styles.socialMediaIcon}>
+              <TouchableOpacity onPress={openWhatsAppChat}>
                 <Image
                   source={require("../../assets/img/whatsapp.png")}
                   style={{
                     width: 50,
                     height: 50,
-                    marginRight: 8, // Espaçamento entre as imagens
+                    marginRight: 8,
                   }}
                 />
-              </View>
-              <View style={styles.socialMediaIcon}>
-                <Image
-                  source={require("../../assets/img/linkedin.png")}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    marginRight: 8, // Espaçamento entre as imagens
-                  }}
-                />
-              </View>
-              <View style={styles.socialMediaIcon}>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => openSocialMediaLink(usuario?.instagram_usu)}
+                style={styles.socialMediaIcon}
+              >
                 <Image
                   source={require("../../assets/img/instagram.png")}
                   style={{
                     width: 50,
                     height: 50,
+                    marginRight: 8,
                   }}
                 />
-              </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => openSocialMediaLink(usuario?.linkedin_usu)}
+                style={styles.socialMediaIcon}
+              >
+                <Image
+                  source={require("../../assets/img/linkedin.png")}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginRight: 8,
+                  }}
+                />
+              </TouchableOpacity>
             </View>
-
             <Text style={styles.titulo2}>
               Você deseja editar o seu perfil?{" "}
             </Text>
