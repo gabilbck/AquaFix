@@ -68,24 +68,72 @@ export default function RegisterAuto({ navigation }) {
 
   const setImageToFirebase = async (url) => {
     try {
-      const ref = collection(db, "usuario");
-      await addDoc(ref, { url });
+      // Check if email is already registered
+      const emailQuery = query(
+        collection(db, "usuario"),
+        where("email_usu", "==", email)
+      );
+      const emailQuerySnapshot = await getDocs(emailQuery);
 
-      console.log("URL da imagem enviada a Firestore");
-      setImage(null);
+      if (!emailQuerySnapshot.empty) {
+        console.error("E-mail já cadastrado");
+        setErroEmail("E-mail já cadastrado");
+        return;
+      }
+
+      // Check if username is already registered
+      const usernameQuery = query(
+        collection(db, "usuario"),
+        where("nome_usu", "==", nomeUsu)
+      );
+      const usernameQuerySnapshot = await getDocs(usernameQuery);
+
+      if (!usernameQuerySnapshot.empty) {
+        console.error("Nome de usuário já cadastrado");
+        setErroUser("Nome de usuário já cadastrado");
+        return;
+      }
+
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        senha
+      );
+      console.log("Usuário criado com sucesso!", userCredential);
+
+      const uid = userCredential.user.uid;
+
+      await setDoc(doc(db, "usuario", uid), {
+        adm: false,
+          bio_usu: "Olá, eu sou " + adisobre,
+          profissao_usu: "",
+          cep_usu: zipCode,
+          cpf_usu: cpf,
+          email_usu: email,
+          nome_real_usu: nomeCompleto,
+          nome_usu: nomeUsu,
+          senha_usu: senha,
+          tipo_conta: "Autônomo",
+          whatsapp_usu: whatsappUsu,
+          foto_usu: getImage,
+      });
+        await uploadImageToFirebase();
+
+      console.log("Cadastrado!");
+      navigation.navigate("LoginScreen");
     } catch (error) {
-      console.error("Erro ao enviar a Firestore: ", error);
-      setImage(null);
+      console.error("Erro ao criar usuário", error);
+      // Handle error codes
     }
   };
 
-  function Register() {
-    if (senha !== confirmSenha || senha == "" || confirmSenha == "") {
+  /*function Register() {
+    if (senha !== confirmSenha) {
       setErroSenha("As senhas não correspondem");
     } else {
       setErroSenha("");
     }
-  
+
     if (email == "") {
       setEmailError("Prencha o campo email");
     } else {
@@ -100,7 +148,91 @@ export default function RegisterAuto({ navigation }) {
 
     if (getImage == null){
       setErrImage("Escolha uma imagem");
-    } else{
+    } else {
+      setErrImage("");
+    }
+
+    if (nomeUsu == "") {
+      setNomeUsuError("Prencha o campo nome de usuário");
+    } else {
+      setNomeUsuError("");
+    }
+
+    if (zipCode == "") {
+      setZipCodeError("Prencha o campo CEP");
+    } else {
+      setZipCodeError("");
+    }
+
+    if (cpf == "") {
+      setCpfError("Prencha o campo CPF");
+    } else {
+      setCpfError("");
+    }
+
+    if (adisobre == "") {
+      setAdicionarSobreError("Prencha o campo sobre");
+    } else {
+      setAdicionarSobreError("");
+    }
+
+    if (whatsappUsu == "") {
+      setWhatsappUsuError("Prencha o campo telefone");
+    } else {
+      setWhatsappUsuError("");
+    }
+      createUserWithEmailAndPassword(auth, email, senha)
+      .then((userCredential) => {
+        console.log("Usuário criado com sucesso!", userCredential);
+        const uid = userCredential.user.uid;
+
+        setDoc(doc(db, "usuario", uid), {
+          adm: false,
+          bio_usu: "Olá, eu sou " + adisobre,
+          profissao_usu: "",
+          cep_usu: zipCode,
+          cpf_usu: cpf,
+          email_usu: email,
+          nome_real_usu: nomeCompleto,
+          nome_usu: nomeUsu,
+          senha_usu: senha,
+          tipo_conta: "Autônomo",
+          whatsapp_usu: whatsappUsu,
+          foto_usu: getImage,
+        }).then(() => {
+          console.log("Cadastrado!");
+          navigation.navigate("LoginScreen");
+        });
+      })
+      .catch((error) => {
+        console.log("Erro ao criar usuário", error);
+        // Handle error codes
+      });
+    
+  }*/
+
+  function Registrar(){
+    if (senha !== confirmSenha) {
+      setErroSenha("As senhas não correspondem");
+    } else {
+      setErroSenha("");
+    }
+
+    if (email == "") {
+      setEmailError("Prencha o campo email");
+    } else {
+      setEmailError("");
+    }
+
+    if (nomeCompleto == "") {
+      setNomeCompletoError("Prencha o campo nome completo");
+    } else {
+      setNomeCompletoError("");
+    }
+
+    if (getImage == null){
+      setErrImage("Escolha uma imagem");
+    } else {
       setErrImage("");
     }
 
@@ -134,33 +266,7 @@ export default function RegisterAuto({ navigation }) {
       setWhatsappUsuError("");
     }
 
-    createUserWithEmailAndPassword(auth, email, senha)
-      .then((userCredential) => {
-        console.log("Usuário criado com sucesso!", userCredential);
-        const uid = userCredential.user.uid;
-
-        setDoc(doc(db, "usuario", uid), {
-          adm: false,
-          bio_usu: "Olá, eu sou " + adisobre,
-          profissao_usu: "",
-          cep_usu: zipCode,
-          cpf_usu: cpf,
-          email_usu: email,
-          nome_real_usu: nomeCompleto,
-          nome_usu: nomeUsu,
-          senha_usu: senha,
-          tipo_conta: "Autônomo",
-          whatsapp_usu: whatsappUsu,
-          foto_usu: getImage,
-        }).then(() => {
-          console.log("Cadastrado!");
-          navigation.navigate("LoginScreen");
-        });
-      })
-      .catch((error) => {
-        console.log("Erro ao criar usuário", error);
-        // Handle error codes
-      });
+    setImageToFirebase();
   }
 
   function retornaLogradouro() {
@@ -321,7 +427,7 @@ export default function RegisterAuto({ navigation }) {
               style={styles.input}
             />
             <Text style={styles.textErr}>{whatsappUsuError}</Text>
-            <Button textColor={"white"} onPress={Register} style={styles.botao}>
+            <Button textColor={"white"} onPress={Registrar} style={styles.botao}>
               REGISTRAR
             </Button>
           </View>
