@@ -9,7 +9,7 @@ import {
   endAt,
   orderBy,
 } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { db, auth } from "../config/firebase";
 
 import { styles } from "../utils/styles";
 import { Image } from "expo-image";
@@ -112,10 +112,23 @@ export default function PesquisaScreen({ navigation }) {
                     </Card.Content>
                     <Card.Actions>
                       <Button
-                        style={styles.cardButton}
-                        onPress={() => Linking.openURL(publicacao.link)}
+                        onPress={() =>
+                          navigation.navigate("PerfilViewScreen", {
+                            id_pessoa: item.id,
+                            nome_pessoa: item.nome_usu,
+                            servicos_usu: item.servicos_usu,
+                            servicos_usu1: item.servicos_usu1,
+                            servicos_usu2: item.servicos_usu2,
+                            bio_usu: item.bio_usu,
+                            email_usu: item.email_usu,
+                            whatsapp_usu: item.whatsapp_usu,
+                            linkedin_usu: item.linkedin_usu,
+                            instagram_usu: item.instagram_usu,
+                            foto_usu: item.foto_usu,
+                          })
+                        }
                       >
-                        Acessar
+                        Ver perfil
                       </Button>
                     </Card.Actions>
                   </Card>

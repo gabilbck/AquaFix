@@ -8,10 +8,17 @@ import { auth, db } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation from React Navigation
 
-export default function PerfilViewScreen() {
+export default function PerfilViewScreen(props, { navigation }) {
   const [usuario, setUsuario] = useState({});
-  const navigation = useNavigation(); // Initialize navigation
 
+  // traga os props id id e nome
+  const { id_pessoa, nome_pessoa } = props.route.params;
+
+  useEffect(() => {
+    console.warn("Estou pronta");
+    console.log("id_pessoa: ", id_pessoa);
+    console.log("nome_pessoa: ", nome_pessoa);
+  }, [id_pessoa, nome_pessoa]);
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
