@@ -5,8 +5,8 @@ import { styles } from "../utils/styles";
 import { useState } from "react";
 import { auth, db, storage } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, collection, addDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc, setDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 
 export default function RegisterAuto({ navigation }) {
@@ -24,7 +24,7 @@ export default function RegisterAuto({ navigation }) {
   const [getImage, setImage] = useState(null);
   const [ErrImage, setErrImage] = useState("");
   const [logradouro, setLogradouro] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [erroEmail, setErroEmail] = useState("");
   const [senhaError, setSenhaError] = useState("");
   const [nomeUsuError, setNomeUsuError] = useState("");
   const [nomeCompletoError, setNomeCompletoError] = useState("");
@@ -32,6 +32,9 @@ export default function RegisterAuto({ navigation }) {
   const [cpfError, setCpfError] = useState("");
   const [erroSenha, setErroSenha] = useState("");
   const [whatsappUsuError, setWhatsappUsuError] = useState("");
+  const [FacebookUsu, setFacebookUsu] = useState("");
+  const [instagramUsu, setinstagramUsu] = useState("");
+  const [linkedinUsu, setlinkedinUsu] = useState("");
   const [adisobreError, setAdicionarSobreError] = useState("");
 
   const pickImage = async () => {
@@ -45,7 +48,7 @@ export default function RegisterAuto({ navigation }) {
     console.log(result);
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImage(result.uri);
     }
   };
 
@@ -55,7 +58,7 @@ export default function RegisterAuto({ navigation }) {
       const blob = await response.blob();
 
       const storageRef = ref(storage, "foto_usu/" + Date.now());
-      const uploadTask = uploadBytes(storageRef, blob);
+      const uploadTask = uploadBytesResumable(storageRef, blob);
 
       await uploadTask;
 
@@ -115,6 +118,9 @@ export default function RegisterAuto({ navigation }) {
           senha_usu: senha,
           tipo_conta: "Autônomo",
           whatsapp_usu: whatsappUsu,
+          facebook_usu: FacebookUsu,
+          instagram_usu: instagramUsu,
+          linkedin_usu: linkedinUsu,
           foto_usu: getImage,
       });
         await uploadImageToFirebase();
@@ -211,71 +217,13 @@ export default function RegisterAuto({ navigation }) {
     
   }*/
 
-  function Registrar(){
-    if (senha !== confirmSenha) {
-      setErroSenha("As senhas não correspondem");
-    } else {
-      setErroSenha("");
-    }
-
-    if (email == "") {
-      setEmailError("Prencha o campo email");
-    } else {
-      setEmailError("");
-    }
-
-    if (nomeCompleto == "") {
-      setNomeCompletoError("Prencha o campo nome completo");
-    } else {
-      setNomeCompletoError("");
-    }
-
-    if (getImage == null){
-      setErrImage("Escolha uma imagem");
-    } else {
-      setErrImage("");
-    }
-
-    if (nomeUsu == "") {
-      setNomeUsuError("Prencha o campo nome de usuário");
-    } else {
-      setNomeUsuError("");
-    }
-
-    if (zipCode == "") {
-      setZipCodeError("Prencha o campo CEP");
-    } else {
-      setZipCodeError("");
-    }
-
-    if (cpf == "") {
-      setCpfError("Prencha o campo CPF");
-    } else {
-      setCpfError("");
-    }
-
-    if (adisobre == "") {
-      setAdicionarSobreError("Prencha o campo sobre");
-    } else {
-      setAdicionarSobreError("");
-    }
-
-    if (whatsappUsu == "") {
-      setWhatsappUsuError("Prencha o campo telefone");
-    } else {
-      setWhatsappUsuError("");
-    }
-
-    setImageToFirebase();
-  }
-
   function retornaLogradouro() {
     const url = `https://viacep.com.br/ws/${zipCode}/json/`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
         console.log(data.logradouro);
-        setLogradouro(data.logradouro); // Atualiza o estado com o logradouro
+        return data.logradouro; // Atualiza o estado com o logradouro
       });
   }
 
@@ -309,10 +257,67 @@ export default function RegisterAuto({ navigation }) {
     return formattedValueCep;
   }
 
-  function Registrar() {
-    handleRegister();
-    uploadImageToFirebase();
-  }
+  const Registrar = () => {
+    if (email === "") {
+      setErroEmail("Preencha o campo e-mail");
+      return;
+    }
+
+    if (!email.includes("@") || !email.includes(".")) {
+      setErroEmail("E-mail inválido");
+      return;
+    }
+    if (email.includes(" ")) {
+      setErroEmail("E-mail inválido");
+      return;
+    }
+    if (senha !== confirmSenha) {
+      setErroSenha("As senhas não correspondem");
+      return;
+    }
+
+    if (senha == "") {
+      setErroSenha("Preencha o campo senha");
+      return;
+    }
+
+    if (nomeCompleto == "") {
+      setNomeCompletoError("Preencha o campo nome completo");
+      return;
+    }
+    
+    if (nomeUsu == "") {
+      setNomeUsuError("Preencha o campo nome de usuário");
+      return;
+    }
+    
+    if (zipCode == "") {
+      setZipCodeError("Preencha o campo CEP");
+      return;
+    }
+    
+    if (cpf == "") {
+      setCpfError("Preencha o campo CPF");
+      return;
+    }
+
+    if (getImage == null){
+      setErrImage("Escolha uma imagem");
+      return;
+    }
+
+    if (adisobre == "") {
+      setAdicionarSobreError("Preencha o campo sobre");
+      return;
+    }
+
+    if (whatsappUsu == "") {
+      setWhatsappUsuError("Preencha o campo telefone");
+      return;
+    }
+
+    setImageToFirebase();
+  };
 
   return (
     // <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -336,7 +341,7 @@ export default function RegisterAuto({ navigation }) {
               onChangeText={setEmail}
               style={styles.input}
             />
-            <Text style={styles.textErr}>{emailError}</Text>
+            <Text style={styles.textErr}>{erroEmail}</Text>
             <TextInput
               placeholder="Senha"
               secureTextEntry={true}
@@ -388,7 +393,6 @@ export default function RegisterAuto({ navigation }) {
             <Text style={styles.textErr}>{cpfError}</Text>
 
             {getImage ? (
-              <>
                 <Image
                   source={{ uri: getImage }}
                   style={{
@@ -401,7 +405,6 @@ export default function RegisterAuto({ navigation }) {
                     border: "4px #16337E solid",
                   }}
                 />
-              </>
             ) : (
               <Button
                 onPress={pickImage}
@@ -427,6 +430,24 @@ export default function RegisterAuto({ navigation }) {
               style={styles.input}
             />
             <Text style={styles.textErr}>{whatsappUsuError}</Text>
+            <TextInput
+              placeholder="Facebook (opcional)"
+              value={FacebookUsu}
+              onChangeText={setFacebookUsu}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Instagram (opcional)"
+              value={instagramUsu}
+              onChangeText={setinstagramUsu}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Linkedin (opcional)"
+              value={linkedinUsu}
+              onChangeText={setlinkedinUsu}
+              style={styles.input}
+            />
             <Button textColor={"white"} onPress={Registrar} style={styles.botao}>
               REGISTRAR
             </Button>
