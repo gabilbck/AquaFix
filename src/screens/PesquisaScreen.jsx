@@ -96,16 +96,23 @@ export default function PesquisaScreen({ navigation }) {
               data={resultado}
               renderItem={({ item }) => (
                 <View>
-                  <Card>
-                    <Card.Title
-                      title={item.nome_usu}
+                  <Card
+                  style={styles.card}
+                  >
+                    <Card.Content>
+                      <Text
                       fontWeight="bold"
                       style={{
                         fontSize: 25,
                         fontWeight: "bold",
+                        gap: 10,
+                      }}>{item.nome_usu}</Text>
+                      <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: "bold",
                       }}
-                    />
-                    <Card.Content>
+                      >Serviços:</Text>
                       <Text>{item.servicos_usu}</Text>
                       <Text>{item.servicos_usu1}</Text>
                       <Text>{item.servicos_usu2}</Text>
@@ -127,8 +134,21 @@ export default function PesquisaScreen({ navigation }) {
                             foto_usu: item.foto_usu,
                           })
                         }
+                        style={{
+                          backgroundColor: "grey",
+                          color: "black",
+                          fontWeight: "bold",
+                        }}
                       >
+                        <Text
+                        style={{
+                          color: "black",
+                          fontWeight: "bold"
+                        }}
+                        >
                         Ver perfil
+                        </Text>
+                        
                       </Button>
                     </Card.Actions>
                   </Card>
