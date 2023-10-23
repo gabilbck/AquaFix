@@ -108,7 +108,7 @@ export default function RegisterAuto({ navigation }) {
 
       await setDoc(doc(db, "usuario", uid), {
         adm: false,
-          bio_usu: "Olá, eu sou " + adisobre,
+          bio_usu: adisobre,
           profissao_usu: "",
           cep_usu: zipCode,
           cpf_usu: cpf,
