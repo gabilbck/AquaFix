@@ -36,6 +36,18 @@ export default function CadPasso1({ navigation }) {
               Quero prestar um serviço
             </Button>
           </View>
+          <View style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: 10,
+          }}>
+            <Button
+              textColor={"black"}
+              onPress={() => navigation.navigate("LoginScreen")}
+            >
+              <Text style={styles.botaoPreto}>Voltar ao anterior</Text>
+            </Button>
+          </View>
         </View>
       </View>
     </View>

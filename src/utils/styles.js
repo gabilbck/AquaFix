@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   containerInner: {
     maxWidth: 500,
     width: "100%",
-    
+    height: "100%",
   },
   imagemTopo: {
     //logo DE CIMA
@@ -226,7 +226,7 @@ export const styles = StyleSheet.create({
   },
 
   card: {
-    backgroundColor: "#f6f6f6",
+    backgroundColor: "#16337e",
     marginVertical: 10,
     elevation: 2,
     borderRadius: 8, // Adicione bordas arredondadas aos cards
@@ -273,10 +273,10 @@ export const styles = StyleSheet.create({
   servicos: {
     padding: 10,
     borderRadius: 100,
-    backgroundColor: "#16337E",
-    color: "white",
+    backgroundColor: "white",
+    color: "black",
     textAlign: "center",
-    fontWeight: 'bold',
+    marginTop: 5,
   },
   linhaServicos: {
     flexDirection: "row",

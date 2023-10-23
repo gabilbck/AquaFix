@@ -14,6 +14,7 @@ import { db, auth } from "../config/firebase";
 import { styles } from "../utils/styles";
 import { Image } from "expo-image";
 import { Button, Card } from "react-native-paper";
+import { ScrollView } from "react-native-web";
 
 export default function PesquisaScreen({ navigation }) {
   const [resultado, setResultado] = useState([]);
@@ -87,96 +88,105 @@ export default function PesquisaScreen({ navigation }) {
   }, [busca]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imagemTopo}>
-        <Image
-          source={require("../../assets/img/logocomp-branca.png")}
-          style={{ width: 200, height: 127 }}
-        />
-      </View>
-      <View style={styles.conteudo}>
-        <View style={styles.containerInner}>
-          <TextInput
-            placeholder="Faça sua busca"
-            value={busca}
-            onChangeText={setBusca}
-            style={styles.input}
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.imagemTopo}>
+          <Image
+            source={require("../../assets/img/logocomp-branca.png")}
+            style={{ width: 200, height: 127 }}
           />
-          {resultado.length > 0 && (
-            <FlatList
-              data={resultado}
-              renderItem={({ item }) => (
-                <View>
-                  <Card style={styles.card}>
-                    <Card.Content>
-                      <Text
-                        fontWeight="bold"
-                        style={{
-                          fontSize: 25,
-                          fontWeight: "bold",
-                          gap: 10,
-                        }}
-                      >
-                        {item.nome_usu}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 15,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Serviços:
-                      </Text>
-                      <View style={styles.linhaServicos}>
-                        <Text style={styles.servicos}>{item.servicos_usu}</Text>
-                        <Text style={styles.servicos}>
-                          {item.servicos_usu1}
-                        </Text>
-                        <Text style={styles.servicos}>
-                          {item.servicos_usu2}
-                        </Text>
-                      </View>
-                    </Card.Content>
-                    <Card.Actions>
-                      <Button
-                        onPress={() =>
-                          navigation.navigate("PerfilViewScreen", {
-                            id_pessoa: item.id,
-                            nome_pessoa: item.nome_usu,
-                            servicos_usu: item.servicos_usu,
-                            servicos_usu1: item.servicos_usu1,
-                            servicos_usu2: item.servicos_usu2,
-                            bio_usu: item.bio_usu,
-                            email_usu: item.email_usu,
-                            whatsapp_usu: item.whatsapp_usu,
-                            linkedin_usu: item.linkedin_usu,
-                            instagram_usu: item.instagram_usu,
-                            foto_usu: item.foto_usu,
-                          })
-                        }
-                        style={{
-                          backgroundColor: "grey",
-                          color: "black",
-                          fontWeight: "bold",
-                        }}
-                      >
+        </View>
+        <View style={styles.conteudo}>
+          <View style={styles.containerInner}>
+            <TextInput
+              placeholder="Faça sua busca"
+              value={busca}
+              onChangeText={setBusca}
+              style={styles.input}
+            />
+            {resultado.length > 0 && (
+              <FlatList
+                data={resultado}
+                renderItem={({ item }) => (
+                  <View>
+                    <Card style={styles.card}>
+                      <Card.Content>
                         <Text
+                          fontWeight="bold"
                           style={{
-                            color: "black",
+                            fontSize: 25,
                             fontWeight: "bold",
+                            gap: 10,
+                            color: "white",
                           }}
                         >
-                          Ver perfil
+                          {item.nome_usu}
                         </Text>
-                      </Button>
-                    </Card.Actions>
-                  </Card>
-                </View>
-              )}
-            />
-          )}
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            fontWeight: "bold",
+                            color: "white",
+                            marginTop: 7,
+                          }}
+                        >
+                          Serviços:
+                        </Text>
+                        <View style={styles.linhaServicos}>
+                          <Text style={styles.servicos}>
+                            {item.servicos_usu}
+                          </Text>
+                          <Text style={styles.servicos}>
+                            {item.servicos_usu1}
+                          </Text>
+                          <Text style={styles.servicos}>
+                            {item.servicos_usu2}
+                          </Text>
+                        </View>
+                      </Card.Content>
+                      <Card.Actions>
+                        <Button
+                          onPress={() =>
+                            navigation.navigate("PerfilViewScreen", {
+                              id_pessoa: item.id,
+                              nome_pessoa: item.nome_usu,
+                              servicos_usu: item.servicos_usu,
+                              servicos_usu1: item.servicos_usu1,
+                              servicos_usu2: item.servicos_usu2,
+                              bio_usu: item.bio_usu,
+                              email_usu: item.email_usu,
+                              whatsapp_usu: item.whatsapp_usu,
+                              linkedin_usu: item.linkedin_usu,
+                              instagram_usu: item.instagram_usu,
+                              foto_usu: item.foto_usu,
+                            })
+                          }
+                          style={{
+                            backgroundColor: "lightgray",
+                            borderRadius: 8,
+                            border: 0,
+                            marginTop: 10,
+                            width: "100%",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: "black",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Ver perfil
+                          </Text>
+                        </Button>
+                      </Card.Actions>
+                    </Card>
+                  </View>
+                )}
+              />
+            )}
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
