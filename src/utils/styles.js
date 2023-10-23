@@ -269,6 +269,19 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 15,
     fontWeight: 'bold',
-  }
+  },
+  servicos: {
+    padding: 10,
+    borderRadius: 100,
+    backgroundColor: "#16337E",
+    color: "white",
+    textAlign: "center",
+    fontWeight: 'bold',
+  },
+  linhaServicos: {
+    flexDirection: "row",
+    alignSelf: "stretch",
+    justifyContent: "space-between",
+  },
   
 });

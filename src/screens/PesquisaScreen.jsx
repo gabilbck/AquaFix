@@ -70,6 +70,17 @@ export default function PesquisaScreen({ navigation }) {
 
     setResultado(resultadoFinal);
   }
+  function existeServico() {
+    if (item.servicos_usu !== "") {
+      return <Text>• {item.servicos_usu}</Text>;
+    }
+    if (item.servicos_usu1 !== "") {
+      return <Text>• {item.servicos_usu1}</Text>;
+    }
+    if (item.servicos_usu2 !== "") {
+      return <Text>• {item.servicos_usu2}</Text>;
+    }
+  }
 
   useEffect(() => {
     buscarServico();
@@ -96,26 +107,35 @@ export default function PesquisaScreen({ navigation }) {
               data={resultado}
               renderItem={({ item }) => (
                 <View>
-                  <Card
-                  style={styles.card}
-                  >
+                  <Card style={styles.card}>
                     <Card.Content>
                       <Text
-                      fontWeight="bold"
-                      style={{
-                        fontSize: 25,
-                        fontWeight: "bold",
-                        gap: 10,
-                      }}>{item.nome_usu}</Text>
+                        fontWeight="bold"
+                        style={{
+                          fontSize: 25,
+                          fontWeight: "bold",
+                          gap: 10,
+                        }}
+                      >
+                        {item.nome_usu}
+                      </Text>
                       <Text
-                      style={{
-                        fontSize: 15,
-                        fontWeight: "bold",
-                      }}
-                      >Serviços:</Text>
-                      <Text>{item.servicos_usu}</Text>
-                      <Text>{item.servicos_usu1}</Text>
-                      <Text>{item.servicos_usu2}</Text>
+                        style={{
+                          fontSize: 15,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Serviços:
+                      </Text>
+                      <View style={styles.linhaServicos}>
+                        <Text style={styles.servicos}>{item.servicos_usu}</Text>
+                        <Text style={styles.servicos}>
+                          {item.servicos_usu1}
+                        </Text>
+                        <Text style={styles.servicos}>
+                          {item.servicos_usu2}
+                        </Text>
+                      </View>
                     </Card.Content>
                     <Card.Actions>
                       <Button
@@ -141,14 +161,13 @@ export default function PesquisaScreen({ navigation }) {
                         }}
                       >
                         <Text
-                        style={{
-                          color: "black",
-                          fontWeight: "bold"
-                        }}
+                          style={{
+                            color: "black",
+                            fontWeight: "bold",
+                          }}
                         >
-                        Ver perfil
+                          Ver perfil
                         </Text>
-                        
                       </Button>
                     </Card.Actions>
                   </Card>

@@ -38,6 +38,18 @@ export default function CadPasso2({ navigation }) {
               Quero registrar minha empresa
             </Button>
           </View>
+          <View style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: 10,
+          }}>
+            <Button
+              textColor={"black"}
+              onPress={() => navigation.navigate("CadPasso1")}
+            >
+              <Text style={styles.botaoPreto}>Voltar ao anterior</Text>
+            </Button>
+          </View>
         </View>
       </View>
     </View>

@@ -5,7 +5,14 @@ import { styles } from "../utils/styles";
 import { useState } from "react";
 import { auth, db, storage } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 
@@ -36,6 +43,9 @@ export default function RegisterAuto({ navigation }) {
   const [instagramUsu, setinstagramUsu] = useState("");
   const [linkedinUsu, setlinkedinUsu] = useState("");
   const [adisobreError, setAdicionarSobreError] = useState("");
+  const [servicosUsu, setServicosUsu] = useState("");
+  const [servicosUsu1, setServicosUsu1] = useState("");
+  const [servicosUsu2, setServicosUsu2] = useState("");
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -108,22 +118,24 @@ export default function RegisterAuto({ navigation }) {
 
       await setDoc(doc(db, "usuario", uid), {
         adm: false,
-          bio_usu: adisobre,
-          profissao_usu: "",
-          cep_usu: zipCode,
-          cpf_usu: cpf,
-          email_usu: email,
-          nome_real_usu: nomeCompleto,
-          nome_usu: nomeUsu,
-          senha_usu: senha,
-          tipo_conta: "Autônomo",
-          whatsapp_usu: whatsappUsu,
-          facebook_usu: FacebookUsu,
-          instagram_usu: instagramUsu,
-          linkedin_usu: linkedinUsu,
-          foto_usu: getImage,
+        bio_usu: adisobre,
+        cep_usu: zipCode,
+        cpf_usu: cpf,
+        email_usu: email,
+        nome_real_usu: nomeCompleto,
+        nome_usu: nomeUsu,
+        senha_usu: senha,
+        tipo_conta: "Autônomo",
+        whatsapp_usu: whatsappUsu,
+        facebook_usu: FacebookUsu,
+        instagram_usu: instagramUsu,
+        linkedin_usu: linkedinUsu,
+        foto_usu: getImage,
+        servicos_usu: servicosUsu,
+        servicos_usu1: servicosUsu1,
+        servicos_usu2: servicosUsu2,
       });
-        await uploadImageToFirebase();
+      await uploadImageToFirebase();
 
       console.log("Cadastrado!");
       navigation.navigate("LoginScreen");
@@ -258,6 +270,16 @@ export default function RegisterAuto({ navigation }) {
   }
 
   const Registrar = () => {
+    const checkServicosPreenchidos = () => {
+      const servicosList = [servicosUsu, servicosUsu1, servicosUsu2];
+
+      if (servicosList.every((servico) => servico === "")) {
+        setErroServico("Preencha pelo menos um serviço");
+      } else {
+        setErroServico("");
+      }
+    };
+    if (checkServicosPreenchidos()) return;
     if (email === "") {
       setErroEmail("Preencha o campo e-mail");
       return;
@@ -285,23 +307,23 @@ export default function RegisterAuto({ navigation }) {
       setNomeCompletoError("Preencha o campo nome completo");
       return;
     }
-    
+
     if (nomeUsu == "") {
       setNomeUsuError("Preencha o campo nome de usuário");
       return;
     }
-    
+
     if (zipCode == "") {
       setZipCodeError("Preencha o campo CEP");
       return;
     }
-    
+
     if (cpf == "") {
       setCpfError("Preencha o campo CPF");
       return;
     }
 
-    if (getImage == null){
+    if (getImage == null) {
       setErrImage("Escolha uma imagem");
       return;
     }
@@ -391,20 +413,38 @@ export default function RegisterAuto({ navigation }) {
               style={styles.input}
             />
             <Text style={styles.textErr}>{cpfError}</Text>
+            <TextInput
+              placeholder="Serviço 1"
+              value={servicosUsu}
+              onChangeText={setServicosUsu}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Serviço 2"
+              value={servicosUsu1}
+              onChangeText={setServicosUsu1}
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Serviço 3"
+              value={servicosUsu2}
+              onChangeText={setServicosUsu2}
+              style={styles.input}
+            />
 
             {getImage ? (
-                <Image
-                  source={{ uri: getImage }}
-                  style={{
-                    width: 200,
-                    height: 200,
-                    borderRadius: "50%",
-                    alignSelf: "center",
-                    marginTop: 10,
-                    marginBottom: 10,
-                    border: "4px #16337E solid",
-                  }}
-                />
+              <Image
+                source={{ uri: getImage }}
+                style={{
+                  width: 200,
+                  height: 200,
+                  borderRadius: "50%",
+                  alignSelf: "center",
+                  marginTop: 10,
+                  marginBottom: 10,
+                  border: "4px #16337E solid",
+                }}
+              />
             ) : (
               <Button
                 onPress={pickImage}
@@ -420,7 +460,7 @@ export default function RegisterAuto({ navigation }) {
               value={adisobre}
               onChangeText={setAdicionarSobre}
               style={styles.input}
-              />
+            />
             <Text style={styles.textErr}>{adisobreError}</Text>
             <TextInput
               placeholder="Telefone"
@@ -448,32 +488,34 @@ export default function RegisterAuto({ navigation }) {
               onChangeText={setlinkedinUsu}
               style={styles.input}
             />
-            <Button textColor={"white"} onPress={Registrar} style={styles.botao}>
+            <Button
+              textColor={"white"}
+              onPress={Registrar}
+              style={styles.botao}
+            >
               REGISTRAR
             </Button>
           </View>
           <View style={styles.linha}>
-              <View style={styles.coluna}>
-                <Text>Escolheu a opção errada?</Text>
-                <Button
-                  textColor={"black"}
-                  onPress={() => navigation.navigate("CadPasso2")}
-                >
-                  <Text style={styles.botaoPreto}>
-                    Voltar ao passo anterior
-                  </Text>
-                </Button>
-              </View>
-              <View style={styles.coluna}>
-                <Text>Já tem uma conta?</Text>
-                <Button
-                  textColor={"black"}
-                  onPress={() => navigation.navigate("LoginScreen")}
-                >
-                  <Text style={styles.botaoPreto}>Entrar agora!</Text>
-                </Button>
-              </View>
+            <View style={styles.coluna}>
+              <Text>Escolheu a opção errada?</Text>
+              <Button
+                textColor={"black"}
+                onPress={() => navigation.navigate("CadPasso2")}
+              >
+                <Text style={styles.botaoPreto}>Voltar ao passo anterior</Text>
+              </Button>
             </View>
+            <View style={styles.coluna}>
+              <Text>Já tem uma conta?</Text>
+              <Button
+                textColor={"black"}
+                onPress={() => navigation.navigate("LoginScreen")}
+              >
+                <Text style={styles.botaoPreto}>Entrar agora!</Text>
+              </Button>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </View>
