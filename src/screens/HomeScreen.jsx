@@ -146,7 +146,7 @@ export default function HomeScreen() {
         {/* Parte que aparece o conteúdo: cinza/branco */}
         <View style={styles.conteudo}>
           <View style={styles.containerInner}>
-            <Text style={styles.titulo}>Bom dia, {usuario?.nome_usu}?</Text>
+            <Text style={styles.titulo}>Bom dia, {usuario?.nome_usu}!</Text>
             <Text style={styles.subtitulo}>
               Venha conhecer as novidades do momento:
             </Text>
@@ -184,23 +184,42 @@ export default function HomeScreen() {
               {publicacoes.map((publicacao, index) => (
                 <View key={index}>
                   <Card key={publicacao.id} style={styles.card}>
-                    <Card.Title
-                      title={publicacao.titulo_puli_adm}
-                      fontWeight="bold"
-                      style={{
-                        fontSize: 25,
-                        fontWeight: "bold",
-                      }}
-                    />
                     <Card.Content>
-                      <Text>{publicacao.texto}</Text>
+                      <Text
+                        fontWeight="bold"
+                        style={{
+                          fontSize: 25,
+                          fontWeight: "bold",
+                          gap: 10,
+                          color: "white",
+                        }}
+                      >
+                        {publicacao.titulo_puli_adm}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          color: "white",
+                          marginTop: 7,
+                        }}
+                      >
+                        {publicacao.texto}
+                      </Text>
                     </Card.Content>
                     <Card.Actions>
                       <Button
-                        style={styles.cardButton}
+                        style={{
+                          backgroundColor: "lightgray",
+                          borderRadius: 8,
+                          border: 0,
+                          marginTop: 10,
+                          width: "100%",
+                        }}
                         onPress={() => Linking.openURL(publicacao.link)}
                       >
+                        <Text style={{ color: "black", fontWeight: "bold" }}>
                         Acessar
+                        </Text>
                       </Button>
                     </Card.Actions>
                   </Card>

@@ -8,31 +8,29 @@ import { auth, db } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation from React Navigation
 
-export default function PerfilViewScreen(props, { navigation }) {
+export default function PerfilViewScreen({ navigation, route }) {
   const [usuario, setUsuario] = useState({});
+  // const [pessoa, onChangePessoa] = useState(route.params.title);
 
   // traga os props id id e nome
-  const { id_pessoa, nome_pessoa } = props.route.params;
+  const { pessoa } = route.params;
+
+  // useEffect(() => {
+  //   console.log("vou busar por este id_pessoa: ", id_pessoa);
+  //   setUsuario({
+  //     nome_usu: nome_pessoa,
+  //     uid: id_pessoa,
+  //   });
+  // }, [id_pessoa, nome_pessoa]);
 
   useEffect(() => {
-    console.warn("Estou pronta");
-    console.log("id_pessoa: ", id_pessoa);
-    console.log("nome_pessoa: ", nome_pessoa);
-  }, [id_pessoa, nome_pessoa]);
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("Usuário UID: ", user.uid);
-        setUsuario({ uid: user.uid });
-      } else {
-        console.log("Usuário não logado");
-      }
+    setUsuario({
+      ...pessoa,
+      uid: pessoa.id_pessoa,
     });
-
-    return () => {
-      unsub();
-    };
-  }, []);
+    console.log("Trouxe essa pessoa maravilhosa:",pessoa);
+    console.log(usuario);
+  }, [pessoa]);
 
   useEffect(() => {
     // verifica se uid não é vazio
@@ -101,7 +99,7 @@ export default function PerfilViewScreen(props, { navigation }) {
         <View style={styles.conteudo}>
           <View style={styles.containerInner}>
             <Text style={styles.titulo2}>Nome: </Text>
-            <Text style={styles.subtitulo2}>{usuario?.nome_real_usu}</Text>
+            <Text style={styles.subtitulo2}>{usuario?.nome_completo}</Text>
             <Text style={styles.titulo2}>Apelido: </Text>
             <Text style={styles.subtitulo2}>{usuario?.nome_usu}</Text>
             <Text style={styles.titulo2}>Email: </Text>
