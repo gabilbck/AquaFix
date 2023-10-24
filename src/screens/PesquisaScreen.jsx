@@ -72,7 +72,6 @@ export default function PesquisaScreen({ navigation }) {
     setResultado(resultadoFinal);
   }
 
-
   useEffect(() => {
     buscarServico();
   }, [busca]);
@@ -139,18 +138,6 @@ export default function PesquisaScreen({ navigation }) {
                           onPress={() =>
                             navigation.navigate("PerfilViewScreen", {
                               pessoa: item,
-                              // id_pessoa: item.id,
-                              // nome_pessoa: item.nome_usu,
-                              // nome_pessoa_real: item.nome_real_usu,
-                              // servicos_usu: item.servicos_usu,
-                              // servicos_usu1: item.servicos_usu1,
-                              // servicos_usu2: item.servicos_usu2,
-                              // bio_usu: item.bio_usu,
-                              // email_usu: item.email_usu,
-                              // whatsapp_usu: item.whatsapp_usu,
-                              // linkedin_usu: item.linkedin_usu,
-                              // instagram_usu: item.instagram_usu,
-                              // foto_usu: item.foto_usu,
                             })
                           }
                           style={{

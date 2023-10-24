@@ -113,7 +113,7 @@ export default function RegisterUsu({ navigation }) {
           cep_usu: zipCode,
           cpf_usu: cpf,
           email_usu: email,
-          nome_real_usu: nomeCompleto,
+          nome_completo: nomeCompleto,
           nome_usu: nomeUsu,
           senha_usu: senha,
           tipo_conta: "Cliente",

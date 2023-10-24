@@ -46,7 +46,7 @@ export default function RegisterScreen({ navigation }) {
           cnpj_usu: "",
           email_usu: email,
           foto_usu: "",
-          nome_real_usu: nomeCompleto,
+          nome_completo: nomeCompleto,
           nome_usu: nomeUsu,
           senha_usu: senha,
           whatsapp_usu: whatsappUsu,

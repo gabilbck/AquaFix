@@ -11,6 +11,9 @@ import { Linking } from "react-native";
 export default function PerfilScreen() {
   const [usuario, setUsuario] = useState({});
   const navigation = useNavigation();
+  const [estadoServico, setEstadoServico] = useState("");
+  const [estadoLinkdin, setEstadoLinkdin] = useState("");
+  const [estadoInsta, setEstadoInsta] = useState("");
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -41,7 +44,9 @@ export default function PerfilScreen() {
           setUsuario(userData);
 
           if (userData.whatsapp_usu) {
-            userData.whatsapp_usu = extractCleanPhoneNumber(userData.whatsapp_usu);
+            userData.whatsapp_usu = extractCleanPhoneNumber(
+              userData.whatsapp_usu
+            );
           }
         } else {
           console.log("Usuário não encontrado !!!");
@@ -96,6 +101,104 @@ export default function PerfilScreen() {
     return cleanedNumber;
   };
 
+  function VerificaServico() {
+    const servicosList = [
+      usuario?.servicosUsu,
+      usuario?.servicosUsu1,
+      usuario?.servicosUsu2,
+    ];
+    if (
+      servicosList.every((servico) => servico === "") ||
+      servicosList.every((servico) => servico === undefined)
+    ) {
+      setEstadoServico(
+        <Text style={styles.subtitulo2}>
+          Este usuário não possui serviços cadastrados
+        </Text>
+      );
+    } else {
+      setEstadoServico(
+        <Text style={styles.subtitulo2}>
+          {usuario?.servicos_usu}
+          {usuario?.servicos_usu1}
+          {usuario?.servicos_usu2}
+        </Text>
+      );
+    }
+  }
+
+  function VerificaLinkdin() {
+    if (usuario?.linkedin_usu != "" || usuario?.linkedin_usu != undefined) {
+      setEstadoLinkdin(
+        <TouchableOpacity
+          onPress={() => openSocialMediaLink(usuario?.linkedin_usu)}
+          style={styles.socialMediaIcon}
+        >
+          <Image
+            source={require("../../assets/img/linkedin.png")}
+            style={{
+              width: 50,
+              height: 50,
+              marginRight: 8,
+            }}
+          />
+        </TouchableOpacity>
+      );
+    } else {
+      setEstadoLinkdin("");
+    }
+  }
+
+
+  function VerificaInsta() {
+    if ((usuario?.instagram_usu != "") || (usuario?.instagram_usu != undefined)) {
+      setEstadoInsta(
+        <TouchableOpacity
+          onPress={() => openSocialMediaLink(usuario?.instagram_usu)}
+          style={styles.socialMediaIcon}
+        >
+          <Image
+            source={require("../../assets/img/instagram.png")}
+            style={{
+              width: 50,
+              height: 50,
+              marginRight: 8,
+            }}
+          />
+        </TouchableOpacity>
+      );
+    } else {
+      setEstadoInsta("");
+    }
+  }
+
+  useEffect(() => {
+    VerificaServico() && VerificaLinkdin() && VerificaInsta();
+  }, [usuario.uid]);
+  // const checkServicosPreenchidos = () => {
+  //   const servicosList = [
+  //     usuario?.servicosUsu,
+  //     usuario?.servicosUsu1,
+  //     usuario?.servicosUsu2,
+  //   ];
+  //   if (servicosList.every((servico) => servico === "")) {
+  //     setEstadoServico(
+  //       <Text style={styles.subtitulo2}>
+  //         Este usuário não possui serviços cadastrados
+  //       </Text>
+  //     );
+  //   } else {
+  //     setEstadoServico(
+  //       <Text style={styles.subtitulo2}>
+  //         {usuario?.servicos_usu}
+  //         {usuario?.servicos_usu1}
+  //         {usuario?.servicos_usu2}
+  //       </Text>
+  //     );
+  //   }
+  // };
+  // if (checkServicosPreenchidos()) return;
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -128,7 +231,7 @@ export default function PerfilScreen() {
           <View style={styles.containerInner}>
             <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
             <Text style={styles.titulo2}>Nome: </Text>
-            <Text style={styles.subtitulo2}>{usuario?.nome_real_usu}</Text>
+            <Text style={styles.subtitulo2}>{usuario?.nome_completo}</Text>
             <Text style={styles.titulo2}>Apelido: </Text>
             <Text style={styles.subtitulo2}>{usuario?.nome_usu}</Text>
             <Text style={styles.titulo2}>Email: </Text>
@@ -137,8 +240,16 @@ export default function PerfilScreen() {
             <Text style={styles.subtitulo2}>{usuario?.bio_usu}</Text>
             <Text style={styles.titulo2}>Telefone para contato:</Text>
             <Text style={styles.subtitulo2}>{usuario?.whatsapp_usu}</Text>
+
             <Text style={styles.titulo2}>Serviços que você oferece:</Text>
-            <Text style={styles.subtitulo2}>{usuario?.servicos_usu}</Text>
+            {estadoServico}
+
+            {/* <Text style={styles.subtitulo2}>
+              {usuario?.servicos_usu}
+              {usuario?.servicos_usu1}
+              {usuario?.servicos_usu2}
+            </Text> */}
+
             <Text style={styles.titulo2}>Redes sociais:</Text>
             <View style={styles.socialMediaContainer}>
               <TouchableOpacity onPress={openWhatsAppChat}>
@@ -151,32 +262,8 @@ export default function PerfilScreen() {
                   }}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => openSocialMediaLink(usuario?.instagram_usu)}
-                style={styles.socialMediaIcon}
-              >
-                <Image
-                  source={require("../../assets/img/instagram.png")}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    marginRight: 8,
-                  }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => openSocialMediaLink(usuario?.linkedin_usu)}
-                style={styles.socialMediaIcon}
-              >
-                <Image
-                  source={require("../../assets/img/linkedin.png")}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    marginRight: 8,
-                  }}
-                />
-              </TouchableOpacity>
+              {estadoLinkdin}
+              {estadoInsta}
             </View>
             <Text style={styles.titulo2}>
               Você deseja editar o seu perfil?{" "}

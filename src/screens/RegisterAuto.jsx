@@ -46,6 +46,7 @@ export default function RegisterAuto({ navigation }) {
   const [servicosUsu, setServicosUsu] = useState("");
   const [servicosUsu1, setServicosUsu1] = useState("");
   const [servicosUsu2, setServicosUsu2] = useState("");
+  const [erroServico, setErroServico] = useState("");
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -122,7 +123,7 @@ export default function RegisterAuto({ navigation }) {
         cep_usu: zipCode,
         cpf_usu: cpf,
         email_usu: email,
-        nome_real_usu: nomeCompleto,
+        nome_completo: nomeCompleto,
         nome_usu: nomeUsu,
         senha_usu: senha,
         tipo_conta: "Autônomo",
@@ -211,7 +212,7 @@ export default function RegisterAuto({ navigation }) {
           cep_usu: zipCode,
           cpf_usu: cpf,
           email_usu: email,
-          nome_real_usu: nomeCompleto,
+          nome_completo: nomeCompleto,
           nome_usu: nomeUsu,
           senha_usu: senha,
           tipo_conta: "Autônomo",
@@ -470,12 +471,6 @@ export default function RegisterAuto({ navigation }) {
               style={styles.input}
             />
             <Text style={styles.textErr}>{whatsappUsuError}</Text>
-            <TextInput
-              placeholder="Facebook (opcional)"
-              value={FacebookUsu}
-              onChangeText={setFacebookUsu}
-              style={styles.input}
-            />
             <TextInput
               placeholder="Instagram (opcional)"
               value={instagramUsu}

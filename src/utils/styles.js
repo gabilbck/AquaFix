@@ -262,7 +262,7 @@ export const styles = StyleSheet.create({
   
   tipoconta: {
     padding: 10,
-    width: 80,
+    width: 100,
     borderRadius: 100,
     backgroundColor: "#16337E",
     color: "white",

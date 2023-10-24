@@ -131,6 +131,13 @@ export default function RootNavigation({ navigation }) {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="PerfilViewScreen"
+          component={PerfilViewScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -182,16 +189,6 @@ function TabsNavigation() {
           tabBarLabel: "Perfil",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="PerfilViewScreen"
-        component={PerfilViewScreen}
-        options={{
-          tabBarLabel: "Ver Perfil",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account-alert" color={color} size={26} />
           ),
         }}
       />

@@ -3,10 +3,9 @@ import { Image, View, ScrollView } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { styles } from "../utils/styles";
 import { useEffect, useState } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { auth, db } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation from React Navigation
 
 export default function PerfilViewScreen({ navigation, route }) {
   const [usuario, setUsuario] = useState({});
