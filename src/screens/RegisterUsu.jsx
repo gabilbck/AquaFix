@@ -327,6 +327,7 @@ export default function RegisterUsu({ navigation }) {
               onChangeText={setSenha}
               style={styles.input}
             />
+            <Text style={styles.textErr}>{erroEmail}</Text>
             <TextInput
               placeholder="Confirmar Senha"
               secureTextEntry={true}

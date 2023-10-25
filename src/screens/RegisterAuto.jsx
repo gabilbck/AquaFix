@@ -146,90 +146,6 @@ export default function RegisterAuto({ navigation }) {
     }
   };
 
-  /*function Register() {
-    if (senha !== confirmSenha) {
-      setErroSenha("As senhas não correspondem");
-    } else {
-      setErroSenha("");
-    }
-
-    if (email == "") {
-      setEmailError("Prencha o campo email");
-    } else {
-      setEmailError("");
-    }
-
-    if (nomeCompleto == "") {
-      setNomeCompletoError("Prencha o campo nome completo");
-    } else {
-      setNomeCompletoError("");
-    }
-
-    if (getImage == null){
-      setErrImage("Escolha uma imagem");
-    } else {
-      setErrImage("");
-    }
-
-    if (nomeUsu == "") {
-      setNomeUsuError("Prencha o campo nome de usuário");
-    } else {
-      setNomeUsuError("");
-    }
-
-    if (zipCode == "") {
-      setZipCodeError("Prencha o campo CEP");
-    } else {
-      setZipCodeError("");
-    }
-
-    if (cpf == "") {
-      setCpfError("Prencha o campo CPF");
-    } else {
-      setCpfError("");
-    }
-
-    if (adisobre == "") {
-      setAdicionarSobreError("Prencha o campo sobre");
-    } else {
-      setAdicionarSobreError("");
-    }
-
-    if (whatsappUsu == "") {
-      setWhatsappUsuError("Prencha o campo telefone");
-    } else {
-      setWhatsappUsuError("");
-    }
-      createUserWithEmailAndPassword(auth, email, senha)
-      .then((userCredential) => {
-        console.log("Usuário criado com sucesso!", userCredential);
-        const uid = userCredential.user.uid;
-
-        setDoc(doc(db, "usuario", uid), {
-          adm: false,
-          bio_usu: "Olá, eu sou " + adisobre,
-          profissao_usu: "",
-          cep_usu: zipCode,
-          cpf_usu: cpf,
-          email_usu: email,
-          nome_completo: nomeCompleto,
-          nome_usu: nomeUsu,
-          senha_usu: senha,
-          tipo_conta: "Autônomo",
-          whatsapp_usu: whatsappUsu,
-          foto_usu: getImage,
-        }).then(() => {
-          console.log("Cadastrado!");
-          navigation.navigate("LoginScreen");
-        });
-      })
-      .catch((error) => {
-        console.log("Erro ao criar usuário", error);
-        // Handle error codes
-      });
-    
-  }*/
-
   function retornaLogradouro() {
     const url = `https://viacep.com.br/ws/${zipCode}/json/`;
     fetch(url)
@@ -372,6 +288,7 @@ export default function RegisterAuto({ navigation }) {
               onChangeText={setSenha}
               style={styles.input}
             />
+            <Text style={styles.fakespaceErr}></Text>
             <TextInput
               placeholder="Confirmar senha"
               value={confirmSenha}
@@ -472,11 +389,19 @@ export default function RegisterAuto({ navigation }) {
             />
             <Text style={styles.textErr}>{whatsappUsuError}</Text>
             <TextInput
+              placeholder="Facebook (opcional)"
+              value={FacebookUsu}
+              onChangeText={setFacebookUsu}
+              style={styles.input}
+            />
+            <Text style={styles.textErr}></Text>
+            <TextInput
               placeholder="Instagram (opcional)"
               value={instagramUsu}
               onChangeText={setinstagramUsu}
               style={styles.input}
             />
+            <Text style={styles.textErr}></Text>
             <TextInput
               placeholder="Linkedin (opcional)"
               value={linkedinUsu}

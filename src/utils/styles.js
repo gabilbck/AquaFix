@@ -250,6 +250,10 @@ export const styles = StyleSheet.create({
     marginTop: 6,
     textAlign: 'center',
   },
+  fakespaceErr: {
+    marginBottom: 10,
+    marginTop: 6,
+  },
   socialMediaContainer: {
     flexDirection: "row", 
     justifyContent: "left", 
