@@ -1,3 +1,4 @@
+import { GeoPoint } from "firebase/firestore";
 import { StyleSheet } from "react-native";
 
 /**
@@ -14,11 +15,13 @@ import { StyleSheet } from "react-native";
 
 // CSS TEMPORÁRIO!
 export const styles = StyleSheet.create({
+  /** Geral */
   /** Cadastros/Logins/etc */
   container: {
     //Base: PRIMEIRO VIEW DE TODOS AZUL
     flex: 1,
     backgroundColor: "#16337E",
+    width: "100%",
   },
   container2: {
     marginTop: 40,

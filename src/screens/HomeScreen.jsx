@@ -134,101 +134,103 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        {/* Parte que aparece a imagem: azul e logo */}
-        <View style={styles.imagemTopo}>
-          <Image
-            source={require("../../assets/img/logocomp-branca.png")}
-            style={{ width: 200, height: 127 }}
-          />
-        </View>
-        {/* Parte que aparece o conteúdo: cinza/branco */}
-        <View style={styles.conteudo}>
-          <View style={styles.containerInner}>
-            <Text style={styles.titulo}>Bom dia, {usuario?.nome_usu}!</Text>
-            <Text style={styles.subtitulo}>
-              Venha conhecer as novidades do momento:
-            </Text>
-            {isAdmin && (
-              <View>
-                <TextInput
-                  placeholder="Título"
-                  value={titulo}
-                  onChangeText={(text) => setTitulo(text)}
-                  style={styles.input}
-                />
-                <TextInput
-                  placeholder="Texto"
-                  value={texto}
-                  onChangeText={(text) => setTexto(text)}
-                  style={styles.input}
-                />
-                <TextInput
-                  placeholder="Link"
-                  value={link}
-                  onChangeText={(text) => setLink(text)}
-                  style={styles.input}
-                />
-                <Button
-                  onPress={handleCadastro}
-                  style={styles.botao}
-                  textColor="white"
-                >
-                  PUBLICAR
-                </Button>
-              </View>
-            )}
-            {/* Lista de publicações */}
-            <View>
-              {publicacoes.map((publicacao, index) => (
-                <View key={index}>
-                  <Card key={publicacao.id} style={styles.card}>
-                    <Card.Content>
-                      <Text
-                        fontWeight="bold"
-                        style={{
-                          fontSize: 25,
-                          fontWeight: "bold",
-                          gap: 10,
-                          color: "white",
-                        }}
-                      >
-                        {publicacao.titulo_puli_adm}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 15,
-                          color: "white",
-                          marginTop: 7,
-                        }}
-                      >
-                        {publicacao.texto}
-                      </Text>
-                    </Card.Content>
-                    <Card.Actions>
-                      <Button
-                        style={{
-                          backgroundColor: "lightgray",
-                          borderRadius: 8,
-                          border: 0,
-                          marginTop: 10,
-                          width: "100%",
-                        }}
-                        onPress={() => Linking.openURL(publicacao.link)}
-                      >
-                        <Text style={{ color: "black", fontWeight: "bold" }}>
-                        Acessar
-                        </Text>
-                      </Button>
-                    </Card.Actions>
-                  </Card>
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          {/* Parte que aparece a imagem: azul e logo */}
+          <View style={styles.imagemTopo}>
+            <Image
+              source={require("../../assets/img/logocomp-branca.png")}
+              style={{ width: 200, height: 127 }}
+            />
+          </View>
+          {/* Parte que aparece o conteúdo: cinza/branco */}
+          <View style={{ ...styles.conteudo, flex: 1 }}>
+            <View style={styles.containerInner}>
+              <Text style={styles.titulo}>Bom dia, {usuario?.nome_usu}!</Text>
+              <Text style={styles.subtitulo}>
+                Venha conhecer as novidades do momento:
+              </Text>
+              {isAdmin && (
+                <View>
+                  <TextInput
+                    placeholder="Título"
+                    value={titulo}
+                    onChangeText={(text) => setTitulo(text)}
+                    style={styles.input}
+                  />
+                  <TextInput
+                    placeholder="Texto"
+                    value={texto}
+                    onChangeText={(text) => setTexto(text)}
+                    style={styles.input}
+                  />
+                  <TextInput
+                    placeholder="Link"
+                    value={link}
+                    onChangeText={(text) => setLink(text)}
+                    style={styles.input}
+                  />
+                  <Button
+                    onPress={handleCadastro}
+                    style={styles.botao}
+                    textColor="white"
+                  >
+                    PUBLICAR
+                  </Button>
                 </View>
-              ))}
+              )}
+              {/* Lista de publicações */}
+              <View>
+                {publicacoes.map((publicacao, index) => (
+                  <View key={index}>
+                    <Card key={publicacao.id} style={styles.card}>
+                      <Card.Content>
+                        <Text
+                          fontWeight="bold"
+                          style={{
+                            fontSize: 25,
+                            fontWeight: "bold",
+                            gap: 10,
+                            color: "white",
+                          }}
+                        >
+                          {publicacao.titulo_puli_adm}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            color: "white",
+                            marginTop: 7,
+                          }}
+                        >
+                          {publicacao.texto}
+                        </Text>
+                      </Card.Content>
+                      <Card.Actions>
+                        <Button
+                          style={{
+                            backgroundColor: "lightgray",
+                            borderRadius: 8,
+                            border: 0,
+                            marginTop: 10,
+                            width: "100%",
+                          }}
+                          onPress={() => Linking.openURL(publicacao.link)}
+                        >
+                          <Text style={{ color: "black", fontWeight: "bold" }}>
+                            Acessar
+                          </Text>
+                        </Button>
+                      </Card.Actions>
+                    </Card>
+                  </View>
+                ))}
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }

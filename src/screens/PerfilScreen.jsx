@@ -72,7 +72,7 @@ export default function PerfilScreen() {
       const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
       Linking.openURL(whatsappUrl)
         .then((data) => {
-          console.log("WhatsApp chat opened");
+          console.log("WhatsApp foi aberto");
         })
         .catch((error) => {
           console.error("Error opening WhatsApp chat", error);

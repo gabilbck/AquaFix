@@ -17,7 +17,7 @@ const themeLight = {
     onError: "rgb(255, 255, 255)",
     errorContainer: "rgb(255, 218, 214)",
     onErrorContainer: "rgb(65, 0, 2)",
-    background: "rgb(0, 0, 0)",
+    background: "white",
     onBackground: "rgb(0, 0, 0)",
     surface: "rgb(0, 0, 0)",
     onSurface: "rgb(0, 0, 0)",
