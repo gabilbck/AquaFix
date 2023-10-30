@@ -20,6 +20,7 @@ import RegisterEmp from "./screens/RegisterEmp";
 import PerfilViewScreen from "./screens/PerfilViewScreen";
 import CarrinhoScreen from "./screens/CarrinhoScreen";
 import LojaScreen from "./screens/LojaScreen";
+import RegisterProd from "./screens/RegisterProd";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -35,7 +36,7 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigation({ navigation }) {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LoginScreen">
+      <Stack.Navigator initialRouteName="RegisterProd">
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
@@ -115,6 +116,13 @@ export default function RootNavigation({ navigation }) {
         <Stack.Screen
           name="PesquisaScreen"
           component={PesquisaScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="RegisterProd"
+          component={RegisterProd}
           options={{
             headerShown: false,
           }}
