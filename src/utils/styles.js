@@ -124,6 +124,19 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 40,
   },
+  card2: {
+
+  },
+  botaoverde: {
+    fontSize: 17,
+    padding: 4,
+    backgroundColor: "#32A22C",
+    borderRadius: 5,
+    color: "white",
+    textDecorationColor: "white",
+    alignSelf: "center",
+    marginBottom: 20,
+  },
   botao2: {
     fontSize: 17,
     padding: 4,

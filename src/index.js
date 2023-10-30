@@ -18,6 +18,8 @@ import RegisterEmp from "./screens/RegisterEmp";
 
 
 import PerfilViewScreen from "./screens/PerfilViewScreen";
+import CarrinhoScreen from "./screens/CarrinhoScreen";
+import LojaScreen from "./screens/LojaScreen";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -168,7 +170,7 @@ function TabsNavigation() {
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialCommunityIcons name="home" color={color} size={33} />
           ),
         }}
       />
@@ -178,7 +180,27 @@ function TabsNavigation() {
         options={{
           tabBarLabel: "Pesquise",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={26} />
+            <MaterialCommunityIcons name="magnify" color={color} size={33} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="LojaScreen"
+        component={LojaScreen}
+        options={{
+          tabBarLabel: "Loja",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="store" color={color} size={33} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="CarrinhoScreen"
+        component={CarrinhoScreen}
+        options={{
+          tabBarLabel: "Carrinho",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="cart" color={color} size={33} />
           ),
         }}
       />
@@ -188,7 +210,7 @@ function TabsNavigation() {
         options={{
           tabBarLabel: "Perfil",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" color={color} size={26} />
+            <MaterialCommunityIcons name="account" color={color} size={33} />
           ),
         }}
       />
