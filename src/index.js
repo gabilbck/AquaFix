@@ -15,8 +15,6 @@ import PesquisaScreen from "./screens/PesquisaScreen";
 import PerfilScreen from "./screens/PerfilScreen";
 import EditUsu from "./screens/EditUsu";
 import RegisterEmp from "./screens/RegisterEmp";
-
-
 import PerfilViewScreen from "./screens/PerfilViewScreen";
 import CarrinhoScreen from "./screens/CarrinhoScreen";
 import LojaScreen from "./screens/LojaScreen";
