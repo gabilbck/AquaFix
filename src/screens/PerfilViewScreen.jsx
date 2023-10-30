@@ -1,4 +1,5 @@
-import React from "react";
+import { Rating, AirbnbRating } from "react-native-ratings";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   View,
@@ -8,53 +9,32 @@ import {
 } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import { styles } from "../utils/styles";
-import { useEffect, useState } from "react";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../config/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, addDoc } from "firebase/firestore";
 
 export default function PerfilViewScreen({ navigation, route }) {
   const [usuario, setUsuario] = useState({});
-  // const [pessoa, onChangePessoa] = useState(route.params.title);
   const [estadoServico, setEstadoServico] = useState("");
   const [estadoLinkdin, setEstadoLinkdin] = useState("");
   const [estadoInsta, setEstadoInsta] = useState("");
-  const [notaUsu, setNotaUsu] = useState("");
-
-  // traga os props id id e nome
+  const [notaUsuPessimo, setNotaUsuPessimo] = useState("");
+  const [notaUsuRuim, setNotaUsuRuim] = useState("");
+  const [notaUsuSatisfatorio, setNotaUsuSatisfatorio] = useState("");
+  const [notaUsuOtimo, setNotaUsuOtimo] = useState("");
+  const [notaUsuPerfeito, setNotaUsuPerfeito] = useState("");
   const { pessoa } = route.params;
 
-  // useEffect(() => {
-  //   console.log("vou busar por este id_pessoa: ", id_pessoa);
-  //   setUsuario({
-  //     nome_usu: nome_pessoa,
-  //     uid: id_pessoa,
-  //   });
-  // }, [id_pessoa, nome_pessoa]);
-
   useEffect(() => {
-    setUsuario({
-      ...pessoa,
-      uid: pessoa.id_pessoa,
-    });
-    console.log("Trouxe essa pessoa maravilhosa:", pessoa);
-    console.log(usuario);
+    setUsuario({ ...pessoa, uid: pessoa.id_pessoa });
   }, [pessoa]);
 
   useEffect(() => {
-    // verifica se uid não é vazio
     if (!usuario.uid) return;
-
-    // referência ao documento no Firestore usando o UID do usuário
     const usuarioRef = doc(db, "usuario", usuario.uid);
-
-    console.log("Buscando usuário com UID: ", usuario.uid);
-
-    // busca o documento
     getDoc(usuarioRef)
       .then((docSnapshot) => {
         if (docSnapshot.exists()) {
-          // pega os dados do documento
           const userData = docSnapshot.data();
           setUsuario(userData);
           if (userData.whatsapp_usu) {
@@ -74,17 +54,12 @@ export default function PerfilViewScreen({ navigation, route }) {
   const openWhatsAppChat = () => {
     if (usuario?.whatsapp_usu) {
       const whatsappNumber = usuario?.whatsapp_usu;
-
-      // Validate and sanitize the phone number
       const sanitizedWhatsAppNumber = whatsappNumber.replace(/[^0-9]/g, "");
-
       if (sanitizedWhatsAppNumber.length === 0) {
         console.error("Invalid WhatsApp number");
         return;
       }
-
       const whatsappUrl = `https://api.whatsapp.com/send?phone=55${sanitizedWhatsAppNumber}`;
-
       Linking.openURL(whatsappUrl)
         .then((data) => {
           console.log("WhatsApp chat opened");
@@ -114,14 +89,14 @@ export default function PerfilViewScreen({ navigation, route }) {
     ) {
       setEstadoServico(
         <Text style={styles.subtitulo2}>
-          Este usuário não possui serviços cadastrados
+          {" "}
+          Este usuário não possui serviços cadastrados{" "}
         </Text>
       );
     } else {
       setEstadoServico(
         <Text style={styles.subtitulo2}>
-          {usuario?.servicos_usu}
-          {usuario?.servicos_usu1}
+          {usuario?.servicos_usu} {usuario?.servicos_usu1}{" "}
           {usuario?.servicos_usu2}
         </Text>
       );
@@ -137,11 +112,7 @@ export default function PerfilViewScreen({ navigation, route }) {
         >
           <Image
             source={require("../../assets/img/linkedin.png")}
-            style={{
-              width: 50,
-              height: 50,
-              marginRight: 8,
-            }}
+            style={{ width: 50, height: 50, marginRight: 8 }}
           />
         </TouchableOpacity>
       );
@@ -159,11 +130,7 @@ export default function PerfilViewScreen({ navigation, route }) {
         >
           <Image
             source={require("../../assets/img/instagram.png")}
-            style={{
-              width: 50,
-              height: 50,
-              marginRight: 8,
-            }}
+            style={{ width: 50, height: 50, marginRight: 8 }}
           />
         </TouchableOpacity>
       );
@@ -196,7 +163,6 @@ export default function PerfilViewScreen({ navigation, route }) {
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
-          {/* Parte que aparece a imagem: azul e logo */}
           <View style={styles.usuTopo}>
             <Image
               source={usuario.foto_usu}
@@ -222,45 +188,43 @@ export default function PerfilViewScreen({ navigation, route }) {
               {usuario.nome_usu}
             </Text>
           </View>
-          {/* Parte que aparece o conteúdo: cinza/branco */}
           <View style={styles.conteudo}>
             <View style={styles.containerInner}>
               <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
-              <Button
-                backgroundColor="red"
-                onPress={() => notaUsuario()}
-                value="péssimo"
-              >
-                Péssimo {usuario?.nota_usu}
-              </Button>
-              <Button
-                backgroundColor="orange"
-                onPress={() => notaUsuario()}
-                value="ruim"
-              >
-                Ruim {usuario?.nota_usu}
-              </Button>
-              <Button
-                backgroundColor="yellow"
-                onPress={() => notaUsuario()}
-                value="satisfatório"
-              >
-                Satisfatório {usuario?.nota_usu}
-              </Button>
-              <Button
-                backgroundColor="green"
-                onPress={() => notaUsuario()}
-                value="ótimo"
-              >
-                Ótimo {usuario?.nota_usu}
-              </Button>
-              <Button
-                backgroundColor="purple"
-                onPress={() => notaUsuario()}
-                value="perfeito"
-              >
-                Perfeito {usuario?.nota_usu}
-              </Button>
+              <TempComponente />
+              <View style={{ border: "4px solid red" }}>
+                <Button onPress={() => usuarioNota()} value="péssimo">
+                  Péssimo {usuario?.nota_usu}
+                </Button>
+                <Button
+                  backgroundColor="orange"
+                  onPress={() => usuarioNota()}
+                  value="ruim"
+                >
+                  Ruim {usuario?.nota_usu}
+                </Button>
+                <Button
+                  backgroundColor="yellow"
+                  onPress={() => usuarioNota()}
+                  value="satisfatório"
+                >
+                  Satisfatório {usuario?.nota_usu}
+                </Button>
+                <Button
+                  backgroundColor="green"
+                  onPress={() => usuarioNota()}
+                  value="ótimo"
+                >
+                  Ótimo {usuario?.nota_usu}
+                </Button>
+                <Button
+                  backgroundColor="purple"
+                  onPress={() => usuarioNota()}
+                  value="perfeito"
+                >
+                  Perfeito {usuario?.nota_usu}
+                </Button>
+              </View>
               <Text style={styles.titulo2}>Nome: </Text>
               <Text style={styles.subtitulo2}>{usuario?.nome_completo}</Text>
               <Text style={styles.titulo2}>Apelido: </Text>
@@ -294,7 +258,7 @@ export default function PerfilViewScreen({ navigation, route }) {
                 onPress={() => navigation.goBack()}
                 style={{ ...styles.botao, marginTop: 0 }}
               >
-                VOLTAR
+                VOLTAR PARA A TELA ANTERIOR
               </Button>
             </View>
           </View>
@@ -303,3 +267,51 @@ export default function PerfilViewScreen({ navigation, route }) {
     </View>
   );
 }
+
+const TempComponente = () => {
+  const [userRating, setUserRating] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
+  const [numberOfRatings, setNumberOfRatings] = useState(0);
+
+  // Configurar a referência para o banco de dados Firebase
+  const dbRef = db.database().ref("ratings");
+
+  useEffect(() => {
+    // Recuperar as avaliações do Firebase e calcular a média
+    dbRef.on("value", (snapshot) => {
+      let totalRating = 0;
+      let totalRatings = 0;
+
+      snapshot.forEach((childSnapshot) => {
+        const rating = childSnapshot.val();
+        totalRating += rating;
+        totalRatings++;
+      });
+
+      if (totalRatings > 0) {
+        setAverageRating(totalRating / totalRatings);
+      }
+      setNumberOfRatings(totalRatings);
+    });
+  }, []);
+
+  const handleRatingSubmit = () => {
+    // Enviar a nova avaliação para o Firebase
+    dbRef.push(userRating);
+  };
+
+  return (
+    <View>
+      <Text>Avaliação Média: {averageRating.toFixed(2)}</Text>
+      <Text>Número de Avaliações: {numberOfRatings}</Text>
+      <Rating
+        type="star"
+        ratingCount={5}
+        imageSize={40}
+        showRating
+        onFinishRating={(rating) => setUserRating(rating)}
+      />
+      <Button title="Enviar Avaliação" onPress={handleRatingSubmit} />
+    </View>
+  );
+};
