@@ -23,6 +23,7 @@ export default function LojaScreen() {
   const [link, setLink] = useState("");
   const [publicacoes, setPublicacoes] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [produtos, setProdutos] = useState([]);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -34,94 +35,35 @@ export default function LojaScreen() {
       }
     });
 
-    return () => {
-      unsub();
-    };
-  }, []);
-
-  useEffect(() => {
-    // verifica se uid não é vazio
-    if (!usuario.uid) return;
-
-    // referência ao documento no Firestore usando o UID do usuário
-    const usuarioRef = doc(db, "usuario", usuario.uid);
-
-    console.log("Buscando usuário com UID: ", usuario.uid);
-
-    // busca o documento
-    getDoc(usuarioRef)
-      .then((docSnapshot) => {
-        if (docSnapshot.exists()) {
-          // pega os dados do documento
-          const userData = docSnapshot.data();
-
-          console.log("Usuário encontrado: ", userData);
-
-          // precisa veriricar se user.adm é do FIRESTORE
-          setIsAdmin(userData.adm === true ? true : false); // Defina como true se for um administrador
-          console.log("Usuário é admin: ", userData.adm);
-          console.log("Usuário é: ", userData);
-          setUsuario(userData);
-        } else {
-          console.log("Usuário não encontrado !!!");
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar usuário:", error);
-      });
-  }, [usuario.uid]);
-
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("Usuário UID: ", user.uid);
-        setUsuario({ uid: user.uid, nome_usu: user.displayName }); // Defina o nome do usuário aqui
-        // Verifique se o usuário é um administrador (defina isso de acordo com sua lógica)
-        const usuarioRef = doc(db, "usuario", user.uid);
-      } else {
-        console.log("Usuário não logado");
-        // Se não estiver logado, defina isAdmin como false
-        setIsAdmin(false);
-      }
-    });
-
     carregarPublicacoes();
+    carregarProdutos();
 
     return () => {
       unsub();
     };
   }, []);
 
-  const handleCadastro = async () => {
-    if (titulo && texto && link) {
-      try {
-        // Gere um ID personalizado para a publicação
-        const publicacaoId = Date.now(); // Use um valor numérico para o ID
+  const carregarProdutos = async () => {
+    try {
+      const produtosQuerySnapshot = await getDocs(collection(db, "produto"));
 
-        // Adicione os dados ao Firestore, incluindo o ID personalizado
-        const docRef = await addDoc(collection(db, "publi_adm"), {
-          id: publicacaoId,
-          titulo_puli_adm: titulo,
-          texto,
-          link,
-        });
+      const produtosData = produtosQuerySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          desc_prod: data.desc_prod,
+          url_imagem: data.url_imagem, // URL da imagem do produto
+          nome_prod: data.nome_prod,
+          preco_prod: data.preco_prod,
+        };
+      });
 
-        console.log("Documento cadastrado com ID: ", docRef.id);
-        // Limpe os campos após o cadastro
-        setTitulo("");
-        setTexto("");
-        setLink("");
-        // Recarregue as publicações após o cadastro
-        carregarPublicacoes();
-      } catch (error) {
-        console.error("Erro ao cadastrar documento: ", error);
-      }
-    } else {
-      console.warn("Preencha todos os campos.");
+      setProdutos(produtosData);
+    } catch (error) {
+      console.error("Erro ao buscar produtos: ", error);
     }
-  };
+  }
 
-  const carregarPublicacoes = async () => {
+  const carregarPublicacoes = async () => {// 
     try {
       const querySnapshot = await getDocs(
         query(collection(db, "publi_adm"), orderBy("id", "desc"))
@@ -131,37 +73,66 @@ export default function LojaScreen() {
     } catch (error) {
       console.error("Erro ao buscar publicações: ", error);
     }
-  };
+  }
+
+  const handleCadastro = async () => {
+    if (titulo && texto && link) {
+      try {
+        const publicacaoId = Date.now();
+
+        const docRef = await addDoc(collection(db, "publi_adm"), {
+          id: publicacaoId,
+          titulo_puli_adm: titulo,
+          texto,
+          link,
+        });
+
+        console.log("Documento cadastrado com ID: ", docRef.id);
+        setTitulo("");
+        setTexto("");
+        setLink("");
+        carregarPublicacoes();
+      } catch (error) {
+        console.error("Erro ao cadastrar documento: ", error);
+      }
+    } else {
+      console.warn("Preencha todos os campos.");
+    }
+  }
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        {/* Parte que aparece a imagem: azul e logo */}
         <View style={styles.imagemTopo}>
           <Image
             source={require("../../assets/img/logocomp-branca.png")}
             style={{ width: 200, height: 127 }}
           />
         </View>
-        {/* Parte que aparece o conteúdo: cinza/branco */}
         <View style={styles.conteudo}>
           <View style={styles.containerInner}>
             <Text style={styles.titulo}>PRODUTOS</Text>
 
             {isAdmin && (
-        <Button style={styles.botaoverde}>
-        CADASTRAR
-        </Button>
-
-        )}
-
-        <View style={styles.card2}>
-            
-            </View>
-
+              <Button style={styles.botaoverde} onPress={handleCadastro}>
+                CADASTRAR
+              </Button>
+            )}
+            {produtos.map((produto, index) => (
+              <View style={styles.card2} key={index}>
+                <Image
+                  source={{ uri: produto.url_imagem }} // Use a URL da imagem do produto
+                  style={styles.imagemProduto} // Estilo para a imagem do produto
+                />
+                <View style={styles.textoProduto}>
+                  <Text style={styles.cardProduto}>{produto.nome_prod}</Text>
+                  <Text style={styles.cardValor}>Preço: {produto.preco_prod}</Text>
+                </View>
+                <Button style={styles.cardButton}>VER</Button>
+              </View>
+            ))}
+          </View>
         </View>
-        </View>
-        
       </View>
     </ScrollView>
   );

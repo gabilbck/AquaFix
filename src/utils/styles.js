@@ -125,7 +125,10 @@ export const styles = StyleSheet.create({
     marginVertical: 40,
   },
   card2: {
-
+    backgroundColor: "#16337e",
+    marginVertical: 10,
+    elevation: 2,
+    borderRadius: 8, 
   },
   botaoverde: {
     fontSize: 17,
@@ -240,7 +243,11 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 20,
   },
-
+  imagemProduto: {
+    width: 100, // Ajuste o tamanho conforme necessário
+    height: 100, // Ajuste o tamanho conforme necessário
+    borderRadius: 100,
+  },
   card: {
     backgroundColor: "#16337e",
     marginVertical: 10,
@@ -251,6 +258,17 @@ export const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 25,
     fontWeight: "bold",
+  },
+
+  cardProduto: {
+    marginLeft: 10,
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+
+  cardValor: {
+    marginLeft: 10,
+    fontSize: 22,
   },
 
   cardButton: {
