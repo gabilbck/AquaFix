@@ -3,7 +3,6 @@ import { Button } from "react-native-paper";
 import { Text, View, TextInput, ScrollView, Image } from "react-native";
 import { styles } from "../utils/styles";
 import { auth, db, storage } from "../config/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import {
   doc,
   setDoc,
@@ -21,9 +20,13 @@ import * as ImagePicker from "expo-image-picker";
 
 export default function RegisterProd({ navigation }) {
   const [nomeProd, setNomeProd] = useState("");
+  const [nomeProdErr, setnomeProdErr] = useState("");
   const [descProd, setDescProd] = useState("");
+  const [descProdErr, setDescProdErr] = useState("");
   const [precoProd, setPrecoProd] = useState("");
+  const [precoProdErr, setPrecoProdErr] = useState("");
   const [imagemProd, setImagemProd] = useState(null);
+  const [imagemProdErr, setImagemProdErr] = useState("");
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -35,7 +38,7 @@ export default function RegisterProd({ navigation }) {
 
     console.log(result);
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setImagemProd(result.uri);
     }
   };
@@ -75,18 +78,17 @@ export default function RegisterProd({ navigation }) {
   
       // Cadastrar o produto no banco de dados
       await setDoc(doc(db, "produto", nomeProd), {
+        user_id: auth.currentUser.uid,
         nome_prod: nomeProd,
         desc_prod: descProd,
         preco_prod: "R$" + precoProd,
         foto_prod: imagemProd, // Usar a URL da imagem enviada para o Firebase Storage
       }).then(() => {
           console.log("Cadastrado!");
-          navigation.navigate("LoginScreen"); //pagina principal de produto
+          navigation.navigate("LojaScreen"); //pagina principal de produto
         });
         await uploadImageToFirebase();
 
-      console.log("Cadastrado!");
-      navigation.navigate("LoginScreen");
     } catch (error) {
         console.error("Erro ao cadastrar o produto", error);
       // Handle error codes
@@ -94,17 +96,20 @@ export default function RegisterProd({ navigation }) {
   };
 
     const Registrar = () => {
-      //if (nomeProd === "" || descProd === "" || precoProd === "" || !imagemProd) {
       if (nomeProd === "") {
-        setErroEmail("Preencha o campo Nome");
+        setnomeProdErr("Preencha o campo Nome");
         return;
       }
       if (descProd == "") {
-        setErroSenha("Preencha o campo Descrição");
+        setDescProdErr("Preencha o campo Descrição");
         return;
       }
       if (precoProd == "") {
-        setNomeCompletoError("Preencha o campo Preço");
+        setPrecoProdErr("Preencha o campo Preço");
+        return;
+      }
+      if (imagemProd == null) {
+        setImagemProdErr("Escolha uma foto");
         return;
       }
   
@@ -132,12 +137,14 @@ export default function RegisterProd({ navigation }) {
                   onChangeText={setNomeProd}
                   style={styles.input}
                 />
+                <Text style={styles.textErr}>{nomeProdErr}</Text>
                 <TextInput
                   placeholder="Descrição do Produto"
                   value={descProd}
                   onChangeText={setDescProd}
                   style={styles.input}
                 />
+                <Text style={styles.textErr}>{descProdErr}</Text>
                 <TextInput
                   placeholder="Preço do Produto"
                   value={precoProd}
@@ -145,6 +152,7 @@ export default function RegisterProd({ navigation }) {
                   keyboardType="numeric"
                   style={styles.input}
                 />
+                <Text style={styles.textErr}>{precoProdErr}</Text>
                 {imagemProd ? (
                   <Image
                     source={{ uri: imagemProd }}
@@ -164,6 +172,7 @@ export default function RegisterProd({ navigation }) {
                     Escolher foto
                   </Button>
                 )}
+                <Text style={styles.textErr}>{imagemProdErr}</Text>
                 <Button textColor={"white"} onPress={Registrar} style={styles.botao}>
                   REGISTRAR
                 </Button>
