@@ -128,7 +128,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#16337e",
     marginVertical: 10,
     elevation: 2,
-    borderRadius: 8, 
+    borderRadius: 8, // Adicione bordas arredondadas aos cards
   },
   botaoverde: {
     fontSize: 17,
@@ -248,6 +248,13 @@ export const styles = StyleSheet.create({
     height: 100, // Ajuste o tamanho conforme necessário
     borderRadius: 100,
   },
+  imagemProduto2: {
+    margin: 10,
+    marginTop: 20,
+    width: 90, // Ajuste o tamanho conforme necessário
+    height: 90, // Ajuste o tamanho conforme necessário
+    borderRadius: 13,
+  },
   card: {
     backgroundColor: "#16337e",
     marginVertical: 10,
@@ -261,14 +268,16 @@ export const styles = StyleSheet.create({
   },
 
   cardProduto: {
+    marginTop: 30,
     marginLeft: 10,
     fontSize: 25,
     fontWeight: "bold",
   },
 
   cardValor: {
+    marginTop: 7,
     marginLeft: 10,
-    fontSize: 22,
+    fontSize: 17,
   },
 
   cardButton: {

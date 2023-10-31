@@ -19,6 +19,7 @@ import PerfilViewScreen from "./screens/PerfilViewScreen";
 import CarrinhoScreen from "./screens/CarrinhoScreen";
 import LojaScreen from "./screens/LojaScreen";
 import RegisterProd from "./screens/RegisterProd";
+import VerProdScreen from "./screens/VerProdScreen";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -142,6 +143,13 @@ export default function RootNavigation({ navigation }) {
         <Stack.Screen
           name="PerfilViewScreen"
           component={PerfilViewScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="VerProdScreen"
+          component={VerProdScreen}
           options={{
             headerShown: false,
           }}

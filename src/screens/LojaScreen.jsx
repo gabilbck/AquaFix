@@ -63,9 +63,9 @@ export default function LojaScreen() {
     } catch (error) {
       console.error("Erro ao buscar produtos: ", error);
     }
-  }
+  };
 
-  const carregarPublicacoes = async () => {// 
+  const carregarPublicacoes = async () => {
     try {
       const querySnapshot = await getDocs(
         query(collection(db, "publi_adm"), orderBy("id", "desc"))
@@ -75,7 +75,7 @@ export default function LojaScreen() {
     } catch (error) {
       console.error("Erro ao buscar publicações: ", error);
     }
-  }
+  };
 
   const handleCadastro = async () => {
     if (titulo && texto && link) {
@@ -100,42 +100,68 @@ export default function LojaScreen() {
     } else {
       console.warn("Preencha todos os campos.");
     }
-  }
+  };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.imagemTopo}>
-          <Image
-            source={require("../../assets/img/logocomp-branca.png")}
-            style={{ width: 200, height: 127 }}
-          />
-        </View>
-        <View style={styles.conteudo}>
-          <View style={styles.containerInner}>
-            <Text style={styles.titulo}>PRODUTOS</Text>
-
-            {isAdmin && (
-              <Button style={styles.botaoverde} onPress={handleCadastro}>
-                CADASTRAR
-              </Button>
-            )}
-            {produtos.map((produto, index) => (
-              <View style={styles.card2} key={index}>
-                <Image
-                  source={{ uri: produto.url_imagem }} // Use a URL da imagem do produto
-                  style={styles.imagemProduto} // Estilo para a imagem do produto
-                />
-                <View style={styles.textoProduto}>
-                  <Text style={styles.cardProduto}>{produto.nome_prod}</Text>
-                  <Text style={styles.cardValor}>Preço: {produto.preco_prod}</Text>
-                </View>
-                <Button style={styles.cardButton}>VER</Button>
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.imagemTopo}>
+            <Image
+              source={require("../../assets/img/logocomp-branca.png")}
+              style={{ width: 200, height: 127 }}
+            />
+          </View>
+          <View style={{ ...styles.conteudo, flex: 1 }}>
+            <View style={styles.containerInner}>
+              <Text style={styles.titulo}>PRODUTOS</Text>
+              {isAdmin && (
+                <Button style={styles.botaoverde} onPress={handleCadastro}>
+                  CADASTRAR
+                </Button>
+              )}
+              <View>
+                {produtos.map((produto, index) => (
+                  <View key={index}>
+                    <Card style={styles.card}>
+                      <View style={{ flexDirection: "row" }}>
+                        <Card.Cover
+                          source={{ uri: produto.url_imagem }}
+                          style={styles.imagemProduto2}
+                        />
+                        <Card.Content style={styles.cardContent}>
+                          <Text style={styles.cardProduto}>
+                            {produto.nome_prod}
+                          </Text>
+                          <Text style={styles.cardValor}>
+                            Preço: {produto.preco_prod}
+                          </Text>
+                        </Card.Content>
+                      </View>
+                      <Card.Actions>
+                        <Button
+                          style={{
+                            backgroundColor: "lightgray",
+                            borderRadius: 8,
+                            border: 0,
+                            marginTop: 10,
+                            width: "100%",
+                          }}
+                          onPress={() => navigation.navigate("VerProdScreen")}
+                        >
+                          <Text style={{ color: "black", fontWeight: "bold" }}>
+                            VER
+                          </Text>
+                        </Button>
+                      </Card.Actions>
+                    </Card>
+                  </View>
+                ))}
               </View>
-            ))}
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
