@@ -1,4 +1,3 @@
-import { Rating, AirbnbRating } from "react-native-ratings";
 import React, { useEffect, useState } from "react";
 import {
   Image,
@@ -7,23 +6,24 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import { Button, Text, TextInput } from "react-native-paper";
-import { styles } from "../utils/styles";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { Button, Text } from "react-native-paper";
+import { Rating } from "react-native-ratings";
 import { auth, db } from "../config/firebase";
 import { doc, getDoc, setDoc, addDoc } from "firebase/firestore";
+import { styles } from "../utils/styles";
 
 export default function PerfilViewScreen({ navigation, route }) {
   const [usuario, setUsuario] = useState({});
   const [estadoServico, setEstadoServico] = useState("");
   const [estadoLinkdin, setEstadoLinkdin] = useState("");
   const [estadoInsta, setEstadoInsta] = useState("");
-  const [notaUsuPessimo, setNotaUsuPessimo] = useState("");
-  const [notaUsuRuim, setNotaUsuRuim] = useState("");
-  const [notaUsuSatisfatorio, setNotaUsuSatisfatorio] = useState("");
-  const [notaUsuOtimo, setNotaUsuOtimo] = useState("");
-  const [notaUsuPerfeito, setNotaUsuPerfeito] = useState("");
+  const [notaPessimo, setNotaPessimo] = useState("");
+  const [notaRuim, setNotaRuim] = useState("");
+  const [notaSatisfatorio, setNotaSatisfatorio] = useState("");
+  const [notaOtimo, setNotaOtimo] = useState("");
+  const [notaPerfeito, setNotaPerfeito] = useState("");
   const { pessoa } = route.params;
+  const [nota, setNota] = useState("");
 
   useEffect(() => {
     setUsuario({ ...pessoa, uid: pessoa.id_pessoa });
@@ -139,25 +139,99 @@ export default function PerfilViewScreen({ navigation, route }) {
     }
   }
 
-  useEffect(() => {
-    VerificaServico() && VerificaLinkdin() && VerificaInsta() && usuarioNota();
-  }, [usuario.uid]);
+  function VerificaNota() {
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    console.log("SOCOROOO");
+    // Primeiro verifica se há alguma nota registrada no banco
+    // Depois verifica a média das notas com os campo "avalicao" (valor inteiro) e o usuário que registrou "uid" (do auth) e "media" entre esse valores, com notas de 1 a 5
+    // se o usuário resgistrar nota e clicar no botão enviar, a nota será enviada para o banco e a média será calculada
+    // calcular a média das notas e mostrar na tela
+    // mostrar o número de notas que o usuário recebeu
 
-  async function usuarioNota() {
-    const userCredential = await signInWithEmailAndPassword(auth, email, senha);
-    const uid = userCredential.user.uid;
-    const notaUsuario = () => {
-      try {
-        addDoc(doc(db, "usuario"), {
-          nota_usu: notaUsu,
-          outrocampo: "Nota adicionada!",
-        });
-        console.log("Cadastrado!");
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    // const [userRating, setUserRating] = useState(0);
+    // const [averageRating, setAverageRating] = useState(0);
+    // const [numberOfRatings, setNumberOfRatings] = useState(0);
+
+    // verifica se existe uma collection "avaliacoes" no banco
+    // const avaliacoesRef = doc(db, "avaliacao", usuario.uid);
+    // getDoc(avaliacoesRef); // verifica se existe um documento com o uid do usuário avaliado
+
+    // //setar o id da coleção com o uid do usuário avaliado
+
+    // if (usuario?.nota == undefined || usuario?.nota == "") {
+    //   setNota(
+    //     <Text style={styles.subtitulo2}>
+    //       {" "}
+    //       Este usuário não possui notas cadastradas{" "}
+    //     </Text>
+    //   );
+    // } else {
+    //   setNota(<Text style={styles.subtitulo2}>{usuario?.nota}</Text>);
+    // }
+
+    // // Configurar a referência para o banco de dados Firebase
+    // const dbRef = addDoc.database().ref("ratings"); // Certifique-se de que 'db' esteja definido corretamente
+
+    // useEffect(() => {
+    //   // Recuperar as avaliações do Firebase e calcular a média
+    //   dbRef.on("value", (snapshot) => {
+    //     let totalRating = 0;
+    //     let totalRatings = 0;
+
+    //     snapshot.forEach((childSnapshot) => {
+    //       const rating = childSnapshot.val();
+    //       totalRating += rating;
+    //       totalRatings++;
+    //     });
+
+    //     if (totalRatings > 0) {
+    //       setAverageRating(totalRating / totalRatings);
+    //     }
+    //     setNumberOfRatings(totalRatings);
+    //   });
+    // }, []);
+
+    // const handleRatingSubmit = () => {
+    //   // Enviar a nova avaliação para o Firebase
+    //   dbRef.push(userRating);
+    // };
+
+    // return (
+    //   <View>
+    //     <Text>Avaliação Média: {averageRating.toFixed(2)}</Text>
+    //     <Text>Número de Avaliações: {numberOfRatings}</Text>
+    //     <Rating
+    //       type="star"
+    //       ratingCount={5}
+    //       imageSize={40}
+    //       showRating
+    //       onFinishRating={(rating) => setUserRating(rating)}
+    //     />
+    //     <Button title="Enviar Avaliação" onPress={handleRatingSubmit} />
+    //   </View>
+    // );
   }
+
+  useEffect(() => {
+    VerificaServico();
+    VerificaLinkdin();
+    VerificaInsta();
+    VerificaNota();
+  }, [usuario.uid]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -191,40 +265,8 @@ export default function PerfilViewScreen({ navigation, route }) {
           <View style={styles.conteudo}>
             <View style={styles.containerInner}>
               <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
-              <TempComponente />
-              <View style={{ border: "4px solid red" }}>
-                <Button onPress={() => usuarioNota()} value="péssimo">
-                  Péssimo {usuario?.nota_usu}
-                </Button>
-                <Button
-                  backgroundColor="orange"
-                  onPress={() => usuarioNota()}
-                  value="ruim"
-                >
-                  Ruim {usuario?.nota_usu}
-                </Button>
-                <Button
-                  backgroundColor="yellow"
-                  onPress={() => usuarioNota()}
-                  value="satisfatório"
-                >
-                  Satisfatório {usuario?.nota_usu}
-                </Button>
-                <Button
-                  backgroundColor="green"
-                  onPress={() => usuarioNota()}
-                  value="ótimo"
-                >
-                  Ótimo {usuario?.nota_usu}
-                </Button>
-                <Button
-                  backgroundColor="purple"
-                  onPress={() => usuarioNota()}
-                  value="perfeito"
-                >
-                  Perfeito {usuario?.nota_usu}
-                </Button>
-              </View>
+              {/* <TempComponente /> */}
+              <View style={styles.ratingContainer}>{nota}</View>
               <Text style={styles.titulo2}>Nome: </Text>
               <Text style={styles.subtitulo2}>{usuario?.nome_completo}</Text>
               <Text style={styles.titulo2}>Apelido: </Text>
@@ -268,50 +310,50 @@ export default function PerfilViewScreen({ navigation, route }) {
   );
 }
 
-const TempComponente = () => {
-  const [userRating, setUserRating] = useState(0);
-  const [averageRating, setAverageRating] = useState(0);
-  const [numberOfRatings, setNumberOfRatings] = useState(0);
+// const TempComponente = () => {
+//   const [userRating, setUserRating] = useState(0);
+//   const [averageRating, setAverageRating] = useState(0);
+//   const [numberOfRatings, setNumberOfRatings] = useState(0);
 
-  // Configurar a referência para o banco de dados Firebase
-  const dbRef = db.database().ref("ratings");
+//   // Configurar a referência para o banco de dados Firebase
+//   const dbRef = addDoc.database().ref("ratings"); // Certifique-se de que 'db' esteja definido corretamente
 
-  useEffect(() => {
-    // Recuperar as avaliações do Firebase e calcular a média
-    dbRef.on("value", (snapshot) => {
-      let totalRating = 0;
-      let totalRatings = 0;
+//   useEffect(() => {
+//     // Recuperar as avaliações do Firebase e calcular a média
+//     dbRef.on("value", (snapshot) => {
+//       let totalRating = 0;
+//       let totalRatings = 0;
 
-      snapshot.forEach((childSnapshot) => {
-        const rating = childSnapshot.val();
-        totalRating += rating;
-        totalRatings++;
-      });
+//       snapshot.forEach((childSnapshot) => {
+//         const rating = childSnapshot.val();
+//         totalRating += rating;
+//         totalRatings++;
+//       });
 
-      if (totalRatings > 0) {
-        setAverageRating(totalRating / totalRatings);
-      }
-      setNumberOfRatings(totalRatings);
-    });
-  }, []);
+//       if (totalRatings > 0) {
+//         setAverageRating(totalRating / totalRatings);
+//       }
+//       setNumberOfRatings(totalRatings);
+//     });
+//   }, []);
 
-  const handleRatingSubmit = () => {
-    // Enviar a nova avaliação para o Firebase
-    dbRef.push(userRating);
-  };
+//   const handleRatingSubmit = () => {
+//     // Enviar a nova avaliação para o Firebase
+//     dbRef.push(userRating);
+//   };
 
-  return (
-    <View>
-      <Text>Avaliação Média: {averageRating.toFixed(2)}</Text>
-      <Text>Número de Avaliações: {numberOfRatings}</Text>
-      <Rating
-        type="star"
-        ratingCount={5}
-        imageSize={40}
-        showRating
-        onFinishRating={(rating) => setUserRating(rating)}
-      />
-      <Button title="Enviar Avaliação" onPress={handleRatingSubmit} />
-    </View>
-  );
-};
+//   return (
+//     <View>
+//       <Text>Avaliação Média: {averageRating.toFixed(2)}</Text>
+//       <Text>Número de Avaliações: {numberOfRatings}</Text>
+//       <Rating
+//         type="star"
+//         ratingCount={5}
+//         imageSize={40}
+//         showRating
+//         onFinishRating={(rating) => setUserRating(rating)}
+//       />
+//       <Button title="Enviar Avaliação" onPress={handleRatingSubmit} />
+//     </View>
+//   );
+// };
