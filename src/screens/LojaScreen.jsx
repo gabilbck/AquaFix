@@ -26,15 +26,25 @@ export default function LojaScreen() {
   const [publicacoes, setPublicacoes] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [produtos, setProdutos] = useState([]);
-  
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log("Usuário UID: ", user.uid);
         setUsuario({ uid: user.uid });
+        const usuarioRef = doc(db, "usuario", user.uid);
+        getDoc(usuarioRef)
+          .then((docSnapshot) => {
+            if (docSnapshot.exists()) {
+              const userData = docSnapshot.data();
+              setIsAdmin(userData.adm === true ? true : false);
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao buscar usuário:", error);
+          });
       } else {
-        console.log("Usuário não logado");
+        setIsAdmin(false);
       }
     });
 
@@ -54,7 +64,7 @@ export default function LojaScreen() {
         const data = doc.data();
         return {
           desc_prod: data.desc_prod,
-          foto_prod: data.foto_prod, // URL da imagem do produto
+          foto_prod: data.foto_prod,
           nome_prod: data.nome_prod,
           preco_prod: data.preco_prod,
         };
@@ -98,6 +108,9 @@ export default function LojaScreen() {
       } catch (error) {
         console.error("Erro ao cadastrar documento: ", error);
       }
+    } else if (isAdmin) {
+      // Redirect the administrator to "RegisterProd" screen
+      navigation.navigate("RegisterProd");
     } else {
       console.warn("Preencha todos os campos.");
     }
