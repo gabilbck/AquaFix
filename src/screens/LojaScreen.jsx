@@ -26,6 +26,7 @@ export default function LojaScreen() {
   const [publicacoes, setPublicacoes] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [produtos, setProdutos] = useState([]);
+  
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -53,7 +54,7 @@ export default function LojaScreen() {
         const data = doc.data();
         return {
           desc_prod: data.desc_prod,
-          url_imagem: data.url_imagem, // URL da imagem do produto
+          foto_prod: data.foto_prod, // URL da imagem do produto
           nome_prod: data.nome_prod,
           preco_prod: data.preco_prod,
         };
@@ -126,7 +127,7 @@ export default function LojaScreen() {
                     <Card style={styles.card}>
                       <View style={{ flexDirection: "row" }}>
                         <Card.Cover
-                          source={{ uri: produto.url_imagem }}
+                          source={{ uri: produto.foto_prod }}
                           style={styles.imagemProduto2}
                         />
                         <Card.Content style={styles.cardContent}>
@@ -144,7 +145,7 @@ export default function LojaScreen() {
                             backgroundColor: "lightgray",
                             borderRadius: 8,
                             border: 0,
-                            marginTop: 10,
+                            marginTop: 0,
                             width: "100%",
                           }}
                           onPress={() => navigation.navigate("VerProdScreen")}
