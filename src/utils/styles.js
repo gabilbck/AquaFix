@@ -107,9 +107,9 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 8,
-    color: '#333',
+    color: "#333",
     paddingRight: 30, // para acomodar a seta do seletor
     marginBottom: 10,
   },
@@ -287,26 +287,26 @@ export const styles = StyleSheet.create({
   },
 
   textErr: {
-    color: 'red',
-    fontWeight: 'bold',
+    color: "red",
+    fontWeight: "bold",
     marginBottom: 10,
     marginTop: 6,
-    textAlign: 'center',
+    textAlign: "center",
   },
   fakespaceErr: {
     marginBottom: 10,
     marginTop: 6,
   },
   socialMediaContainer: {
-    flexDirection: "row", 
-    justifyContent: "left", 
+    flexDirection: "row",
+    justifyContent: "left",
     marginTop: 12,
     marginBottom: 12,
   },
   socialMediaIcon: {
     alignItems: "left",
   },
-  
+
   tipoconta: {
     padding: 10,
     width: 100,
@@ -315,7 +315,7 @@ export const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     marginBottom: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   servicos: {
     padding: 10,
@@ -330,5 +330,29 @@ export const styles = StyleSheet.create({
     alignSelf: "stretch",
     justifyContent: "space-between",
   },
-  
+  modalContent: {
+    backgroundColor: "white",
+    padding: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    margin: 20,
+    alignSelf: "center",
+  },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 12,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  botaoAvaliar: {
+    width: 80,
+    borderRadius: 5,
+    backgroundColor: "grey",
+    color: "white",
+    textAlign: "center",
+    marginBottom: 15,
+    fontWeight: "bold",
+  },
 });

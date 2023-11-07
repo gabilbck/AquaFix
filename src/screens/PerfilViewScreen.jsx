@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import {
-  Image,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Image, View, ScrollView, Linking, Pressable } from "react-native";
+import { Button, Modal, Text } from "react-native-paper";
 import { Rating } from "react-native-ratings";
 import { auth, db } from "../config/firebase";
-import { doc, getDoc, setDoc, addDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { styles } from "../utils/styles";
 
 export default function PerfilViewScreen({ navigation, route }) {
@@ -17,13 +20,13 @@ export default function PerfilViewScreen({ navigation, route }) {
   const [estadoServico, setEstadoServico] = useState("");
   const [estadoLinkdin, setEstadoLinkdin] = useState("");
   const [estadoInsta, setEstadoInsta] = useState("");
-  const [notaPessimo, setNotaPessimo] = useState("");
-  const [notaRuim, setNotaRuim] = useState("");
-  const [notaSatisfatorio, setNotaSatisfatorio] = useState("");
-  const [notaOtimo, setNotaOtimo] = useState("");
-  const [notaPerfeito, setNotaPerfeito] = useState("");
   const { pessoa } = route.params;
-  const [nota, setNota] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [avaliacao, setAvaliacao] = useState(0);
+  const [avaliou, setAvaliou] = useState(false); // Adicione o estado para controlar se o usuário já avaliou
+  const [avaliacoes, setAvaliacoes] = useState([]);
+  const [mediaAvaliacoes, setMediaAvaliacoes] = useState(0);
+
 
   useEffect(() => {
     setUsuario({ ...pessoa, uid: pessoa.id_pessoa });
@@ -48,6 +51,29 @@ export default function PerfilViewScreen({ navigation, route }) {
       })
       .catch((error) => {
         console.error("Erro ao buscar usuário:", error);
+      });
+
+    // Carregar avaliações do usuário
+    const avaliacoesRef = collection(db, "avaliacoes");
+    const q = query(avaliacoesRef, where("uid_usuario_avaliado", "==", usuario.uid));
+
+    getDocs(q)
+      .then((querySnapshot) => {
+        const avaliacoesArray = [];
+        querySnapshot.forEach((doc) => {
+          avaliacoesArray.push(doc.data().nota);
+        });
+        setAvaliacoes(avaliacoesArray);
+
+        // Calcular a média das avaliações
+        if (avaliacoesArray.length > 0) {
+          const somaAvaliacoes = avaliacoesArray.reduce((a, b) => a + b, 0);
+          const media = somaAvaliacoes / avaliacoesArray.length;
+          setMediaAvaliacoes(media);
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar avaliações:", error);
       });
   }, [usuario.uid]);
 
@@ -106,7 +132,7 @@ export default function PerfilViewScreen({ navigation, route }) {
   function VerificaLinkdin() {
     if (usuario?.linkedin_usu != "" || usuario?.linkedin_usu != undefined) {
       setEstadoLinkdin(
-        <TouchableOpacity
+        <Pressable
           onPress={() => openSocialMediaLink(usuario?.linkedin_usu)}
           style={styles.socialMediaIcon}
         >
@@ -114,7 +140,7 @@ export default function PerfilViewScreen({ navigation, route }) {
             source={require("../../assets/img/linkedin.png")}
             style={{ width: 50, height: 50, marginRight: 8 }}
           />
-        </TouchableOpacity>
+        </Pressable>
       );
     } else {
       setEstadoLinkdin("");
@@ -124,7 +150,7 @@ export default function PerfilViewScreen({ navigation, route }) {
   function VerificaInsta() {
     if (usuario?.instagram_usu != "" || usuario?.instagram_usu != undefined) {
       setEstadoInsta(
-        <TouchableOpacity
+        <Pressable
           onPress={() => openSocialMediaLink(usuario?.instagram_usu)}
           style={styles.socialMediaIcon}
         >
@@ -132,106 +158,59 @@ export default function PerfilViewScreen({ navigation, route }) {
             source={require("../../assets/img/instagram.png")}
             style={{ width: 50, height: 50, marginRight: 8 }}
           />
-        </TouchableOpacity>
+        </Pressable>
       );
     } else {
       setEstadoInsta("");
     }
   }
 
-  function VerificaNota() {
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    console.log("SOCOROOO");
-    // Primeiro verifica se há alguma nota registrada no banco
-    // Depois verifica a média das notas com os campo "avalicao" (valor inteiro) e o usuário que registrou "uid" (do auth) e "media" entre esse valores, com notas de 1 a 5
-    // se o usuário resgistrar nota e clicar no botão enviar, a nota será enviada para o banco e a média será calculada
-    // calcular a média das notas e mostrar na tela
-    // mostrar o número de notas que o usuário recebeu
-
-    // const [userRating, setUserRating] = useState(0);
-    // const [averageRating, setAverageRating] = useState(0);
-    // const [numberOfRatings, setNumberOfRatings] = useState(0);
-
-    // verifica se existe uma collection "avaliacoes" no banco
-    // const avaliacoesRef = doc(db, "avaliacao", usuario.uid);
-    // getDoc(avaliacoesRef); // verifica se existe um documento com o uid do usuário avaliado
-
-    // //setar o id da coleção com o uid do usuário avaliado
-
-    // if (usuario?.nota == undefined || usuario?.nota == "") {
-    //   setNota(
-    //     <Text style={styles.subtitulo2}>
-    //       {" "}
-    //       Este usuário não possui notas cadastradas{" "}
-    //     </Text>
-    //   );
-    // } else {
-    //   setNota(<Text style={styles.subtitulo2}>{usuario?.nota}</Text>);
-    // }
-
-    // // Configurar a referência para o banco de dados Firebase
-    // const dbRef = addDoc.database().ref("ratings"); // Certifique-se de que 'db' esteja definido corretamente
-
-    // useEffect(() => {
-    //   // Recuperar as avaliações do Firebase e calcular a média
-    //   dbRef.on("value", (snapshot) => {
-    //     let totalRating = 0;
-    //     let totalRatings = 0;
-
-    //     snapshot.forEach((childSnapshot) => {
-    //       const rating = childSnapshot.val();
-    //       totalRating += rating;
-    //       totalRatings++;
-    //     });
-
-    //     if (totalRatings > 0) {
-    //       setAverageRating(totalRating / totalRatings);
-    //     }
-    //     setNumberOfRatings(totalRatings);
-    //   });
-    // }, []);
-
-    // const handleRatingSubmit = () => {
-    //   // Enviar a nova avaliação para o Firebase
-    //   dbRef.push(userRating);
-    // };
-
-    // return (
-    //   <View>
-    //     <Text>Avaliação Média: {averageRating.toFixed(2)}</Text>
-    //     <Text>Número de Avaliações: {numberOfRatings}</Text>
-    //     <Rating
-    //       type="star"
-    //       ratingCount={5}
-    //       imageSize={40}
-    //       showRating
-    //       onFinishRating={(rating) => setUserRating(rating)}
-    //     />
-    //     <Button title="Enviar Avaliação" onPress={handleRatingSubmit} />
-    //   </View>
-    // );
-  }
-
   useEffect(() => {
     VerificaServico();
     VerificaLinkdin();
     VerificaInsta();
-    VerificaNota();
   }, [usuario.uid]);
+
+  // Função para abrir o modal de avaliação
+  const abrirModalAvaliacao = () => {
+    setModalVisible(true);
+  };
+
+  // Função para fechar o modal de avaliação
+  const fecharModalAvaliacao = () => {
+    setModalVisible(false);
+  };
+
+  // Função para salvar a avaliação no Firebase
+  const salvarAvaliacao = () => {
+  const currentUser = auth.currentUser;
+
+  if (currentUser) {
+    if (usuario.uid && !avaliou) {
+      const avaliacaoRef = collection(db, "avaliacoes");
+      const novaAvaliacao = {
+        uid_usuario_avaliador: currentUser.uid,
+        uid_usuario_avaliado: usuario.uid,
+        nota: avaliacao,
+      };
+
+      // Salvar a avaliação no Firebase
+      addDoc(avaliacaoRef, novaAvaliacao)
+        .then(() => {
+          setAvaliou(true); // Atualizar o estado para indicar que o usuário já avaliou
+          fecharModalAvaliacao(); // Fechar o modal de avaliação
+        })
+        .catch((error) => {
+          console.error("Erro ao salvar a avaliação:", error);
+        });
+    } else if (avaliou) {
+      console.warn("Você já avaliou este perfil.");
+    }
+  } else {
+    console.error("Usuário não autenticado. Faça a autenticação antes de avaliar.");
+    // Adicione aqui a lógica para redirecionar o usuário para a tela de login ou registro.
+  }
+};
 
   return (
     <View style={{ flex: 1 }}>
@@ -265,8 +244,16 @@ export default function PerfilViewScreen({ navigation, route }) {
           <View style={styles.conteudo}>
             <View style={styles.containerInner}>
               <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
-              {/* <TempComponente /> */}
-              <View style={styles.ratingContainer}>{nota}</View>
+
+              <Text style={styles.titulo2}>Avaliações: </Text>
+              <Text style={styles.titulo2}>Avaliação Média: {mediaAvaliacoes.toFixed(2)}</Text>
+              <Button
+                onPress={() => abrirModalAvaliacao()}
+                style={styles.botaoAvaliar}
+              >
+                Avaliar
+              </Button>
+
               <Text style={styles.titulo2}>Nome: </Text>
               <Text style={styles.subtitulo2}>{usuario?.nome_completo}</Text>
               <Text style={styles.titulo2}>Apelido: </Text>
@@ -281,7 +268,7 @@ export default function PerfilViewScreen({ navigation, route }) {
               {estadoServico}
               <Text style={styles.titulo2}>Entrar em Contato:</Text>
               <View style={styles.socialMediaContainer}>
-                <TouchableOpacity onPress={openWhatsAppChat}>
+                <Pressable onPress={openWhatsAppChat}>
                   <View style={styles.socialMediaIcon}>
                     <Image
                       source={require("../../assets/img/whatsapp.png")}
@@ -292,13 +279,13 @@ export default function PerfilViewScreen({ navigation, route }) {
                       }}
                     />
                   </View>
-                </TouchableOpacity>
+                </Pressable>
                 {estadoLinkdin}
                 {estadoInsta}
               </View>
               <Button
                 onPress={() => navigation.goBack()}
-                style={{ ...styles.botao, marginTop: 0 }}
+                style={{ ...styles.botao, marginTop: 30 }}
               >
                 VOLTAR PARA A TELA ANTERIOR
               </Button>
@@ -306,8 +293,106 @@ export default function PerfilViewScreen({ navigation, route }) {
           </View>
         </View>
       </ScrollView>
+
+      {/* Modal de avaliação */}
+      <Modal visible={modalVisible} onDismiss={() => fecharModalAvaliacao()}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalTitle}>Avaliar {usuario.nome_usu}</Text>
+          <Rating
+            onFinishRating={(rating) => setAvaliacao(rating)}
+            style={{ paddingVertical: 10 }}
+            type="star"
+            ratingCount={5}
+            imageSize={40}
+          />
+          <Button
+            style={{ ...styles.botao, marginTop: 10, marginBottom: 0 }}
+            onPress={() => salvarAvaliacao()}
+          >
+            <Text
+              style={{color: "white"}}
+            >Salvar Avaliação</Text>
+          </Button>
+        </View>
+      </Modal>
     </View>
   );
+}
+
+{
+  /*     1
+
+    separar
+
+    Primeiro verifica se há alguma nota registrada no banco
+    Depois verifica a média das notas com os campo "avalicao" (valor inteiro) e o usuário que registrou "uid" (do auth) e "media" entre esse valores, com notas de 1 a 5
+    se o usuário resgistrar nota e clicar no botão enviar, a nota será enviada para o banco e a média será calculada
+    calcular a média das notas e mostrar na tela
+    mostrar o número de notas que o usuário recebeu
+
+    const [userRating, setUserRating] = useState(0);
+    const [averageRating, setAverageRating] = useState(0);
+    const [numberOfRatings, setNumberOfRatings] = useState(0);
+
+    verifica se existe uma collection "avaliacoes" no banco
+    const avaliacoesRef = doc(db, "avaliacao", usuario.uid);
+    getDoc(avaliacoesRef); // verifica se existe um documento com o uid do usuário avaliado
+
+    //setar o id da coleção com o uid do usuário avaliado
+
+    if (usuario?.nota == undefined || usuario?.nota == "") {
+      setNota(
+        <Text style={styles.subtitulo2}>
+          {" "}
+          Este usuário não possui notas cadastradas{" "}
+        </Text>
+      );
+    } else {
+      setNota(<Text style={styles.subtitulo2}>{usuario?.nota}</Text>);
+    }
+
+    // Configurar a referência para o banco de dados Firebase
+    const dbRef = addDoc.database().ref("ratings"); // Certifique-se de que 'db' esteja definido corretamente
+
+    useEffect(() => {
+      // Recuperar as avaliações do Firebase e calcular a média
+      dbRef.on("value", (snapshot) => {
+        let totalRating = 0;
+        let totalRatings = 0;
+
+        snapshot.forEach((childSnapshot) => {
+          const rating = childSnapshot.val();
+          totalRating += rating;
+          totalRatings++;
+        });
+
+        if (totalRatings > 0) {
+          setAverageRating(totalRating / totalRatings);
+        }
+        setNumberOfRatings(totalRatings);
+      });
+    }, []);
+
+    const handleRatingSubmit = () => {
+      // Enviar a nova avaliação para o Firebase
+      dbRef.push(userRating);
+    };
+
+    return (
+      <View>
+        <Text>Avaliação Média: {averageRating.toFixed(2)}</Text>
+        <Text>Número de Avaliações: {numberOfRatings}</Text>
+        <Rating
+          type="star"
+          ratingCount={5}
+          imageSize={40}
+          showRating
+          onFinishRating={(rating) => setUserRating(rating)}
+        />
+        <Button title="Enviar Avaliação" onPress={handleRatingSubmit} />
+      </View>
+    );
+*/
 }
 
 // const TempComponente = () => {
@@ -315,12 +400,9 @@ export default function PerfilViewScreen({ navigation, route }) {
 //   const [averageRating, setAverageRating] = useState(0);
 //   const [numberOfRatings, setNumberOfRatings] = useState(0);
 
-//   // Configurar a referência para o banco de dados Firebase
-//   const dbRef = addDoc.database().ref("ratings"); // Certifique-se de que 'db' esteja definido corretamente
-
 //   useEffect(() => {
 //     // Recuperar as avaliações do Firebase e calcular a média
-//     dbRef.on("value", (snapshot) => {
+//     db("value", (snapshot) => {
 //       let totalRating = 0;
 //       let totalRatings = 0;
 
@@ -357,3 +439,54 @@ export default function PerfilViewScreen({ navigation, route }) {
 //     </View>
 //   );
 // };
+
+// function VerificaNota() {
+//   const usuarioUid = usuario?.uid;
+
+//   const avaliacoesQuery = query(
+//     console.log("Verificando 1"),
+//     collection(db, "avaliacao"),
+//     console.log("Verificando 2"),
+//     where("avaliadoUid", "==", usuarioUid),
+//     console.log("Verificando 3"),
+//   );
+
+//   getDocs(avaliacoesQuery)
+//     .then((querySnapshot) => {
+//       let totalEstrelas = 0;
+//       let totalAvaliacoes = querySnapshot.size;
+
+//       querySnapshot.forEach((doc) => {
+//         const avaliacao = doc.data();
+//         totalEstrelas += avaliacao.estrelas;
+//       });
+
+//       const mediaEstrelas =
+//         totalAvaliacoes > 0 ? totalEstrelas / totalAvaliacoes : 0;
+
+//       console.log("Média de estrelas: " + mediaEstrelas);
+//     })
+//     .catch((error) => {
+//       console.error("Erro ao calcular a média de estrelas: ", error);
+//     });
+
+//     {/*1*/}
+// }
+
+// function avaliarEmpregado() {
+//   const avaliacao = {
+//     avaliadorUid: usuario.uid,
+//     avaliadoUid: usuario?.uid,
+//     estrelas: setEstrelas, // Substitua pelo número de estrelas que o avaliador deu
+//   };
+
+//   const avaliacoesCollection = collection(db, "avaliacoes");
+
+//   addDoc(avaliacoesCollection, avaliacao)
+//     .then(() => {
+//       console.log("Avaliação adicionada com sucesso!");
+//     })
+//     .catch((error) => {
+//       console.error("Erro ao adicionar a avaliação: ", error);
+//     });
+// }
