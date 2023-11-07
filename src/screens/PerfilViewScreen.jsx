@@ -27,7 +27,6 @@ export default function PerfilViewScreen({ navigation, route }) {
   const [avaliacoes, setAvaliacoes] = useState([]);
   const [mediaAvaliacoes, setMediaAvaliacoes] = useState(0);
 
-
   useEffect(() => {
     setUsuario({ ...pessoa, uid: pessoa.id_pessoa });
   }, [pessoa]);
@@ -55,7 +54,10 @@ export default function PerfilViewScreen({ navigation, route }) {
 
     // Carregar avaliações do usuário
     const avaliacoesRef = collection(db, "avaliacoes");
-    const q = query(avaliacoesRef, where("uid_usuario_avaliado", "==", usuario.uid));
+    const q = query(
+      avaliacoesRef,
+      where("uid_usuario_avaliado", "==", usuario.uid)
+    );
 
     getDocs(q)
       .then((querySnapshot) => {
@@ -183,34 +185,40 @@ export default function PerfilViewScreen({ navigation, route }) {
 
   // Função para salvar a avaliação no Firebase
   const salvarAvaliacao = () => {
-  const currentUser = auth.currentUser;
+    const currentUser = auth.currentUser;
 
-  if (currentUser) {
-    if (usuario.uid && !avaliou) {
-      const avaliacaoRef = collection(db, "avaliacoes");
-      const novaAvaliacao = {
-        uid_usuario_avaliador: currentUser.uid,
-        uid_usuario_avaliado: usuario.uid,
-        nota: avaliacao,
-      };
+    if (currentUser) {
+      if (usuario.uid && !avaliou) {
+        const avaliacaoRef = collection(db, "avaliacoes");
+        const novaAvaliacao = {
+          uid_usuario_avaliador: currentUser.uid,
+          uid_usuario_avaliado: usuario.uid,
+          nota: avaliacao,
+        };
 
-      // Salvar a avaliação no Firebase
-      addDoc(avaliacaoRef, novaAvaliacao)
-        .then(() => {
-          setAvaliou(true); // Atualizar o estado para indicar que o usuário já avaliou
-          fecharModalAvaliacao(); // Fechar o modal de avaliação
-        })
-        .catch((error) => {
-          console.error("Erro ao salvar a avaliação:", error);
-        });
-    } else if (avaliou) {
-      console.warn("Você já avaliou este perfil.");
+        // Salvar a avaliação no Firebase
+        addDoc(avaliacaoRef, novaAvaliacao)
+          .then(() => {
+            setAvaliou(true); // Atualizar o estado para indicar que o usuário já avaliou
+            fecharModalAvaliacao(); // Fechar o modal de avaliação
+          })
+          .catch((error) => {
+            console.error("Erro ao salvar a avaliação:", error);
+          });
+      } else if (avaliou) {
+        console.warn("Você já avaliou este perfil.");
+      }
+    } else {
+      console.error(
+        "Usuário não autenticado. Faça a autenticação antes de avaliar."
+      );
+      // Adicione aqui a lógica para redirecionar o usuário para a tela de login ou registro.
     }
-  } else {
-    console.error("Usuário não autenticado. Faça a autenticação antes de avaliar.");
-    // Adicione aqui a lógica para redirecionar o usuário para a tela de login ou registro.
+  };
+
+  function showRating(rating) {
+    console.log("Mizeravi escolheu: ", rating);
   }
-};
 
   return (
     <View style={{ flex: 1 }}>
@@ -224,8 +232,8 @@ export default function PerfilViewScreen({ navigation, route }) {
                 height: 103,
                 borderRadius: 50,
                 alignSelf: "center",
-                marginTop: 10,
-                marginBottom: 10,
+                marginTop: 5,
+                marginBottom: 5,
                 borderColor: "white",
                 borderWidth: 4,
               }}
@@ -240,18 +248,15 @@ export default function PerfilViewScreen({ navigation, route }) {
             >
               {usuario.nome_usu}
             </Text>
+            <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
           </View>
           <View style={styles.conteudo}>
             <View style={styles.containerInner}>
-              <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
-
-              <Text style={styles.titulo2}>Avaliações: </Text>
-              <Text style={styles.titulo2}>Avaliação Média: {mediaAvaliacoes.toFixed(2)}</Text>
               <Button
                 onPress={() => abrirModalAvaliacao()}
                 style={styles.botaoAvaliar}
               >
-                Avaliar
+                Avaliar Prestador
               </Button>
 
               <Text style={styles.titulo2}>Nome: </Text>
@@ -298,20 +303,21 @@ export default function PerfilViewScreen({ navigation, route }) {
       <Modal visible={modalVisible} onDismiss={() => fecharModalAvaliacao()}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Avaliar {usuario.nome_usu}</Text>
+          <Text style={styles.modalText}>{mediaAvaliacoes.toFixed(2)}</Text>
           <Rating
-            onFinishRating={(rating) => setAvaliacao(rating)}
+            // onFinishRating={(rating) => setAvaliacao(rating)}
+            onFinishRating={showRating}
             style={{ paddingVertical: 10 }}
             type="star"
             ratingCount={5}
             imageSize={40}
+            // onDismiss={console.log(this.ratingCompleted)}
           />
           <Button
             style={{ ...styles.botao, marginTop: 10, marginBottom: 0 }}
             onPress={() => salvarAvaliacao()}
           >
-            <Text
-              style={{color: "white"}}
-            >Salvar Avaliação</Text>
+            <Text style={{ color: "white" }}>Salvar Avaliação</Text>
           </Button>
         </View>
       </Modal>

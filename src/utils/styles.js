@@ -309,12 +309,13 @@ export const styles = StyleSheet.create({
 
   tipoconta: {
     padding: 10,
-    width: 100,
+    alignSelf: "center",
     borderRadius: 100,
-    backgroundColor: "#16337E",
-    color: "white",
+    backgroundColor: "white",
+    color: "#16337E",
     textAlign: "center",
-    marginBottom: 15,
+    marginBottom: 10,
+    marginTop: 10,
     fontWeight: "bold",
   },
   servicos: {
@@ -346,13 +347,20 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
-  botaoAvaliar: {
-    width: 80,
-    borderRadius: 5,
-    backgroundColor: "grey",
-    color: "white",
+  modalText: {
+    fontSize: 17,
+    marginBottom: 12,
     textAlign: "center",
+  },
+  botaoAvaliar: {
+    alignSelf: "center",
+    alignContent: "left",
+    alignItems: "left",
+    borderRadius: 5,
+    backgroundColor: "#16337E",
+    color: "White",
     marginBottom: 15,
     fontWeight: "bold",
+    marginTop: 15,
   },
 });
