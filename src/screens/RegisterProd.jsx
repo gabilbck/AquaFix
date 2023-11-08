@@ -17,6 +17,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 
 export default function RegisterProd({ navigation }) {
   const [nomeProd, setNomeProd] = useState("");
@@ -35,14 +36,21 @@ export default function RegisterProd({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
-
+  
     if (!result.canceled) {
-      setImagemProd(result.uri);
+      const resizedImage = await resizeImage(result.uri);
+      setImagemProd(resizedImage.uri);
     }
   };
-
+  
+  const resizeImage = async (uri) => {
+    const manipResult = await ImageManipulator.manipulateAsync(
+      uri,
+      [{ resize: { width: 800 } }], // Redimensiona a largura da imagem para 800 pixels (ou outro valor desejado)
+      { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
+    );
+    return manipResult;
+  };
 
   const uploadImageToFirebase = async () => {
     try {

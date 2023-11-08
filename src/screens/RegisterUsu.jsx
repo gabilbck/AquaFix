@@ -36,20 +36,28 @@ export default function RegisterUsu({ navigation }) {
   const [erroSenha, setErroSenha] = useState("");
   const [whatsappUsuError, setWhatsappUsuError] = useState("");
   const [adisobreError, setAdicionarSobreError] = useState("");
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        console.log(result);
-
-        if (!result.canceled) {
-            setImage(result.assets[0].uri);
-        }
-    };
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+  
+    if (!result.canceled) {
+      const resizedImage = await resizeImage(result.uri);
+      setImage(resizedImage.uri);
+    }
+  };
+  
+  const resizeImage = async (uri) => {
+    const manipResult = await ImageManipulator.manipulateAsync(
+      uri,
+      [{ resize: { width: 800 } }], // Redimensiona a largura da imagem para 800 pixels (ou outro valor desejado)
+      { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
+    );
+    return manipResult;
+  };
 
     const uploadImageToFirebase = async () => {
       try {

@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 
 export default function RegisterAuto({ navigation }) {
   const [adisobre, setAdicionarSobre] = useState("");
@@ -55,18 +56,24 @@ export default function RegisterAuto({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-
+  
     if (!result.canceled) {
-      const fileSize = result.fileSize / (1024 * 1024); // Tamanho da imagem em MB
-      if (fileSize > 1) {
-        setErrImage("A imagem selecionada excede 1 MB de tamanho.");
-        setImage(null); // Limpa a imagem selecionada
-      } else {
-        setErrImage(""); // Limpa a mensagem de erro
-        setImage(result.uri); // Define a imagem selecionada no estado
-      }
+      const resizedImage = await resizeImage(result.uri);
+      setImage(resizedImage.uri);
     }
   };
+  
+  const resizeImage = async (uri) => {
+    const manipResult = await ImageManipulator.manipulateAsync(
+      uri,
+      [{ resize: { width: 800 } }], // Redimensiona a largura da imagem para 800 pixels (ou outro valor desejado)
+      { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
+    );
+    return manipResult;
+  };
+  
+  
+
 
   const uploadImageToFirebase = async () => {
     try {
@@ -248,11 +255,6 @@ export default function RegisterAuto({ navigation }) {
 
     if (getImage == null) {
       setErrImage("Escolha uma imagem");
-      return;
-    }
-    
-    if (ErrImage !== "") {
-      // Se houver erro na imagem, não permita o registro
       return;
     }
 

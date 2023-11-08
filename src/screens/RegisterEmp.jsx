@@ -16,6 +16,7 @@ import { cnpj } from "cpf-cnpj-validator";
 import * as ImagePicker from "expo-image-picker";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Image } from "expo-image";
+import * as ImageManipulator from "expo-image-manipulator";
 
 export default function RegisterEmp({ navigation }) {
   const [nomeUsu, setNomeUsu] = useState("");
@@ -53,12 +54,20 @@ export default function RegisterEmp({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
-
+  
     if (!result.canceled) {
-      setImage(result.uri);
+      const resizedImage = await resizeImage(result.uri);
+      setImage(resizedImage.uri);
     }
+  };
+  
+  const resizeImage = async (uri) => {
+    const manipResult = await ImageManipulator.manipulateAsync(
+      uri,
+      [{ resize: { width: 800 } }], // Redimensiona a largura da imagem para 800 pixels (ou outro valor desejado)
+      { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
+    );
+    return manipResult;
   };
 
   const uploadImageToFirebase = async () => {
