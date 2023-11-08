@@ -56,10 +56,15 @@ export default function RegisterAuto({ navigation }) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
-      setImage(result.uri);
+      const fileSize = result.fileSize / (1024 * 1024); // Tamanho da imagem em MB
+      if (fileSize > 1) {
+        setErrImage("A imagem selecionada excede 1 MB de tamanho.");
+        setImage(null); // Limpa a imagem selecionada
+      } else {
+        setErrImage(""); // Limpa a mensagem de erro
+        setImage(result.uri); // Define a imagem selecionada no estado
+      }
     }
   };
 
@@ -70,15 +75,16 @@ export default function RegisterAuto({ navigation }) {
 
       const storageRef = ref(storage, "foto_usu/" + Date.now());
       const uploadTask = uploadBytesResumable(storageRef, blob);
-
+  
       await uploadTask;
-
+  
       const imageURL = await getDownloadURL(storageRef);
       setImageToFirebase(imageURL);
     } catch (error) {
       console.error("Error uploading image: ", error);
     }
   };
+  
 
   const setImageToFirebase = async (url) => {
     try {
@@ -242,6 +248,11 @@ export default function RegisterAuto({ navigation }) {
 
     if (getImage == null) {
       setErrImage("Escolha uma imagem");
+      return;
+    }
+    
+    if (ErrImage !== "") {
+      // Se houver erro na imagem, não permita o registro
       return;
     }
 
