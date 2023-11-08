@@ -22,10 +22,9 @@ export default function PerfilViewScreen({ navigation, route }) {
   const [estadoInsta, setEstadoInsta] = useState("");
   const { pessoa } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
-  const [avaliacao, setAvaliacao] = useState(0);
-  const [avaliou, setAvaliou] = useState(false); // Adicione o estado para controlar se o usuário já avaliou
-  const [avaliacoes, setAvaliacoes] = useState([]);
   const [mediaAvaliacoes, setMediaAvaliacoes] = useState(0);
+  const [avaliacoes, setAvaliacoes] = useState([]);
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     setUsuario({ ...pessoa, uid: pessoa.id_pessoa });
@@ -34,6 +33,7 @@ export default function PerfilViewScreen({ navigation, route }) {
   useEffect(() => {
     if (!usuario.uid) return;
     const usuarioRef = doc(db, "usuario", usuario.uid);
+    console.log("usuarioRef", usuarioRef);
     getDoc(usuarioRef)
       .then((docSnapshot) => {
         if (docSnapshot.exists()) {
@@ -52,31 +52,31 @@ export default function PerfilViewScreen({ navigation, route }) {
         console.error("Erro ao buscar usuário:", error);
       });
 
-    // Carregar avaliações do usuário
-    const avaliacoesRef = collection(db, "avaliacoes");
-    const q = query(
-      avaliacoesRef,
-      where("uid_usuario_avaliado", "==", usuario.uid)
-    );
+    // // Carregar avaliações do usuário
+    // const avaliacoesRef = collection(db, "avaliacoes");
+    // const q = query(
+    //   avaliacoesRef,
+    //   where("uid_usuario_avaliado", "==", usuario.uid)
+    // );
 
-    getDocs(q)
-      .then((querySnapshot) => {
-        const avaliacoesArray = [];
-        querySnapshot.forEach((doc) => {
-          avaliacoesArray.push(doc.data().nota);
-        });
-        setAvaliacoes(avaliacoesArray);
+    // getDocs(q)
+    //   .then((querySnapshot) => {
+    //     const avaliacoesArray = [];
+    //     querySnapshot.forEach((doc) => {
+    //       avaliacoesArray.push(doc.data().nota);
+    //     });
+    //     setAvaliacoes(avaliacoesArray);
 
-        // Calcular a média das avaliações
-        if (avaliacoesArray.length > 0) {
-          const somaAvaliacoes = avaliacoesArray.reduce((a, b) => a + b, 0);
-          const media = somaAvaliacoes / avaliacoesArray.length;
-          setMediaAvaliacoes(media);
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar avaliações:", error);
-      });
+    //     // Calcular a média das avaliações
+    //     if (avaliacoesArray.length > 0) {
+    //       const somaAvaliacoes = avaliacoesArray.reduce((a, b) => a + b, 0);
+    //       const media = somaAvaliacoes / avaliacoesArray.length;
+    //       setMediaAvaliacoes(media);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Erro ao buscar avaliações:", error);
+    //   });
   }, [usuario.uid]);
 
   const openWhatsAppChat = () => {
@@ -167,57 +167,53 @@ export default function PerfilViewScreen({ navigation, route }) {
     }
   }
 
+  function abrirModalAvaliacao() {
+    setModalVisible(true);
+  }
+
   useEffect(() => {
     VerificaServico();
     VerificaLinkdin();
     VerificaInsta();
   }, [usuario.uid]);
 
-  // Função para abrir o modal de avaliação
-  const abrirModalAvaliacao = () => {
-    setModalVisible(true);
-  };
-
-  // Função para fechar o modal de avaliação
-  const fecharModalAvaliacao = () => {
-    setModalVisible(false);
-  };
-
-  // Função para salvar a avaliação no Firebase
-  const salvarAvaliacao = () => {
-    const currentUser = auth.currentUser;
-
-    if (currentUser) {
-      if (usuario.uid && !avaliou) {
-        const avaliacaoRef = collection(db, "avaliacoes");
-        const novaAvaliacao = {
-          uid_usuario_avaliador: currentUser.uid,
-          uid_usuario_avaliado: usuario.uid,
-          nota: avaliacao,
-        };
-
-        // Salvar a avaliação no Firebase
-        addDoc(avaliacaoRef, novaAvaliacao)
-          .then(() => {
-            setAvaliou(true); // Atualizar o estado para indicar que o usuário já avaliou
-            fecharModalAvaliacao(); // Fechar o modal de avaliação
-          })
-          .catch((error) => {
-            console.error("Erro ao salvar a avaliação:", error);
-          });
-      } else if (avaliou) {
-        console.warn("Você já avaliou este perfil.");
-      }
-    } else {
-      console.error(
-        "Usuário não autenticado. Faça a autenticação antes de avaliar."
-      );
-      // Adicione aqui a lógica para redirecionar o usuário para a tela de login ou registro.
-    }
-  };
-
   function showRating(rating) {
-    console.log("Mizeravi escolheu: ", rating);
+    console.log("Rating: ", rating);
+    setRating(rating);
+  }
+
+  function salvarAvaliacao() {
+    const currentUser = auth.currentUser;
+    const usuarioAvaliado = usuario?.uid;
+    const user = auth.currentUser;
+
+    if (user != null) {
+      const uid = user.uid;
+      console.log(uid);
+    } else {
+      console.log("Precisamos trazer o uId de alguem lugar, aqui nao tá:");
+    }
+    console.log(
+      "Precisamos trazer o uId de alguem lugar, aqui nao tá:",
+      usuario
+    );
+
+    if (usuarioAvaliado) {
+      // Call addDoc and add the document
+      addDoc(collection(db, "avaliacoes"), {
+        rating: rating,
+        uid_usuario_avaliado: usuarioAvaliado,
+        uid_usuario_avaliador: currentUser.uid,
+      })
+        .then(() => {
+          console.log("Avaliação adicionada com sucesso!");
+        })
+        .catch((error) => {
+          console.error("Erro ao adicionar a avaliação: ", error);
+        });
+    } else {
+      console.error("usuarioAvaliado is undefined or invalid.");
+    }
   }
 
   return (
@@ -325,8 +321,7 @@ export default function PerfilViewScreen({ navigation, route }) {
   );
 }
 
-{
-  /*     1
+/*     1
 
     separar
 
@@ -399,7 +394,6 @@ export default function PerfilViewScreen({ navigation, route }) {
       </View>
     );
 */
-}
 
 // const TempComponente = () => {
 //   const [userRating, setUserRating] = useState(0);
