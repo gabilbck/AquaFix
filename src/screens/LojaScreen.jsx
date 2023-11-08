@@ -16,7 +16,7 @@ import {
 import { Image } from "expo-image";
 import { Linking } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+ 
 export default function LojaScreen() {
   const navigation = useNavigation();
   const [usuario, setUsuario] = useState({});
@@ -26,7 +26,7 @@ export default function LojaScreen() {
   const [publicacoes, setPublicacoes] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [produtos, setProdutos] = useState([]);
-
+ 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -47,19 +47,19 @@ export default function LojaScreen() {
         setIsAdmin(false);
       }
     });
-
+ 
     carregarPublicacoes();
     carregarProdutos();
-
+ 
     return () => {
       unsub();
     };
   }, []);
-
+ 
   const carregarProdutos = async () => {
     try {
       const produtosQuerySnapshot = await getDocs(collection(db, "produto"));
-
+ 
       const produtosData = produtosQuerySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
@@ -69,13 +69,13 @@ export default function LojaScreen() {
           preco_prod: data.preco_prod,
         };
       });
-
+ 
       setProdutos(produtosData);
     } catch (error) {
       console.error("Erro ao buscar produtos: ", error);
     }
   };
-
+ 
   const carregarPublicacoes = async () => {
     try {
       const querySnapshot = await getDocs(
@@ -87,19 +87,19 @@ export default function LojaScreen() {
       console.error("Erro ao buscar publicações: ", error);
     }
   };
-
+ 
   const handleCadastro = async () => {
     if (titulo && texto && link) {
       try {
         const publicacaoId = Date.now();
-
+ 
         const docRef = await addDoc(collection(db, "publi_adm"), {
           id: publicacaoId,
           titulo_puli_adm: titulo,
           texto,
           link,
         });
-
+ 
         console.log("Documento cadastrado com ID: ", docRef.id);
         setTitulo("");
         setTexto("");
@@ -115,7 +115,7 @@ export default function LojaScreen() {
       console.warn("Preencha todos os campos.");
     }
   };
-
+ 
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -161,7 +161,12 @@ export default function LojaScreen() {
                             marginTop: 0,
                             width: "100%",
                           }}
-                          onPress={() => navigation.navigate("VerProdScreen")}
+                          onPress={() => navigation.navigate("VerProdScreen",{
+                            foto_prod: produto.foto_prod,
+                            preco_pro: produto.preco_prod,
+                            nome_prod: produto.nome_prod,
+                            desc_prod: produto.desc_prod,
+                          })}
                         >
                           <Text style={{ color: "black", fontWeight: "bold" }}>
                             VER
