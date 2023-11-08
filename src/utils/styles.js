@@ -363,4 +363,72 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 15,
   },
+
+  backButton: {
+    marginTop: 10,
+    fontSize: 17,
+    padding: 4,
+    backgroundColor: "#808080", 
+    borderRadius: 10,
+    color: "white",
+    textDecorationColor: "white",
+    alignSelf: "center",
+    marginVertical: 10,
+  },
+
+  button: {
+    fontSize: 17,
+    padding: 4,
+    backgroundColor: "red",
+    borderRadius: 10,
+    color: "white",
+    textDecorationColor: "white",
+    alignSelf: "center",
+    marginBottom: 20,
+  },
+  
+  imageContainer: {
+    backgroundColor: "#16337E", 
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    marginBottom: 20,
+  },
+
+  productName: {
+    color: "white", // Altere para a cor desejada
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 10,
+  },
+
+  productPrice: {
+    color: "white", // Altere para a cor desejada
+    fontSize: 18,
+    marginTop: 5,
+  },
+
+  productDescription: {
+    color: "white", // Altere para a cor desejada
+    fontSize: 16,
+    marginTop: 10,
+  },
+
+  addToCartButton: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 15,
+    alignItems: "center",
+    marginTop: 20,
+  },
+
+  addToCartButtonText: {
+    color: "#16337E", // Altere para a cor desejada
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
+  
+
 });
+
