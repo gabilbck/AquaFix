@@ -71,9 +71,6 @@ export default function RegisterAuto({ navigation }) {
     );
     return manipResult;
   };
-  
-  
-
 
   const uploadImageToFirebase = async () => {
     try {
