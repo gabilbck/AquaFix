@@ -13,12 +13,12 @@ import {
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../config/firebase";
-
+ 
 export default function VerProdScreen({ route, navigation }) {
   const { nome_prod, foto_prod, desc_prod, preco_prod, user_id } = route.params;
   const [usuario, setUsuario] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
-
+ 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -28,21 +28,21 @@ export default function VerProdScreen({ route, navigation }) {
         console.log("Usuário não logado");
       }
     });
-
+ 
     return () => {
       unsub();
     };
   }, []);
-
+ 
   useEffect(() => {
     // verifica se uid não é vazio
     if (!usuario.uid) return;
-
+ 
     // referência ao documento no Firestore usando o UID do usuário
     const usuarioRef = doc(db, "usuario", usuario.uid);
-
+ 
     console.log("Buscando usuário com UID: ", usuario.uid);
-
+ 
     // busca o documento
     getDoc(usuarioRef)
       .then((docSnapshot) => {
@@ -65,14 +65,14 @@ export default function VerProdScreen({ route, navigation }) {
         console.error("Erro ao buscar usuário:", error);
       });
   }, [usuario.uid]);
-
+ 
   const handleDeleteProduct = async () => {
     try {
       if (isAdmin) {
         const querySnapshot = await getDocs(
           query(collection(db, "produto"), where("nome_prod", "==", nome_prod))
         );
-
+ 
         if (!querySnapshot.empty) {
           const docToDelete = querySnapshot.docs[0];
           await deleteDoc(doc(db, "produto", docToDelete.id));
@@ -91,7 +91,7 @@ export default function VerProdScreen({ route, navigation }) {
       console.error("Error deleting product:", error.message);
     }
   };
-
+ 
   const handleAddToCart = () => {
     navigation.navigate("CarrinhoScreen", {
       nome_prod,
@@ -103,7 +103,7 @@ export default function VerProdScreen({ route, navigation }) {
     console.log("Produto adicionado ao carrinho!");
     navigation.navigate("CarrinhoScreen");
   };
-
+ 
   return (
     <View style={styles.container}>
       <View style={styles.imagemTopo}>
@@ -156,7 +156,6 @@ export default function VerProdScreen({ route, navigation }) {
               </Button>
             </Card.Content>
           </Card>
-
           <Button
             style={{
               backgroundColor: "#16337E",
