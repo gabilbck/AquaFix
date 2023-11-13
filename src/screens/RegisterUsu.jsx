@@ -13,6 +13,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 
 export default function RegisterUsu({ navigation }) {
   const [adisobre, setAdicionarSobre] = useState("");
@@ -36,6 +37,8 @@ export default function RegisterUsu({ navigation }) {
   const [erroSenha, setErroSenha] = useState("");
   const [whatsappUsuError, setWhatsappUsuError] = useState("");
   const [adisobreError, setAdicionarSobreError] = useState("");
+  const [senhaError, setSenhaError] = useState("");
+  const [erroUser, setErroUser] = useState("");
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
