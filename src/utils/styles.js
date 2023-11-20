@@ -82,6 +82,13 @@ export const styles = StyleSheet.create({
     color: "#16337E",
     fontSize: 15,
   },
+  subtitulo3: {
+    textAlign: "left",
+    color: "white",
+    fontSize: 15,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
   input: {
     height: 50,
     width: "100%",
@@ -186,6 +193,18 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 10,
   },
+  botaovermelho3: {
+    marginBottom: 10,
+    fontSize: 17,
+    padding: 4,
+    backgroundColor: "#e82c3c",
+    borderRadius: 5,
+    color: "white",
+    textDecorationColor: "white",
+    alignSelf: "center",
+    marginVertical: 10,
+    marginTop: 20,
+  },
   botaoedit: {
     marginTop: 15,
     fontSize: 17,
@@ -255,6 +274,16 @@ export const styles = StyleSheet.create({
     height: 90, // Ajuste o tamanho conforme necessário
     borderRadius: 13,
   },
+  imagemProduto3: {
+    marginVertical: 20,
+    marginBottom: 35,
+    width: 320, // Set the width to your desired value
+    height: 220, // Set the height to your desired value
+    alignSelf: 'center',
+    borderRadius: 10,
+  },
+  
+  
   card: {
     backgroundColor: "#16337e",
     marginVertical: 10,
