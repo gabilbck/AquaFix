@@ -24,33 +24,60 @@ export default function PerfilViewScreen({ navigation, route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [mediaAvaliacoes, setMediaAvaliacoes] = useState(0);
   const [avaliacoes, setAvaliacoes] = useState([]);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState();
 
   useEffect(() => {
-    setUsuario({ ...pessoa, uid: pessoa.id_pessoa });
+    setUsuario({ ...pessoa, uid: pessoa.nome_usu });
+    console.log("Pessoa: ", pessoa);
   }, [pessoa]);
 
-  useEffect(() => {
-    if (!usuario.uid) return;
-    const usuarioRef = doc(db, "usuario", usuario.uid);
-    console.log("usuarioRef", usuarioRef);
-    getDoc(usuarioRef)
-      .then((docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const userData = docSnapshot.data();
-          setUsuario(userData);
-          if (userData.whatsapp_usu) {
-            userData.whatsapp_usu = extractCleanPhoneNumber(
-              userData.whatsapp_usu
-            );
-          }
-        } else {
-          console.log("Usuário não encontrado !!!");
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar usuário:", error);
-      });
+  // useEffect(() => {
+  //   if (!usuario.uid) return;
+  //   const usuarioRef = doc(db, "usuario", usuario.uid);
+
+  //   getDoc(usuarioRef)
+  //     .then((docSnapshot) => {
+  //       if (docSnapshot.exists()) {
+  //         const userData = docSnapshot.data();
+  //         setUsuario(userData);
+  //         if (userData.whatsapp_usu) {
+  //           userData.whatsapp_usu = extractCleanPhoneNumber(
+  //             userData.whatsapp_usu
+  //           );
+  //         }
+  //       } else {
+  //         console.log("Usuário não encontrado !!!");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erro ao buscar usuário:", error);
+  //     });
+
+  //     const avaliacoesRef = collection(db, "avaliacoes");
+  //   const q = query(
+  //     avaliacoesRef,
+  //     where("uid_usuario_avaliado", "==", usuario.uid)
+  //   );
+
+  //   getDocs(q)
+  //     .then((querySnapshot) => {
+  //       const avaliacoesArray = [];
+  //       querySnapshot.forEach((doc) => {
+  //         avaliacoesArray.push(doc.data().rating);
+  //       });
+  //       setNumberOfRatings(avaliacoesArray.length);
+
+  //       // Calcular a média das avaliações
+  //       if (avaliacoesArray.length > 0) {
+  //         const somaAvaliacoes = avaliacoesArray.reduce((a, b) => a + b, 0);
+  //         const media = somaAvaliacoes / avaliacoesArray.length;
+  //         setAverageRating(media);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erro ao buscar avaliações:", error);
+  //     });
+  // }, [usuario.uid]);
 
     // // Carregar avaliações do usuário
     // const avaliacoesRef = collection(db, "avaliacoes");
@@ -77,7 +104,6 @@ export default function PerfilViewScreen({ navigation, route }) {
     //   .catch((error) => {
     //     console.error("Erro ao buscar avaliações:", error);
     //   });
-  }, [usuario.uid]);
 
   const openWhatsAppChat = () => {
     if (usuario?.whatsapp_usu) {
@@ -175,46 +201,71 @@ export default function PerfilViewScreen({ navigation, route }) {
     VerificaServico();
     VerificaLinkdin();
     VerificaInsta();
+    loadAvaliacoes();
   }, [usuario.uid]);
+
+  const loadAvaliacoes = async () => {
+    try {
+      const avaliacoesRef = collection(db, "avaliacao");
+      const q = query(
+        avaliacoesRef,
+        where("uid_usuario_avaliado", "==", usuario.uid)
+      );
+      const querySnapshot = await getDocs(q);
+
+      let totalRating = 0;
+      let count = 0;
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        totalRating += data.rating;
+        count += 1;
+      });
+
+      if (count > 0) {
+        const averageRating = totalRating / count;
+        setMediaAvaliacoes(averageRating);
+      } else {
+        setMediaAvaliacoes(0);
+      }
+
+      // Set the ratings for displaying in the modal
+      setAvaliacoes(querySnapshot.docs.map((doc) => doc.data().rating));
+    } catch (error) {
+      console.error("Error loading ratings: ", error);
+    }
+  };
 
   function showRating(rating) {
     console.log("Rating: ", rating);
     setRating(rating);
   }
-
-  function salvarAvaliacao() {
+  const handleRatingSubmit = async () => {
     const currentUser = auth.currentUser;
     const usuarioAvaliado = usuario?.uid;
-    const user = auth.currentUser;
-
-    if (user != null) {
-      const uid = user.uid;
-      console.log(uid);
-    } else {
-      console.log("Precisamos trazer o uId de alguem lugar, aqui nao tá:");
-    }
-    console.log(
-      "Precisamos trazer o uId de alguem lugar, aqui nao tá:",
-      usuario
-    );
-
+  
     if (usuarioAvaliado) {
+  
       // Call addDoc and add the document
-      addDoc(collection(db, "avaliacoes"), {
+      addDoc(collection(db, "avaliacao"), {
         rating: rating,
         uid_usuario_avaliado: usuarioAvaliado,
         uid_usuario_avaliador: currentUser.uid,
       })
         .then(() => {
           console.log("Avaliação adicionada com sucesso!");
+          // Limpar o estado de rating após a avaliação ser salva
+          setRating(0);
+          // Fechar o modal após a avaliação ser salva
+          setModalVisible(false);
         })
         .catch((error) => {
           console.error("Erro ao adicionar a avaliação: ", error);
         });
-    } else {
-      console.error("usuarioAvaliado is undefined or invalid.");
-    }
-  }
+      } else {
+        console.error("usuarioAvaliado is undefined or invalid.");
+      }
+    };
 
   return (
     <View style={{ flex: 1 }}>
@@ -242,6 +293,7 @@ export default function PerfilViewScreen({ navigation, route }) {
                 marginTop: 7,
               }}
             >
+              
               {usuario.nome_usu}
             </Text>
             <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
@@ -296,22 +348,20 @@ export default function PerfilViewScreen({ navigation, route }) {
       </ScrollView>
 
       {/* Modal de avaliação */}
-      <Modal visible={modalVisible} onDismiss={() => fecharModalAvaliacao()}>
+      <Modal visible={modalVisible} animationType="slide" onDismiss={() => fecharModalAvaliacao()}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Avaliar {usuario.nome_usu}</Text>
           <Text style={styles.modalText}>{mediaAvaliacoes.toFixed(2)}</Text>
           <Rating
-            // onFinishRating={(rating) => setAvaliacao(rating)}
             onFinishRating={showRating}
             style={{ paddingVertical: 10 }}
             type="star"
             ratingCount={5}
             imageSize={40}
-            // onDismiss={console.log(this.ratingCompleted)}
           />
           <Button
             style={{ ...styles.botao, marginTop: 10, marginBottom: 0 }}
-            onPress={() => salvarAvaliacao()}
+            onPress={() => handleRatingSubmit()}
           >
             <Text style={{ color: "white" }}>Salvar Avaliação</Text>
           </Button>
