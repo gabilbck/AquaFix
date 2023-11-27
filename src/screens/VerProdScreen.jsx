@@ -52,7 +52,7 @@ export default function VerProdScreen({ route, navigation }) {
 
           console.log("Usuário encontrado: ", userData);
 
-          // precisa veriricar se user.adm é do FIRESTORE
+          // precisa verificar se user.adm é do FIRESTORE
           setIsAdmin(userData.adm === true ? true : false); // Defina como true se for um administrador
           console.log("Usuário é admin: ", userData.adm);
           console.log("Usuário é: ", userData);
@@ -150,7 +150,7 @@ export default function VerProdScreen({ route, navigation }) {
                   fontSize: 15,
                   fontWeight: "bold",
                 }}
-                onPress={handleAddToCart}
+                onPress={addToCart}
               >
                 ADICIONAR AO CARRINHO
               </Button>
