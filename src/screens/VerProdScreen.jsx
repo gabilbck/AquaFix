@@ -13,12 +13,12 @@ import {
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../config/firebase";
- 
+
 export default function VerProdScreen({ route, navigation }) {
-  const { nome_prod, foto_prod, desc_prod, preco_prod, user_id } = route.params;
+  const { nome_prod, foto_prod, desc_prod, preco_prod } = route.params;
   const [usuario, setUsuario] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
- 
+
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -28,32 +28,27 @@ export default function VerProdScreen({ route, navigation }) {
         console.log("Usuário não logado");
       }
     });
- 
+
     return () => {
       unsub();
     };
   }, []);
- 
+
   useEffect(() => {
-    // verifica se uid não é vazio
     if (!usuario.uid) return;
- 
-    // referência ao documento no Firestore usando o UID do usuário
+
     const usuarioRef = doc(db, "usuario", usuario.uid);
- 
+
     console.log("Buscando usuário com UID: ", usuario.uid);
- 
-    // busca o documento
+
     getDoc(usuarioRef)
       .then((docSnapshot) => {
         if (docSnapshot.exists()) {
-          // pega os dados do documento
           const userData = docSnapshot.data();
 
           console.log("Usuário encontrado: ", userData);
 
-          // precisa verificar se user.adm é do FIRESTORE
-          setIsAdmin(userData.adm === true ? true : false); // Defina como true se for um administrador
+          setIsAdmin(userData.adm === true ? true : false);
           console.log("Usuário é admin: ", userData.adm);
           console.log("Usuário é: ", userData);
           setUsuario(userData);
@@ -65,45 +60,48 @@ export default function VerProdScreen({ route, navigation }) {
         console.error("Erro ao buscar usuário:", error);
       });
   }, [usuario.uid]);
- 
+
   const handleDeleteProduct = async () => {
     try {
       if (isAdmin) {
         const querySnapshot = await getDocs(
           query(collection(db, "produto"), where("nome_prod", "==", nome_prod))
         );
- 
+
         if (!querySnapshot.empty) {
           const docToDelete = querySnapshot.docs[0];
           await deleteDoc(doc(db, "produto", docToDelete.id));
           console.log("Produto excluído com sucesso!");
           navigation.navigate("LojaScreen");
         } else {
-          console.error("Document not found based on nome_prod:", nome_prod);
+          console.error("Documento não encontrado com base em nome_prod:", nome_prod);
         }
       } else {
         Alert.alert(
-          "Permission Denied",
-          "You do not have permission to delete products."
+          "Permissão Negada",
+          "Você não tem permissão para excluir produtos."
         );
       }
     } catch (error) {
-      console.error("Error deleting product:", error.message);
+      console.error("Erro ao excluir o produto:", error.message);
     }
   };
- 
+
   const handleAddToCart = () => {
-    navigation.navigate("CarrinhoScreen", {
-      nome_prod,
-      foto_prod,
-      desc_prod,
-      preco_prod,
-      user_id,
-    });
-    console.log("Produto adicionado ao carrinho!");
-    navigation.navigate("CarrinhoScreen");
+    if (route.params && route.params.user_id) {
+      navigation.navigate("CarrinhoScreen", {
+        nome_prod,
+        foto_prod,
+        desc_prod,
+        preco_prod,
+        user_id: route.params.user_id,
+      });
+      console.log("Produto adicionado ao carrinho!");
+    } else {
+      console.error("user_id não está definido em route.params");
+    }
   };
- 
+
   return (
     <View style={styles.container}>
       <View style={styles.imagemTopo}>
@@ -124,7 +122,7 @@ export default function VerProdScreen({ route, navigation }) {
               <Text style={styles.subtitulo3}>Nome: {nome_prod}</Text>
               <Text style={styles.subtitulo3}>Preço: {preco_prod}</Text>
               <Text style={styles.subtitulo3}>Descrição: {desc_prod}</Text>
-              {isAdmin && usuario.uid === user_id && (
+              {isAdmin && usuario.uid === route.params.user_id && (
                 <Button
                   style={styles.botaovermelho3}
                   labelStyle={{
@@ -150,7 +148,7 @@ export default function VerProdScreen({ route, navigation }) {
                   fontSize: 15,
                   fontWeight: "bold",
                 }}
-                onPress={addToCart}
+                onPress={handleAddToCart}
               >
                 ADICIONAR AO CARRINHO
               </Button>
