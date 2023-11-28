@@ -275,7 +275,7 @@ export default function PerfilViewScreen({ navigation, route }) {
       {/* Modal de avaliação */}
       <Modal visible={modalVisible} animationType="slide" onDismiss={() => fecharModalAvaliacao()}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Avaliar @{usuario.nome_usu}</Text>
+          <Text style={styles.modalTitle}>Avaliar: {usuario.nome_usu}</Text>
           <Text style={styles.modalText}>{mediaAvaliacoes.toFixed(2)}</Text>
           <Rating
             onFinishRating={showRating}
