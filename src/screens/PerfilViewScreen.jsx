@@ -317,7 +317,7 @@ export default function PerfilViewScreen({ navigation, route }) {
               <Text style={styles.subtitulo2}>{usuario?.bio_usu}</Text>
               <Text style={styles.titulo2}>Telefone para contato:</Text>
               <Text style={styles.subtitulo2}>{usuario?.whatsapp_usu}</Text>
-              <Text style={styles.titulo2}>Serviços que você oferece:</Text>
+              <Text style={styles.titulo2}>Serviços oferecidos:</Text>
               {estadoServico}
               <Text style={styles.titulo2}>Entrar em Contato:</Text>
               <View style={styles.socialMediaContainer}>
