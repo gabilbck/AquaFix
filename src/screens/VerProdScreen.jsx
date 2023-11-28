@@ -7,9 +7,8 @@ import {
   query,
   where,
   getDoc,
-  getDocs,
-  collection,
   deleteDoc,
+  collection,
   addDoc,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
@@ -65,22 +64,36 @@ export default function VerProdScreen({ route, navigation }) {
   const handleDeleteProduct = async () => {
     try {
       if (isAdmin) {
-        const querySnapshot = await getDocs(
-          query(collection(db, "produto"), where("nome_prod", "==", nome_prod))
-        );
+        Alert.alert(
+          "Confirm Deletion",
+          "Are you sure you want to delete this product?",
+          [
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+            {
+              text: "Delete",
+              onPress: async () => {
+                const querySnapshot = await getDoc(
+                  query(collection(db, "produto"), where("nome_prod", "==", nome_prod))
+                );
 
-        if (!querySnapshot.empty) {
-          const docToDelete = querySnapshot.docs[0];
-          await deleteDoc(doc(db, "produto", docToDelete.id));
-          console.log("Produto excluído com sucesso!");
-          navigation.navigate("LojaScreen");
-        } else {
-          console.error("Documento não encontrado com base em nome_prod:", nome_prod);
-        }
+                if (querySnapshot.exists()) {
+                  await deleteDoc(doc(db, "produto", querySnapshot.id));
+                  console.log("Produto excluído com sucesso!");
+                  navigation.navigate("LojaScreen");
+                } else {
+                  console.error("Documento não encontrado com base em nome_prod:", nome_prod);
+                }
+              },
+            },
+          ]
+        );
       } else {
         Alert.alert(
-          "Permissão Negada",
-          "Você não tem permissão para excluir produtos."
+          "Permission Denied",
+          "You do not have permission to delete products."
         );
       }
     } catch (error) {
@@ -89,25 +102,29 @@ export default function VerProdScreen({ route, navigation }) {
   };
 
   const handleAddToCart = () => {
-    if (route.params && route.params.user_id) {
-      navigation.navigate("CarrinhoScreen", {
-        nome_prod,
-        foto_prod,
-        desc_prod,
-        preco_prod,
-        user_id: route.params.user_id,
-      });
-      console.log("Achei os produtinhos :3");
-      addDoc(collection(db, "carrinho"), {
-        nome_prod,
-        foto_prod,
-        desc_prod,
-        preco_prod,
-        user_id: route.params.user_id,
-      });
-      console.log("Produto adicionado ao carrinho!");
-    } else {
-      console.error("user_id não está definido em route.params");
+    try {
+      if (route.params?.user_id) {
+        navigation.navigate("CarrinhoScreen", {
+          nome_prod,
+          foto_prod,
+          desc_prod,
+          preco_prod,
+          user_id: route.params.user_id,
+        });
+
+        console.log("Produto adicionado ao carrinho!");
+        addDoc(collection(db, "carrinho"), {
+          nome_prod,
+          foto_prod,
+          desc_prod,
+          preco_prod,
+          user_id: route.params.user_id,
+        });
+      } else {
+        console.error("user_id não está definido em route.params");
+      }
+    } catch (error) {
+      console.error("Erro ao adicionar o produto ao carrinho:", error.message);
     }
   };
 

@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, Button } from "react-native";
 import { styles } from "../utils/styles";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../config/firebase";
 import { ScrollView } from "react-native-web";
 
 export default function CarrinhoScreen({ route, navigation }) {
-  const { user_id } = route.params;
+  const { user_id } = route.params || {};
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [msgErro, setMsgErro] = useState("");
@@ -56,7 +62,11 @@ export default function CarrinhoScreen({ route, navigation }) {
     const carrinhoRef = collection(db, "carrinho");
 
     carrinhoRef(
-      query(carrinhoRef, where("user_id", "==", user_id), where("id", "==", item.id))
+      query(
+        carrinhoRef,
+        where("user_id", "==", user_id),
+        where("id", "==", item.id)
+      )
     )
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -71,34 +81,42 @@ export default function CarrinhoScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <View style={styles.imagemTopo}>
-        <Image
-          source={require("../../assets/img/logocomp-branca.png")}
-          style={{ width: 200, height: 127 }}
-        />
-      </View>
-      <View style={styles.conteudo}>
-        <Text style={styles.titulo}>CARRINHO</Text>
-        <View style={styles.containerInner}>
-
-          {cartItems.map((item) => (
-            <View key={item.id} style={styles.card}>
-              <Text style={styles.textoCard}>ID: {item.id}</Text>
-              <Text style={styles.tituloCard}>{item.nome_prod}</Text>
-              <Text style={styles.textoCard}>R$ {item.preco_prod}</Text>
-              <Text style={styles.textoCard}>{item.desc_prod}</Text>
-              <Text style={styles.imagemProduto}>{item.foto_prod}</Text>
-              <Button onPress={() => handleRemoverItem(item)}>Remover</Button>
-            </View>
-          ))}
-          <Text style={styles.tituloCard}>Carrinho</Text>
-          <Text style={styles.tituloCard}>Quantidade de itens: {cartItems.length}</Text>
-          <Text style={styles.tituloCard}>Total: R$ {totalPrice}</Text>
-          <Button onPress={handleFinalizarCompra}>Finalizar Compra</Button>
-          <Button onPress={() => navigation.navigate("LojaScreen")}>Continuar Comprando</Button>
-          <Text style={styles.error}>{msgErro}</Text>
+        <View style={styles.imagemTopo}>
+          <Image
+            source={{ uri: cartItems.length > 0 ? cartItems[0].foto_prod : "" }}
+            style={styles.imagemProduto}
+          />
         </View>
-      </View>
+        <View style={styles.conteudo}>
+          <Text style={styles.titulo}>CARRINHO</Text>
+          <View style={styles.containerInner}>
+            {cartItems.map((item) => (
+              <View key={item.id} style={styles.card}>
+                <Image
+                  source={{ uri: item.foto_prod }}
+                  style={styles.imagemProduto}
+                />
+                <Text style={styles.textoCard}>ID: {item.id}</Text>
+                <Text style={styles.tituloCard}>{item.nome_prod}</Text>
+                <Text style={styles.textoCard}>R$ {item.preco_prod}</Text>
+                <Text style={styles.textoCard}>{item.desc_prod}</Text>
+                <Button onPress={() => handleRemoverItem(item)}>
+                  Remover
+                </Button>
+              </View>
+            ))}
+            <Text style={styles.tituloCard}>Carrinho</Text>
+            <Text style={styles.tituloCard}>
+              Quantidade de itens: {cartItems.length}
+            </Text>
+            <Text style={styles.tituloCard}>Total: R$ {totalPrice}</Text>
+            <Button onPress={handleFinalizarCompra}>Finalizar Compra</Button>
+            <Button onPress={() => navigation.navigate("LojaScreen")}>
+              Continuar Comprando
+            </Button>
+            <Text style={styles.error}>{msgErro}</Text>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
