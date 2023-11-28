@@ -16,13 +16,14 @@ import {
 import { Image } from "expo-image";
 import { Linking } from "react-native";
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   const [usuario, setUsuario] = useState({});
   const [titulo, setTitulo] = useState("");
   const [texto, setTexto] = useState("");
   const [link, setLink] = useState("");
   const [publicacoes, setPublicacoes] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {

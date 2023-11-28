@@ -162,8 +162,9 @@ export default function LojaScreen() {
                             width: "100%",
                           }}
                           onPress={() => navigation.navigate("VerProdScreen",{
+                            user_id: usuario.uid,
                             foto_prod: produto.foto_prod,
-                            preco_pro: produto.preco_prod,
+                            preco_prod: produto.preco_prod,
                             nome_prod: produto.nome_prod,
                             desc_prod: produto.desc_prod,
                           })}

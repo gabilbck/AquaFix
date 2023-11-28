@@ -10,6 +10,7 @@ import {
   getDocs,
   collection,
   deleteDoc,
+  addDoc,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../config/firebase";
@@ -90,6 +91,14 @@ export default function VerProdScreen({ route, navigation }) {
   const handleAddToCart = () => {
     if (route.params && route.params.user_id) {
       navigation.navigate("CarrinhoScreen", {
+        nome_prod,
+        foto_prod,
+        desc_prod,
+        preco_prod,
+        user_id: route.params.user_id,
+      });
+      console.log("Achei os produtinhos :3");
+      addDoc(collection(db, "carrinho"), {
         nome_prod,
         foto_prod,
         desc_prod,
