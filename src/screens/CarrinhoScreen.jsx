@@ -83,6 +83,7 @@ export default function CarrinhoScreen({ route, navigation }) {
 
           {cartItems.map((item) => (
             <View key={item.id} style={styles.card}>
+              <Text style={styles.textoCard}>ID: {item.id}</Text>
               <Text style={styles.tituloCard}>{item.nome_prod}</Text>
               <Text style={styles.textoCard}>R$ {item.preco_prod}</Text>
               <Text style={styles.textoCard}>{item.desc_prod}</Text>

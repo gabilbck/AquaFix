@@ -15,10 +15,8 @@ import {
 } from "firebase/firestore";
 import { Image } from "expo-image";
 import { Linking } from "react-native";
-import { useNavigation } from "@react-navigation/native";
  
-export default function LojaScreen() {
-  const navigation = useNavigation();
+export default function LojaScreen({navigation}) {
   const [usuario, setUsuario] = useState({});
   const [titulo, setTitulo] = useState("");
   const [texto, setTexto] = useState("");
