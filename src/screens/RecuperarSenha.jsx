@@ -8,15 +8,18 @@ import { styles } from "../utils/styles";
 
 export default function RecuperarSenha({ navigation }) {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   async function handlePasswordReset() {
     try {
       await sendPasswordResetEmail(auth, email);
       console.log("Email de redefinição de senha enviado!");
+      navigation.navigate("RecuperarSenha2");
     } catch (error) {
       console.log(error);
       if (error.code === "auth/user-not-found") {
         console.log("Usuário não encontrado");
+        setError("Usuário não encontrado");
         setEmail("");
       }
     }
@@ -42,6 +45,7 @@ export default function RecuperarSenha({ navigation }) {
             style={styles.input}
             onChangeText={setEmail}
           />
+          {error ? <Text style={styles.error}>{error}</Text> : null}
           <Button style={styles.botao} textColor="white"    onPress={handlePasswordReset}>
             Enviar código de verificação
           </Button>

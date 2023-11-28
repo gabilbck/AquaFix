@@ -20,6 +20,7 @@ import CarrinhoScreen from "./screens/CarrinhoScreen";
 import LojaScreen from "./screens/LojaScreen";
 import RegisterProd from "./screens/RegisterProd";
 import VerProdScreen from "./screens/VerProdScreen";
+import RecuperarSenha2 from "./screens/RecuperarSenha2";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -87,6 +88,13 @@ export default function RootNavigation({ navigation }) {
         <Stack.Screen
           name="RecuperarSenha"
           component={RecuperarSenha}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="RecuperarSenha2"
+          component={RecuperarSenha2}
           options={{
             headerShown: false,
           }}
