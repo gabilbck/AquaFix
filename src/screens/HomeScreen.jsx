@@ -103,8 +103,8 @@ export default function HomeScreen({navigation}) {
         const docRef = await addDoc(collection(db, "publi_adm"), {
           id: publicacaoId,
           titulo_puli_adm: titulo,
-          texto,
-          link,
+          texto: texto,
+          link: link,
         });
 
         console.log("Documento cadastrado com ID: ", docRef.id);
