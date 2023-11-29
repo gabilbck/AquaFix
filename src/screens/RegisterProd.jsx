@@ -20,7 +20,7 @@ export default function RegisterProd({ navigation }) {
   const [nomeProdErr, setnomeProdErr] = useState("");
   const [descProd, setDescProd] = useState("");
   const [descProdErr, setDescProdErr] = useState("");
-  const [precoProd, setPrecoProd] = useState("");
+  const [precoProd, setPrecoProd] = useState(0);
   const [precoProdErr, setPrecoProdErr] = useState("");
   const [imagemProd, setImagemProd] = useState(null);
   const [imagemProdErr, setImagemProdErr] = useState("");

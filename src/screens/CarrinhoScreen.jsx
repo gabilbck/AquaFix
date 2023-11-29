@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, Button } from "react-native";
+import { View, Text, Image } from "react-native";
 import { styles } from "../utils/styles";
 import {
   collection,
@@ -9,7 +9,9 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
-import { ScrollView } from "react-native-web";
+import { ScrollView } from "react-native";
+import { Button, Card } from "react-native-paper";
+import { getUser } from "../utils/asyncstorage";
 
 export default function CarrinhoScreen({ route, navigation }) {
   const { user_id } = route.params || {};
@@ -17,9 +19,12 @@ export default function CarrinhoScreen({ route, navigation }) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [msgErro, setMsgErro] = useState("");
 
-  useEffect(() => {
+  useEffect(async () => {
+    const userCompleto = await getUser();
+
     const fetchCartData = async () => {
       try {
+        const user_id = userCompleto.uid;
         const cartQuery = query(
           collection(db, "carrinho"),
           where("user_id", "==", user_id)
@@ -80,38 +85,45 @@ export default function CarrinhoScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
         <View style={styles.imagemTopo}>
           <Image
-            source={{ uri: cartItems.length > 0 ? cartItems[0].foto_prod : "" }}
-            style={styles.imagemProduto}
+            source={require("../../assets/img/logocomp-branca.png")}
+            style={{ width: 200, height: 127 }}
           />
         </View>
         <View style={styles.conteudo}>
           <Text style={styles.titulo}>CARRINHO</Text>
           <View style={styles.containerInner}>
             {cartItems.map((item) => (
-              <View key={item.id} style={styles.card}>
-                <Image
-                  source={{ uri: item.foto_prod }}
-                  style={styles.imagemProduto}
-                />
-                <Text style={styles.textoCard}>ID: {item.id}</Text>
-                <Text style={styles.tituloCard}>{item.nome_prod}</Text>
-                <Text style={styles.textoCard}>R$ {item.preco_prod}</Text>
-                <Text style={styles.textoCard}>{item.desc_prod}</Text>
-                <Button onPress={() => handleRemoverItem(item)}>
-                  Remover
-                </Button>
-              </View>
+              <Card.Content key={item.id} style={styles.card}>
+                {/* {console.log(item)} */}
+                  <Image
+                    source={{ uri: item.foto_prod }}
+                    style={styles.imagemProduto}
+                  />
+                  <Text style={styles.cardTitle}>{item.nome_prod}</Text>
+                  <Text style={styles.cardValor}>R$ {item.preco_prod}</Text>
+                  <Text style={styles.cardTexto}>{item.desc_prod}</Text>
+                  <Button
+                    onPress={() => handleRemoverItem(item)}
+                    style={styles.cardButton}
+                  >
+                    Remover
+                  </Button>
+              </Card.Content>
             ))}
-            <Text style={styles.tituloCard}>Carrinho</Text>
-            <Text style={styles.tituloCard}>
+            <Text style={styles.subtitulo}>
               Quantidade de itens: {cartItems.length}
             </Text>
-            <Text style={styles.tituloCard}>Total: R$ {totalPrice}</Text>
-            <Button onPress={handleFinalizarCompra}>Finalizar Compra</Button>
-            <Button onPress={() => navigation.navigate("LojaScreen")}>
+            <Text style={styles.subtitulo}>Total: R$ {totalPrice}</Text>
+            <Button onPress={handleFinalizarCompra} style={styles.botao}>
+              Finalizar Compra
+            </Button>
+            <Button
+              onPress={() => navigation.navigate("LojaScreen")}
+              style={styles.botao}
+            >
               Continuar Comprando
             </Button>
             <Text style={styles.error}>{msgErro}</Text>

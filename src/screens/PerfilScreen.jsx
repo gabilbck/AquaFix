@@ -226,10 +226,10 @@ export default function PerfilScreen() {
           >
             {usuario.nome_usu}
           </Text>
+          <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
         </View>
         <View style={styles.conteudo}>
           <View style={styles.containerInner}>
-            <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
             <Text style={styles.titulo2}>Nome: </Text>
             <Text style={styles.subtitulo2}>{usuario?.nome_completo}</Text>
             <Text style={styles.titulo2}>Apelido: </Text>

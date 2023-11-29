@@ -15,8 +15,9 @@ import {
 } from "firebase/firestore";
 import { Image } from "expo-image";
 import { Linking } from "react-native";
+import { setUser } from "../utils/asyncstorage";
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
   const [usuario, setUsuario] = useState({});
   const [titulo, setTitulo] = useState("");
   const [texto, setTexto] = useState("");
@@ -24,12 +25,27 @@ export default function HomeScreen({navigation}) {
   const [publicacoes, setPublicacoes] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
-
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log("Usuário UID: ", user.uid);
         setUsuario({ uid: user.uid });
+
+        // get user data from collection 'usuario' based on user.uid
+        const usuarioRef = doc(db, "usuario", user.uid);
+        getDoc(usuarioRef).then((docSnapshot) => {
+          if (docSnapshot.exists()) {
+            const userData = {
+              uid: user.uid,
+              ...docSnapshot.data()
+            };
+            console.log("Usuário completo:", userData);
+
+            setUser(userData);
+          }
+        });
+
+        
       } else {
         console.log("Usuário não logado");
       }

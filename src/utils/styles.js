@@ -313,6 +313,13 @@ export const styles = StyleSheet.create({
     color: "white",
   },
 
+  cardTexto: {
+    marginTop: 7,
+    marginLeft: 10,
+    fontSize: 17,
+    color: "white",
+  },
+
   cardButton: {
     marginLeft: 10,
     justifyContent: "flex-end",
