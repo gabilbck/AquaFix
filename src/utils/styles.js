@@ -289,11 +289,13 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     elevation: 2,
     borderRadius: 8, // Adicione bordas arredondadas aos cards
+    color: "white",
   },
 
   cardTitle: {
     fontSize: 25,
     fontWeight: "bold",
+    color: "white",
   },
 
   cardProduto: {
@@ -301,12 +303,14 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 25,
     fontWeight: "bold",
+    color: "white",
   },
 
   cardValor: {
     marginTop: 7,
     marginLeft: 10,
     fontSize: 17,
+    color: "white",
   },
 
   cardButton: {

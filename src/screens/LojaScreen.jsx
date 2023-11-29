@@ -146,7 +146,7 @@ export default function LojaScreen({navigation}) {
                             {produto.nome_prod}
                           </Text>
                           <Text style={styles.cardValor}>
-                            Preço: {produto.preco_prod}
+                            Preço: R${produto.preco_prod}
                           </Text>
                         </Card.Content>
                       </View>

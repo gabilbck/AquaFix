@@ -85,7 +85,7 @@ export default function RegisterProd({ navigation }) {
         user_id: auth.currentUser.uid,
         nome_prod: nomeProd,
         desc_prod: descProd,
-        preco_prod: "R$" + precoProd,
+        preco_prod: precoProd,
         foto_prod: imagemProd, // Usar a URL da imagem enviada para o Firebase Storage
       }).then(() => {
         console.log("Cadastrado!");
