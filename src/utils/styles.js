@@ -269,7 +269,6 @@ export const styles = StyleSheet.create({
   },
   imagemProduto2: {
     margin: 10,
-    marginTop: 20,
     width: 90, // Ajuste o tamanho conforme necessário
     height: 90, // Ajuste o tamanho conforme necessário
     borderRadius: 13,
@@ -286,10 +285,13 @@ export const styles = StyleSheet.create({
   
   card: {
     backgroundColor: "#16337e",
-    marginVertical: 10,
+    margin: 10,
     elevation: 2,
     borderRadius: 8, // Adicione bordas arredondadas aos cards
     color: "white",
+    maxWidth: 300,
+    wordWrap: "break-word",
+    overflowWrap: "break-word",
   },
 
   cardTitle: {
@@ -299,23 +301,23 @@ export const styles = StyleSheet.create({
   },
 
   cardProduto: {
-    marginTop: 30,
-    marginLeft: 10,
-    fontSize: 25,
+    marginTop: 10,
+    fontSize: 20,
     fontWeight: "bold",
     color: "white",
+    wordWrap: "break-word",
+    overflowWrap: "break-word",
   },
 
   cardValor: {
     marginTop: 7,
-    marginLeft: 10,
     fontSize: 17,
     color: "white",
   },
 
   cardTexto: {
-    marginTop: 7,
-    marginLeft: 10,
+    wordWrap: "break-word",
+    overflowWrap: "break-word",
     fontSize: 17,
     color: "white",
   },
@@ -324,6 +326,11 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     justifyContent: "flex-end",
     backgroundColor: "#16337E",
+  },
+
+  cardContent: {
+    margin: 0,
+    padding: 0,
   },
 
   textErr: {

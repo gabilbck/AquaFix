@@ -54,9 +54,9 @@ export default function PerfilViewScreen({ navigation, route }) {
 
   function VerificaServico() {
     const servicosList = [
-      usuario?.servicosUsu,
-      usuario?.servicosUsu1,
-      usuario?.servicosUsu2,
+      usuario?.servicos_usu,
+      usuario?.servicos_usu1,
+      usuario?.servicos_usu2,
     ];
     if (
       servicosList.every((servico) => servico === "") ||
@@ -71,8 +71,8 @@ export default function PerfilViewScreen({ navigation, route }) {
     } else {
       setEstadoServico(
         <Text style={styles.subtitulo2}>
-          {usuario?.servicos_usu} {usuario?.servicos_usu1}{" "}
-          {usuario?.servicos_usu2}
+          {usuario?.servicos_usu}{", "+usuario?.servicos_usu1}
+          {", "+usuario?.servicos_usu2}
         </Text>
       );
     }

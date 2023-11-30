@@ -19,10 +19,10 @@ export default function CarrinhoScreen({ route, navigation }) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [msgErro, setMsgErro] = useState("");
 
-  useEffect(async () => {
-    const userCompleto = await getUser();
+  useEffect(() => {
+    const fetchData = async () => {
+      const userCompleto = await getUser();
 
-    const fetchCartData = async () => {
       try {
         const user_id = userCompleto.uid;
         const cartQuery = query(
@@ -44,7 +44,7 @@ export default function CarrinhoScreen({ route, navigation }) {
       }
     };
 
-    fetchCartData();
+    fetchData();
   }, [user_id]);
 
   useEffect(() => {
@@ -63,70 +63,113 @@ export default function CarrinhoScreen({ route, navigation }) {
 
   function handleRemoverItem(item) {
     console.log("Removendo item do carrinho: ", item);
-
+  
     const carrinhoRef = collection(db, "carrinho");
-
-    carrinhoRef(
+  
+    // Verifica se user_id e item.id são definidos antes de realizar a consulta
+    if (user_id && item.id) {
       query(
         carrinhoRef,
         where("user_id", "==", user_id),
         where("id", "==", item.id)
       )
-    )
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          deleteDoc(doc.ref);
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            deleteDoc(doc.ref);
+          });
+        })
+        .catch((error) => {
+          console.error("Error removing item from cart: ", error.message);
         });
-      })
-      .catch((error) => {
-        console.error("Error removing item from cart: ", error.message);
-      });
+    } else {
+      console.error("user_id ou item.id é undefined.");
+    }
   }
 
+  const uniqueKeys = cartItems.map((item) => item.id);
+
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
-        <View style={styles.imagemTopo}>
-          <Image
-            source={require("../../assets/img/logocomp-branca.png")}
-            style={{ width: 200, height: 127 }}
-          />
-        </View>
-        <View style={styles.conteudo}>
-          <Text style={styles.titulo}>CARRINHO</Text>
-          <View style={styles.containerInner}>
-            {cartItems.map((item) => (
-              <Card.Content key={item.id} style={styles.card}>
-                {/* {console.log(item)} */}
-                  <Image
-                    source={{ uri: item.foto_prod }}
-                    style={styles.imagemProduto}
-                  />
-                  <Text style={styles.cardTitle}>{item.nome_prod}</Text>
-                  <Text style={styles.cardValor}>R$ {item.preco_prod}</Text>
-                  <Text style={styles.cardTexto}>{item.desc_prod}</Text>
-                  <Button
-                    onPress={() => handleRemoverItem(item)}
-                    style={styles.cardButton}
-                  >
-                    Remover
-                  </Button>
-              </Card.Content>
-            ))}
-            <Text style={styles.subtitulo}>
-              Quantidade de itens: {cartItems.length}
-            </Text>
-            <Text style={styles.subtitulo}>Total: R$ {totalPrice}</Text>
-            <Button onPress={handleFinalizarCompra} style={styles.botao}>
-              Finalizar Compra
-            </Button>
-            <Button
-              onPress={() => navigation.navigate("LojaScreen")}
-              style={styles.botao}
-            >
-              Continuar Comprando
-            </Button>
-            <Text style={styles.error}>{msgErro}</Text>
+    <View style={{flex: 1}}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.imagemTopo}>
+            <Image
+              source={require("../../assets/img/logocomp-branca.png")}
+              style={{ width: 200, height: 127 }}
+            />
+          </View>
+          <View style={styles.conteudo}>
+            <Text style={styles.titulo}>CARRINHO</Text>
+            <View style={styles.containerInner}>
+              {cartItems.map((item, index) => (
+                <View key={index}>
+                  <Card style={styles.card}>
+                    <View style={{ flexDirection: "row" }}>
+                      <Card.Cover
+                        source={{ uri: item.foto_prod }}
+                        style={styles.imagemProduto2}
+                      />
+                      <Card.Content style={styles.cardContent}>
+                        <Text style={styles.cardProduto}>{item.nome_prod}</Text>
+                        <Text style={styles.cardTexto}>{item.desc_prod}</Text>
+                        <Text style={styles.cardValor}>
+                          R$ {item.preco_prod}
+                        </Text>
+                      </Card.Content>
+                    </View>
+                    <Card.Actions>
+                      <Button
+                        style={{
+                          backgroundColor: "red",
+                          borderRadius: 8,
+                          border: 0,
+                          marginTop: 0,
+                          width: "100%",
+                        }}
+                        onPress={() => handleRemoverItem(item)}
+                      >
+                        <Text style={{ color: "white", fontWeight: "bold" }}>
+                          Remover
+                        </Text>
+                      </Button>
+                    </Card.Actions>
+                  </Card>
+                </View>
+                // <Card.Content key={index} style={styles.card}>
+                //   <Image
+                //     source={{ uri: item.foto_prod }}
+                //     style={styles.imagemProduto}
+                //   />
+                //   <Text style={styles.cardTitle}>{item.nome_prod}</Text>
+                //   <Text style={styles.cardValor}>R$ {item.preco_prod}</Text>
+                //   <Text style={styles.cardTexto}>{item.desc_prod}</Text>
+                //   <Button
+                //     onPress={() => handleRemoverItem(item)}
+                //     style={styles.cardButton}
+                //   >
+                //     Remover
+                //   </Button>
+                // </Card.Content>
+              ))}
+
+              <Text style={{ ...styles.subtitulo, marginTop: 10 }}>
+                Quantidade de itens: {cartItems.length}
+              </Text>
+              <Text style={styles.subtitulo}>Total: R$ {totalPrice}</Text>
+              <Button
+                onPress={handleFinalizarCompra}
+                style={{ ...styles.botaoverde, marginTop: 10 }}
+              >
+                COMPRAR
+              </Button>
+              <Button
+                onPress={() => navigation.navigate("LojaScreen")}
+                style={styles.botao}
+              >
+                CONTINUAR COMPRANDO
+              </Button>
+              <Text style={styles.error}>{msgErro}</Text>
+            </View>
           </View>
         </View>
       </ScrollView>
