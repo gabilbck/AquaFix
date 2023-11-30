@@ -61,13 +61,14 @@ export default function LojaScreen({navigation}) {
       const produtosData = produtosQuerySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
+          id_prod: doc.id,
           desc_prod: data.desc_prod,
           foto_prod: data.foto_prod,
           nome_prod: data.nome_prod,
           preco_prod: data.preco_prod,
         };
       });
- 
+      console.log("Produtos: ", produtosData);
       setProdutos(produtosData);
     } catch (error) {
       console.error("Erro ao buscar produtos: ", error);
