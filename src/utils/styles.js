@@ -406,9 +406,8 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#16337E",
     color: "White",
-    marginBottom: 15,
+    marginBottom: 20,
     fontWeight: "bold",
-    marginTop: 15,
   },
 
   backButton: {
