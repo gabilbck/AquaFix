@@ -56,13 +56,13 @@ export default function RegisterAuto({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-  
+
     if (!result.canceled) {
       const resizedImage = await resizeImage(result.uri);
       setImage(resizedImage.uri);
     }
   };
-  
+
   const resizeImage = async (uri) => {
     const manipResult = await ImageManipulator.manipulateAsync(
       uri,
@@ -79,16 +79,15 @@ export default function RegisterAuto({ navigation }) {
 
       const storageRef = ref(storage, "foto_usu/" + Date.now());
       const uploadTask = uploadBytesResumable(storageRef, blob);
-  
+
       await uploadTask;
-  
+
       const imageURL = await getDownloadURL(storageRef);
       setImageToFirebase(imageURL);
     } catch (error) {
       console.error("Error uploading image: ", error);
     }
   };
-  
 
   const setImageToFirebase = async (url) => {
     try {
@@ -270,180 +269,186 @@ export default function RegisterAuto({ navigation }) {
 
   return (
     // <KeyboardAvoidingView style={styles.container} behavior="padding">
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.imagemTopo}>
-          <Image
-            source={require("../../assets/img/logocomp-branca.png")}
-            style={{ width: 200, height: 127 }}
-          />
-        </View>
-        <View style={styles.conteudo}>
-          <View style={styles.containerInner}>
-            <Text style={styles.titulo_register}>CADASTRE-SE</Text>
-            <Text style={styles.subtitulo_register}>
-              Para iniciar seu cadastro, preencha asseguintes informações:
-            </Text>
-            <TextInput
-              placeholder="E-mail"
-              value={email}
-              onChangeText={setEmail}
-              style={styles.input}
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.imagemTopo}>
+            <Image
+              source={require("../../assets/img/logocomp-branca.png")}
+              style={{ width: 200, height: 127 }}
             />
-            <Text style={styles.textErr}>{erroEmail}</Text>
-            <TextInput
-              placeholder="Senha"
-              secureTextEntry={true}
-              value={senha}
-              onChangeText={setSenha}
-              style={styles.input}
-            />
-            <Text style={styles.fakespaceErr}></Text>
-            <TextInput
-              placeholder="Confirmar senha"
-              value={confirmSenha}
-              onChangeText={setConfirmSenha}
-              style={styles.input}
-              secureTextEntry={true}
-            />
-            <Text style={styles.textErr}>{erroSenha}</Text>
-            <TextInput
-              placeholder="Nome Completo"
-              value={nomeCompleto}
-              onChangeText={setNomeCompleto}
-              style={styles.input}
-            />
-            <Text style={styles.textErr}>{nomeCompletoError}</Text>
-            <TextInput
-              placeholder="Nome de Usuário"
-              value={nomeUsu}
-              onChangeText={setNomeUsu}
-              style={styles.input}
-            />
-            <Text style={styles.textErr}>{nomeUsuError}</Text>
-            <TextInput
-              placeholder="Digite seu CEP"
-              value={zipCode}
-              onChangeText={(e) => setZipCode(formatPhoneNumberCep(e))}
-              maxLength={9}
-              style={styles.input}
-              onBlur={retornaLogradouro}
-            />
-            <Text style={styles.textErr}>{zipCodeError}</Text>
-            {/* Mostra o logradouro abaixo do TextInput do CEP */}
-            {logradouro ? <Text>{logradouro}</Text> : null}
-            <Text>{retornaLogradouro}</Text>
-            <TextInput
-              placeholder="Digite seu CPF"
-              value={cpf}
-              onChangeText={(e) => setCpf(formatPhoneNumberCpf(e))}
-              maxLength={14}
-              style={styles.input}
-            />
-            <Text style={styles.textErr}>{cpfError}</Text>
-            <TextInput
-              placeholder="Serviço 1"
-              value={servicosUsu}
-              onChangeText={setServicosUsu}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Serviço 2"
-              value={servicosUsu1}
-              onChangeText={setServicosUsu1}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Serviço 3"
-              value={servicosUsu2}
-              onChangeText={setServicosUsu2}
-              style={styles.input}
-            />
-
-            {getImage ? (
-              <Image
-                source={{ uri: getImage }}
-                style={{
-                  width: 200,
-                  height: 200,
-                  borderRadius: "50%",
-                  alignSelf: "center",
-                  marginTop: 10,
-                  marginBottom: 10,
-                  border: "4px #16337E solid",
-                }}
-              />
-            ) : (
-              <Button
-                onPress={pickImage}
-                style={styles.botao}
-                textColor="white"
-              >
-                Escolher foto
-              </Button>
-            )}
-            <Text style={styles.textErr}>{ErrImage}</Text>
-            <TextInput
-              placeholder="Adicionar Sobre"
-              value={adisobre}
-              onChangeText={setAdicionarSobre}
-              style={styles.input}
-            />
-            <Text style={styles.textErr}>{adisobreError}</Text>
-            <TextInput
-              placeholder="Telefone"
-              value={whatsappUsu}
-              onChangeText={(value) => setWhatsappUsu(formatPhoneNumber(value))}
-              maxLength={15}
-              style={styles.input}
-            />
-            <Text style={styles.textErr}>{whatsappUsuError}</Text>
-            <TextInput
-              placeholder="Facebook (opcional)"
-              value={FacebookUsu}
-              onChangeText={setFacebookUsu}
-              style={styles.input}
-            />
-            <Text style={styles.textErr}></Text>
-            <TextInput
-              placeholder="Instagram (opcional)"
-              value={instagramUsu}
-              onChangeText={setinstagramUsu}
-              style={styles.input}
-            />
-            <Text style={styles.textErr}></Text>
-            <TextInput
-              placeholder="Linkedin (opcional)"
-              value={linkedinUsu}
-              onChangeText={setlinkedinUsu}
-              style={styles.input}
-            />
-            <Button
-              textColor={"white"}
-              onPress={Registrar}
-              style={styles.botao}
-            >
-              REGISTRAR
-            </Button>
           </View>
-          <View style={styles.linha}>
-            <View style={styles.coluna}>
-              <Text>Escolheu a opção errada?</Text>
+          <View style={styles.conteudo}>
+            <View style={styles.containerInner}>
+              <Text style={styles.titulo_register}>CADASTRE-SE</Text>
+              <Text style={styles.subtitulo_register}>
+                Para iniciar seu cadastro, preencha asseguintes informações:
+              </Text>
+              <TextInput
+                placeholder="E-mail"
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+              />
+              <Text style={styles.textErr}>{erroEmail}</Text>
+              <TextInput
+                placeholder="Senha"
+                secureTextEntry={true}
+                value={senha}
+                onChangeText={setSenha}
+                style={styles.input}
+              />
+              <Text style={styles.fakespaceErr}></Text>
+              <TextInput
+                placeholder="Confirmar senha"
+                value={confirmSenha}
+                onChangeText={setConfirmSenha}
+                style={styles.input}
+                secureTextEntry={true}
+              />
+              <Text style={styles.textErr}>{erroSenha}</Text>
+              <TextInput
+                placeholder="Nome Completo"
+                value={nomeCompleto}
+                onChangeText={setNomeCompleto}
+                style={styles.input}
+              />
+              <Text style={styles.textErr}>{nomeCompletoError}</Text>
+              <TextInput
+                placeholder="Nome de Usuário"
+                value={nomeUsu}
+                onChangeText={setNomeUsu}
+                style={styles.input}
+              />
+              <Text style={styles.textErr}>{nomeUsuError}</Text>
+              <TextInput
+                placeholder="Digite seu CEP"
+                value={zipCode}
+                onChangeText={(e) => setZipCode(formatPhoneNumberCep(e))}
+                maxLength={9}
+                style={styles.input}
+                onBlur={retornaLogradouro}
+              />
+              <Text style={styles.textErr}>{zipCodeError}</Text>
+              {/* Mostra o logradouro abaixo do TextInput do CEP */}
+              {logradouro ? <Text>{logradouro}</Text> : null}
+              <Text>{retornaLogradouro}</Text>
+              <TextInput
+                placeholder="Digite seu CPF"
+                value={cpf}
+                onChangeText={(e) => setCpf(formatPhoneNumberCpf(e))}
+                maxLength={14}
+                style={styles.input}
+              />
+              <Text style={styles.textErr}>{cpfError}</Text>
+              <TextInput
+                placeholder="Serviço 1"
+                value={servicosUsu}
+                onChangeText={setServicosUsu}
+                style={styles.input}
+              />
+              <TextInput
+                placeholder="Serviço 2"
+                value={servicosUsu1}
+                onChangeText={setServicosUsu1}
+                style={styles.input}
+              />
+              <TextInput
+                placeholder="Serviço 3"
+                value={servicosUsu2}
+                onChangeText={setServicosUsu2}
+                style={styles.input}
+              />
+
+              {getImage ? (
+                <Image
+                  source={{ uri: getImage }}
+                  style={{
+                    width: 200,
+                    height: 200,
+                    borderRadius: "50%",
+                    alignSelf: "center",
+                    marginTop: 10,
+                    marginBottom: 10,
+                    border: "4px #16337E solid",
+                  }}
+                />
+              ) : (
+                <Button
+                  onPress={pickImage}
+                  style={styles.botao2}
+                  textColor="white"
+                >
+                  Escolher foto
+                </Button>
+              )}
+              <Text style={styles.textErr}>{ErrImage}</Text>
+              <TextInput
+                placeholder="Adicionar Sobre"
+                value={adisobre}
+                onChangeText={setAdicionarSobre}
+                style={styles.input}
+              />
+              <Text style={styles.textErr}>{adisobreError}</Text>
+              <TextInput
+                placeholder="Telefone"
+                value={whatsappUsu}
+                onChangeText={(value) =>
+                  setWhatsappUsu(formatPhoneNumber(value))
+                }
+                maxLength={15}
+                style={styles.input}
+              />
+              <Text style={styles.textErr}>{whatsappUsuError}</Text>
+              <TextInput
+                placeholder="Facebook (opcional)"
+                value={FacebookUsu}
+                onChangeText={setFacebookUsu}
+                style={styles.input}
+              />
+              <Text style={styles.textErr}></Text>
+              <TextInput
+                placeholder="Instagram (opcional)"
+                value={instagramUsu}
+                onChangeText={setinstagramUsu}
+                style={styles.input}
+              />
+              <Text style={styles.textErr}></Text>
+              <TextInput
+                placeholder="Linkedin (opcional)"
+                value={linkedinUsu}
+                onChangeText={setlinkedinUsu}
+                style={styles.input}
+              />
               <Button
-                textColor={"black"}
-                onPress={() => navigation.navigate("CadPasso2")}
+                textColor={"white"}
+                onPress={Registrar}
+                style={styles.botao}
               >
-                <Text style={styles.botaoPreto}>Voltar ao passo anterior</Text>
+                REGISTRAR
               </Button>
             </View>
-            <View style={styles.coluna}>
-              <Text>Já tem uma conta?</Text>
-              <Button
-                textColor={"black"}
-                onPress={() => navigation.navigate("LoginScreen")}
-              >
-                <Text style={styles.botaoPreto}>Entrar agora!</Text>
-              </Button>
+            <View style={styles.linha}>
+              <View style={styles.coluna}>
+                <Text>Escolheu a opção errada?</Text>
+                <Button
+                  textColor={"black"}
+                  onPress={() => navigation.navigate("CadPasso2")}
+                >
+                  <Text style={styles.botaoPreto}>
+                    Voltar ao passo anterior
+                  </Text>
+                </Button>
+              </View>
+              <View style={styles.coluna}>
+                <Text>Já tem uma conta?</Text>
+                <Button
+                  textColor={"black"}
+                  onPress={() => navigation.navigate("LoginScreen")}
+                >
+                  <Text style={styles.botaoPreto}>Entrar agora!</Text>
+                </Button>
+              </View>
             </View>
           </View>
         </View>

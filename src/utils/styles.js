@@ -336,7 +336,7 @@ export const styles = StyleSheet.create({
   textErr: {
     color: "red",
     fontWeight: "bold",
-    marginBottom: 10,
+
     marginTop: 6,
     textAlign: "center",
   },

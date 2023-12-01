@@ -46,9 +46,27 @@ export default function RecuperarSenha({ navigation }) {
             onChangeText={setEmail}
           />
           {error ? <Text style={styles.error}>{error}</Text> : null}
-          <Button style={styles.botao} textColor="white"    onPress={handlePasswordReset}>
+          <Button
+            style={styles.botao}
+            textColor="white"
+            onPress={handlePasswordReset}
+          >
             Enviar código de verificação
           </Button>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: 10,
+            }}
+          >
+            <Button
+              textColor={"black"}
+              onPress={() => navigation.navigate("LoginScreen")}
+            >
+              <Text style={styles.botaoPreto}>Voltar ao Login</Text>
+            </Button>
+          </View>
         </View>
       </View>
     </View>

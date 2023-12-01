@@ -312,20 +312,21 @@ export default function RegisterEmp({ navigation }) {
               onChangeText={setNomeCompleto}
               style={styles.input}
             />
+            <Text style={styles.textErr}>{erroUserComp}</Text>
             <TextInput
               placeholder="Nome de usuário da empresa"
               value={nomeUsu}
               onChangeText={setNomeUsu}
               style={styles.input}
             />
-            <Text>{ }</Text>
+            <Text style={styles.textErr}>{erroUser}</Text>
             <TextInput
               placeholder="E-mail da empresa"
               value={email}
               onChangeText={setEmail}
               style={styles.input}
             />
-            <Text>{erroEmail}</Text>
+            <Text style={styles.textErr}>{erroEmail}</Text>
             <TextInput
               placeholder="Senha"
               value={senha}
@@ -340,7 +341,7 @@ export default function RegisterEmp({ navigation }) {
               style={styles.input}
               secureTextEntry={true}
             />
-            <Text>{erroSenha}</Text>
+            <Text style={styles.textErr}>{erroSenha}</Text>
             <TextInput
               style={styles.input}
               placeholder={`Digite seu CNPJ`}
@@ -348,7 +349,7 @@ export default function RegisterEmp({ navigation }) {
               onChangeText={validar}
               error={!isValid}
             />
-            <Text>{erroCnpj}</Text>
+            <Text style={styles.textErr}>{erroCnpj}</Text>
             <TextInput
               placeholder="CEP"
               value={zipCode}
@@ -356,13 +357,14 @@ export default function RegisterEmp({ navigation }) {
               style={styles.input}
               onBlur={retornaLogradouro}
             />
+            <Text style={styles.textErr}>{erroCep}</Text>
             <TextInput
               placeholder="Número de WhatsApp da empresa"
               value={whatsappUsu}
               onChangeText={(value) => setWhatsappUsu(numeroCelular(value))}
               style={styles.input}
             />
-            <Text>{erroServico}</Text>
+            <Text style={styles.textErr}>{erroServico}</Text>
             <TextInput
               placeholder="Serviço 1"
               value={servicosUsu}

@@ -382,7 +382,7 @@ export default function RegisterUsu({ navigation }) {
               <Image source={{ uri: getImage }} style={{ width: 200, height: 200, borderRadius: "50%", alignSelf: "center", marginTop: 10, marginBottom: 10, border: "4px #16337E solid"}} />
               </>
               :
-              <Button onPress={pickImage} style={styles.botao} textColor="white">
+              <Button onPress={pickImage} style={styles.botao2} textColor="white">
                 Escolher foto
               </Button>
             }
