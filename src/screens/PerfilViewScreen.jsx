@@ -219,7 +219,7 @@ export default function PerfilViewScreen({ navigation, route }) {
               }}
             >
               
-              {usuario.nome_usu}
+              @{usuario.nome_usu}
             </Text>
             <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
           </View>

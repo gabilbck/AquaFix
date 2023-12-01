@@ -224,7 +224,7 @@ export default function PerfilScreen() {
               marginTop: 7,
             }}
           >
-            {usuario.nome_usu}
+            @{usuario.nome_usu}
           </Text>
           <Text style={styles.tipoconta}>{usuario?.tipo_conta}</Text>
         </View>

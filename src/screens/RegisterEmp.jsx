@@ -142,7 +142,7 @@ export default function RegisterEmp({ navigation }) {
         servicos_usu: servicosUsu,
         servicos_usu1: servicosUsu1,
         servicos_usu2: servicosUsu2,
-        tipo_conta: "empresa",
+        tipo_conta: "Empresa",
         foto_usu: getImage,
         instagram_usu: instagramUsu,
         linkedin_usu: linkedinUsu,
