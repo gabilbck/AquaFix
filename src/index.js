@@ -56,14 +56,6 @@ export default function RootNavigation({ navigation }) {
             headerShown: false,
           }}
         />
-
-        {/* <Stack.Screen
-                    name="TabsNavigation"
-                    component={TabsNavigation}
-                    options={{
-                        headerShown: false,
-                    }} /> */}
-
         <Stack.Screen
           name="RegisterScreen"
           component={RegisterScreen}
@@ -173,13 +165,9 @@ function TabsNavigation() {
   return (
     <Tabs.Navigator
       initialRouteName="Feed"
-      // tabBarColor="blue"
-      // tabBarActiveTextColor="white"
       activeColor="white"
       inactiveColor="white"
       selectedLabelStyle={{ backgroundColor: "white" }}
-      // labelStyle={{ fontSize: 12 }}
-      // style={{ backgroundColor: "white" }}
       barStyle={{
         backgroundColor: "#16337E",
       }}

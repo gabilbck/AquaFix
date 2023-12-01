@@ -78,14 +78,12 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Parte que aparece a imagem: azul e logo */}
       <View style={styles.imagemTopo}>
         <Image
           source={require("../../assets/img/logocomp-branca.png")}
           style={{ width: 200, height: 127 }}
         />
       </View>
-      {/* Parte que aparece o conteúdo: cinza/branco */}
       <View style={styles.conteudo}>
         <View style={styles.containerInner}>
           <Text style={styles.titulo}>LOGIN</Text>
