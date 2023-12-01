@@ -91,7 +91,6 @@ export default function LoginScreen({ navigation }) {
             placeholder="Digite seu email"
             value={email}
             onChangeText={setEmail}
-            mode="disabled"
             style={styles.input}
           />
           <TextInput
@@ -99,9 +98,9 @@ export default function LoginScreen({ navigation }) {
             secureTextEntry={true}
             value={senha}
             onChangeText={setSenha}
-            mode="disabled"
             style={styles.input}
             error={error}
+            editable={true}
           />
           <View>{error && <Text style={{...styles.textErr, marginBottom: 10}}>{error}</Text>}</View>
           <Button onPress={handleLogin} style={styles.botao} textColor="white">
