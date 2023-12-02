@@ -57,10 +57,6 @@ export default function CarrinhoScreen({ route, navigation }) {
     setTotalPrice(total);
   }, [cartItems]);
 
-  function handleFinalizarCompra() {
-    navigation.navigate("FinalizarCompra", { user_id });
-  }
-
   async function handleRemoverItem(item) {
     try {
       const userCompleto = await getUser();
@@ -156,7 +152,7 @@ export default function CarrinhoScreen({ route, navigation }) {
               </Text>
               <Text style={{ ...styles.subtitulo, fontWeight: "bold" }}>Total: R$ {totalPrice}</Text>
               <Button
-                onPress={handleFinalizarCompra}
+                onPress={() => navigation.navigate("FinalizarCompra")}
                 style={{ ...styles.botaoverde, marginTop: 10 }}
               >
                 COMPRAR
