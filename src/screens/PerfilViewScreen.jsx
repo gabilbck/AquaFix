@@ -162,6 +162,7 @@ export default function PerfilViewScreen({ navigation, route }) {
   };
 
   function showRating(rating) {
+    loadAvaliacoes({rating});
     console.log("Rating: ", rating);
     setRating(rating);
   }
@@ -276,14 +277,18 @@ export default function PerfilViewScreen({ navigation, route }) {
       <Modal visible={modalVisible} animationType="slide" onDismiss={() => fecharModalAvaliacao()}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Avaliar: {usuario.nome_usu}</Text>
-          <Text style={styles.modalText}>{mediaAvaliacoes.toFixed(2)}</Text>
+          <Text style={styles.modalText}>Avaliação: {rating}</Text>
+          
           <Rating
-            onFinishRating={showRating}
+            onStartRating={rating}
+            onSwipeRating={0}
+            onFinishRating={(rating) => showRating(rating)}
             style={{ paddingVertical: 10 }}
             type="star"
             ratingCount={5}
             imageSize={40}
           />
+          <Text style={styles.modalText}>Média: {mediaAvaliacoes.toFixed(1)}</Text>
           <Button
             style={{ ...styles.botao, marginTop: 10, marginBottom: 0 }}
             onPress={() => handleRatingSubmit()}

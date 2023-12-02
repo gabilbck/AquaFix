@@ -46,12 +46,12 @@ const themeLight = {
 
 const themeDark = {
   colors: {
-    primary: "rgb(181, 196, 255)",
+    primary: "white",
     onPrimary: "rgb(4, 41, 120)",
     primaryContainer: "black",
     onPrimaryContainer: "rgb(255, 225, 255)",
-    secondary: "rgb(180, 197, 255)",
-    onSecondary: "rgb(0, 41, 121)",
+    secondary: "white",
+    onSecondary: "white",
     secondaryContainer: "rgb(8, 62, 166)",
     onSecondaryContainer: "rgb(255, 225, 255)",
     tertiary: "rgb(79, 216, 235)",
