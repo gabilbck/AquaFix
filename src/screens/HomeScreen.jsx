@@ -37,15 +37,13 @@ export default function HomeScreen({ navigation }) {
           if (docSnapshot.exists()) {
             const userData = {
               uid: user.uid,
-              ...docSnapshot.data()
+              ...docSnapshot.data(),
             };
             console.log("Usuário completo:", userData);
 
             setUser(userData);
           }
         });
-
-        
       } else {
         console.log("Usuário não logado");
       }
@@ -198,6 +196,19 @@ export default function HomeScreen({ navigation }) {
                 </View>
               )}
               {/* Lista de publicações */}
+              {publicacoes.length === 0 && (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={{ ...styles.subtitulo, fontWeight: "bold" }}>
+                    Nenhuma publicação encontrada.
+                  </Text>
+                </View>
+              )}
               <View>
                 {publicacoes.map((publicacao, index) => (
                   <View key={index}>

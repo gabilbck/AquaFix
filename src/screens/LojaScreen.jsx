@@ -15,8 +15,8 @@ import {
 } from "firebase/firestore";
 import { Image } from "expo-image";
 import { Linking } from "react-native";
- 
-export default function LojaScreen({navigation}) {
+
+export default function LojaScreen({ navigation }) {
   const [usuario, setUsuario] = useState({});
   const [titulo, setTitulo] = useState("");
   const [texto, setTexto] = useState("");
@@ -24,7 +24,7 @@ export default function LojaScreen({navigation}) {
   const [publicacoes, setPublicacoes] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [produtos, setProdutos] = useState([]);
- 
+
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -45,19 +45,19 @@ export default function LojaScreen({navigation}) {
         setIsAdmin(false);
       }
     });
- 
+
     carregarPublicacoes();
     carregarProdutos();
- 
+
     return () => {
       unsub();
     };
   }, []);
- 
+
   const carregarProdutos = async () => {
     try {
       const produtosQuerySnapshot = await getDocs(collection(db, "produto"));
- 
+
       const produtosData = produtosQuerySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
@@ -74,7 +74,7 @@ export default function LojaScreen({navigation}) {
       console.error("Erro ao buscar produtos: ", error);
     }
   };
- 
+
   const carregarPublicacoes = async () => {
     try {
       const querySnapshot = await getDocs(
@@ -86,19 +86,19 @@ export default function LojaScreen({navigation}) {
       console.error("Erro ao buscar publicações: ", error);
     }
   };
- 
+
   const handleCadastro = async () => {
     if (titulo && texto && link) {
       try {
         const publicacaoId = Date.now();
- 
+
         const docRef = await addDoc(collection(db, "publi_adm"), {
           id: publicacaoId,
           titulo_puli_adm: titulo,
           texto,
           link,
         });
- 
+
         console.log("Documento cadastrado com ID: ", docRef.id);
         setTitulo("");
         setTexto("");
@@ -114,7 +114,7 @@ export default function LojaScreen({navigation}) {
       console.warn("Preencha todos os campos.");
     }
   };
- 
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -128,6 +128,19 @@ export default function LojaScreen({navigation}) {
           <View style={{ ...styles.conteudo, flex: 1 }}>
             <View style={styles.containerInner}>
               <Text style={styles.titulo}>PRODUTOS</Text>
+              {produtos.length === 0 && (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={{ ...styles.subtitulo, fontWeight: "bold" }}>
+                    Nenhum produto cadastrado.
+                  </Text>
+                </View>
+              )}
               {isAdmin && (
                 <Button style={styles.botaoverde} onPress={handleCadastro}>
                   CADASTRAR
@@ -160,13 +173,15 @@ export default function LojaScreen({navigation}) {
                             marginTop: 0,
                             width: "100%",
                           }}
-                          onPress={() => navigation.navigate("VerProdScreen",{
-                            user_id: usuario.uid,
-                            foto_prod: produto.foto_prod,
-                            preco_prod: produto.preco_prod,
-                            nome_prod: produto.nome_prod,
-                            desc_prod: produto.desc_prod,
-                          })}
+                          onPress={() =>
+                            navigation.navigate("VerProdScreen", {
+                              user_id: usuario.uid,
+                              foto_prod: produto.foto_prod,
+                              preco_prod: produto.preco_prod,
+                              nome_prod: produto.nome_prod,
+                              desc_prod: produto.desc_prod,
+                            })
+                          }
                         >
                           <Text style={{ color: "black", fontWeight: "bold" }}>
                             VER
