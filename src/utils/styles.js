@@ -313,6 +313,7 @@ export const styles = StyleSheet.create({
     marginTop: 7,
     fontSize: 17,
     color: "white",
+    fontWeight: "bold",
   },
 
   cardTexto: {
@@ -320,6 +321,7 @@ export const styles = StyleSheet.create({
     overflowWrap: "break-word",
     fontSize: 17,
     color: "white",
+    width: "70%",
   },
 
   cardButton: {

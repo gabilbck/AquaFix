@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../config/firebase";
+import { ScrollView } from "react-native-web";
 
 export default function VerProdScreen({ route, navigation }) {
   const { nome_prod, foto_prod, desc_prod, preco_prod } = route.params;
@@ -76,7 +77,10 @@ export default function VerProdScreen({ route, navigation }) {
               text: "Delete",
               onPress: async () => {
                 const querySnapshot = await getDoc(
-                  query(collection(db, "produto"), where("nome_prod", "==", nome_prod))
+                  query(
+                    collection(db, "produto"),
+                    where("nome_prod", "==", nome_prod)
+                  )
                 );
 
                 if (querySnapshot.exists()) {
@@ -84,7 +88,10 @@ export default function VerProdScreen({ route, navigation }) {
                   console.log("Produto excluído com sucesso!");
                   navigation.navigate("LojaScreen");
                 } else {
-                  console.error("Documento não encontrado com base em nome_prod:", nome_prod);
+                  console.error(
+                    "Documento não encontrado com base em nome_prod:",
+                    nome_prod
+                  );
                 }
               },
             },
@@ -129,72 +136,81 @@ export default function VerProdScreen({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imagemTopo}>
-        <Image
-          source={require("../../assets/img/logocomp-branca.png")}
-          style={{ width: 200, height: 127 }}
-        />
-      </View>
-      <View style={styles.conteudo}>
-        <View style={styles.containerInner}>
-          <Text style={styles.titulo}>{nome_prod}</Text>
-          <Card style={styles.card}>
-            <Card.Content>
-              <Image
-                style={styles.imagemProduto3}
-                source={{ uri: foto_prod }}
-              />
-              <Text style={styles.subtitulo3}>Nome: {nome_prod}</Text>
-              <Text style={styles.subtitulo3}>Preço: R${preco_prod}</Text>
-              <Text style={styles.subtitulo3}>Descrição: {desc_prod}</Text>
-              {isAdmin && usuario.uid === route.params.user_id && (
-                <Button
-                  style={styles.botaovermelho3}
-                  labelStyle={{
-                    color: "white",
-                    fontSize: 15,
-                    fontWeight: "bold",
-                  }}
-                  onPress={handleDeleteProduct}
-                >
-                  EXCLUIR PRODUTO
-                </Button>
-              )}
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.imagemTopo}>
+            <Image
+              source={require("../../assets/img/logocomp-branca.png")}
+              style={{ width: 200, height: 127 }}
+            />
+          </View>
+          <View style={styles.conteudo}>
+            <View style={styles.containerInner}>
+              <Text style={styles.titulo}>{nome_prod}</Text>
+              <Card style={styles.card}>
+                <Card.Content>
+                  <Image
+                    style={styles.imagemProduto3}
+                    source={{ uri: foto_prod }}
+                  />
+                  <Text style={styles.subtitulo3}>Nome: {nome_prod}</Text>
+                  <Text style={styles.subtitulo3}>Preço: R${[preco_prod]}</Text>
+                  <Text style={styles.subtitulo3}>Descrição: {desc_prod}</Text>
+                  {isAdmin && usuario.uid === route.params.user_id && (
+                    <Button
+                      style={styles.botaovermelho3}
+                      labelStyle={{
+                        color: "white",
+                        fontSize: 15,
+                        fontWeight: "bold",
+                      }}
+                      onPress={handleDeleteProduct}
+                    >
+                      EXCLUIR PRODUTO
+                    </Button>
+                  )}
+                  <Button
+                    style={{
+                      backgroundColor: "lightgray",
+                      borderRadius: 8,
+                      border: 0,
+                      marginTop: 15,
+                      width: "100%",
+                    }}
+                    labelStyle={{
+                      color: "black",
+                      fontSize: 15,
+                      fontWeight: "bold",
+                    }}
+                    onPress={handleAddToCart}
+                  >
+                    ADICIONAR AO CARRINHO
+                  </Button>
+                </Card.Content>
+              </Card>
               <Button
                 style={{
-                  backgroundColor: "lightgray",
+                  backgroundColor: "#16337E",
                   borderRadius: 8,
                   border: 0,
-                  marginTop: 0,
+                  marginTop: 20,
+                  marginBottom: 20,
                   width: "100%",
                 }}
                 labelStyle={{
-                  color: "black",
+                  color: "white",
                   fontSize: 15,
                   fontWeight: "bold",
                 }}
-                onPress={handleAddToCart}
+                onPress={() => navigation.goBack()}
               >
-                ADICIONAR AO CARRINHO
+                VOLTAR
               </Button>
-            </Card.Content>
-          </Card>
-          <Button
-            style={{
-              backgroundColor: "#16337E",
-              borderRadius: 8,
-              border: 0,
-              marginTop: 0,
-              width: "100%",
-            }}
-            labelStyle={{ color: "white", fontSize: 15, fontWeight: "bold" }}
-            onPress={() => navigation.goBack()}
-          >
-            VOLTAR
-          </Button>
+            </View>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

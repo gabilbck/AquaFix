@@ -199,7 +199,7 @@ export default function PerfilScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}}>
         <View style={styles.usuTopo}>
           <Image
             source={usuario.foto_usu}

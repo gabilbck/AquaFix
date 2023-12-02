@@ -51,8 +51,7 @@ export default function CarrinhoScreen({ route, navigation }) {
     if (!cartItems.length) return;
 
     const total = cartItems.reduce((acc, item) => {
-      return acc + item.preco_prod;
-      
+      return acc + parseFloat(item.preco_prod);
     }, 0);
 
     setTotalPrice(total);
@@ -152,23 +151,23 @@ export default function CarrinhoScreen({ route, navigation }) {
                 </View>
               ))}
 
-              <Text style={{ ...styles.subtitulo, marginTop: 10 }}>
+              <Text style={{ ...styles.subtitulo, marginTop: 10, fontWeight: "bold" }}>
                 Quantidade de itens: {cartItems.length}
               </Text>
-              <Text style={styles.subtitulo}>Total: R$ {totalPrice}</Text>
+              <Text style={{ ...styles.subtitulo, fontWeight: "bold" }}>Total: R$ {totalPrice}</Text>
               <Button
                 onPress={handleFinalizarCompra}
                 style={{ ...styles.botaoverde, marginTop: 10 }}
               >
                 COMPRAR
               </Button>
+              <Text style={styles.error}>{msgErro}</Text>
               <Button
                 onPress={() => navigation.navigate("LojaScreen")}
-                style={styles.botao}
+                style={{...styles.botao, marginVertical: 10}}
               >
                 CONTINUAR COMPRANDO
               </Button>
-              <Text style={styles.error}>{msgErro}</Text>
             </View>
           </View>
         </View>

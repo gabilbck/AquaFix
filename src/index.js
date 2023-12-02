@@ -21,6 +21,7 @@ import LojaScreen from "./screens/LojaScreen";
 import RegisterProd from "./screens/RegisterProd";
 import VerProdScreen from "./screens/VerProdScreen";
 import RecuperarSenha2 from "./screens/RecuperarSenha2";
+import FinalizarCompra from "./screens/FinalizarCompra";
 
 /**
  * @auth Gabrieli Eduarda Lembeck
@@ -155,6 +156,13 @@ export default function RootNavigation({ navigation }) {
           }}
         />
       </Stack.Navigator>
+      <Stack.Screen
+        name="FinalizarCompra"
+        component={FinalizarCompra}
+        options={{
+          headerShown: false,
+        }}
+      />
     </NavigationContainer>
   );
 }
