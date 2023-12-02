@@ -61,28 +61,42 @@ export default function CarrinhoScreen({ route, navigation }) {
     navigation.navigate("FinalizarCompra", { user_id });
   }
 
-  function handleRemoverItem(item) {
-    console.log("Removendo item do carrinho: ", item);
+  async function handleRemoverItem(item) {
+    try {
+      const userCompleto = await getUser();
+      const currentUserID = userCompleto?.uid;
   
-    const carrinhoRef = collection(db, "carrinho");
+      if (!currentUserID || !item.id) {
+        console.error("user_id ou item.id é undefined.");
+        return;
+      }
   
-    // Verifica se user_id e item.id são definidos antes de realizar a consulta
-    if (user_id && item.id) {
-      query(
+      const carrinhoRef = collection(db, "carrinho");
+      const queryRef = query(
         carrinhoRef,
-        where("user_id", "==", user_id),
+        where("user_id", "==", currentUserID),
         where("id", "==", item.id)
-      )
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            deleteDoc(doc.ref);
-          });
-        })
-        .catch((error) => {
-          console.error("Error removing item from cart: ", error.message);
+      );
+  
+      const querySnapshot = await getDocs(queryRef);
+  
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach(async (doc) => {
+          try {
+            await deleteDoc(doc.ref);
+            // Atualizar o estado para refletir a remoção no UI
+            setCartItems((prevItems) =>
+              prevItems.filter((prevItem) => prevItem.id !== item.id)
+            );
+          } catch (error) {
+            console.error("Erro ao remover item: ", error.message);
+          }
         });
-    } else {
-      console.error("user_id ou item.id é undefined.");
+      } else {
+        console.warn("Item não encontrado no carrinho.");
+      }
+    } catch (error) {
+      console.error("Erro ao obter usuário: ", error.message);
     }
   }
 
@@ -135,21 +149,6 @@ export default function CarrinhoScreen({ route, navigation }) {
                     </Card.Actions>
                   </Card>
                 </View>
-                // <Card.Content key={index} style={styles.card}>
-                //   <Image
-                //     source={{ uri: item.foto_prod }}
-                //     style={styles.imagemProduto}
-                //   />
-                //   <Text style={styles.cardTitle}>{item.nome_prod}</Text>
-                //   <Text style={styles.cardValor}>R$ {item.preco_prod}</Text>
-                //   <Text style={styles.cardTexto}>{item.desc_prod}</Text>
-                //   <Button
-                //     onPress={() => handleRemoverItem(item)}
-                //     style={styles.cardButton}
-                //   >
-                //     Remover
-                //   </Button>
-                // </Card.Content>
               ))}
 
               <Text style={{ ...styles.subtitulo, marginTop: 10 }}>
