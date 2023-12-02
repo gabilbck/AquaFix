@@ -274,10 +274,9 @@ export const styles = StyleSheet.create({
     borderRadius: 13,
   },
   imagemProduto3: {
-    marginVertical: 20,
     marginBottom: 35,
-    width: 320, // Set the width to your desired value
-    height: 220, // Set the height to your desired value
+    width: 270, // Set the width to your desired value
+    height: 270, // Set the height to your desired value
     alignSelf: 'center',
     borderRadius: 10,
   },
@@ -285,11 +284,12 @@ export const styles = StyleSheet.create({
   
   card: {
     backgroundColor: "#16337e",
-    margin: 10,
+    marginVertical: 10,
     elevation: 2,
     borderRadius: 8, // Adicione bordas arredondadas aos cards
     color: "white",
-    maxWidth: 300,
+    maxWidth: "100%",
+    width: "100%",
     wordWrap: "break-word",
     overflowWrap: "break-word",
   },

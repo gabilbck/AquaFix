@@ -138,7 +138,7 @@ export default function VerProdScreen({ route, navigation }) {
       </View>
       <View style={styles.conteudo}>
         <View style={styles.containerInner}>
-          <Text style={styles.titulo}>PRODUTOS</Text>
+          <Text style={styles.titulo}>{nome_prod}</Text>
           <Card style={styles.card}>
             <Card.Content>
               <Image
@@ -146,7 +146,7 @@ export default function VerProdScreen({ route, navigation }) {
                 source={{ uri: foto_prod }}
               />
               <Text style={styles.subtitulo3}>Nome: {nome_prod}</Text>
-              <Text style={styles.subtitulo3}>Preço: {preco_prod}</Text>
+              <Text style={styles.subtitulo3}>Preço: R${preco_prod}</Text>
               <Text style={styles.subtitulo3}>Descrição: {desc_prod}</Text>
               {isAdmin && usuario.uid === route.params.user_id && (
                 <Button
