@@ -107,7 +107,7 @@ export default function RegisterProd({ navigation }) {
       setDescProdErr("Preencha o campo Descrição");
       return;
     }
-    if (precoProd == "") {
+    if (precoProd == 0) {
       setPrecoProdErr("Preencha o campo Preço");
       return;
     }

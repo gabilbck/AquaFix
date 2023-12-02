@@ -116,7 +116,15 @@ export default function EditProfile({ navigation }) {
       <View style={styles.imagemTopo}>
         {imageUri ? (
           <Pressable onPress={pickImage} style={styles.botao3}>
-            <Text style={styles.botaoText}>Escolher foto</Text>
+            <Text style={{
+              fontSize: 15,
+              fontWeight: "bold",
+              color: "#16337E",
+              backgroundColor: "white",
+              borderRadius: 10,
+              padding: 8,
+              alignSelf: "center",
+            }}>Escolher foto</Text>
           </Pressable>
         ) : (
           <Image

@@ -52,6 +52,7 @@ export default function CarrinhoScreen({ route, navigation }) {
 
     const total = cartItems.reduce((acc, item) => {
       return acc + item.preco_prod;
+      
     }, 0);
 
     setTotalPrice(total);

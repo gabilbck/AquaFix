@@ -44,9 +44,7 @@ export default function PerfilScreen() {
           setUsuario(userData);
 
           if (userData.whatsapp_usu) {
-            userData.whatsapp_usu = extractCleanPhoneNumber(
-              userData.whatsapp_usu
-            );
+            userData.whatsapp_usu = extractCleanPhoneNumber(phoneNumber);
           }
         } else {
           console.log("Usuário não encontrado !!!");
@@ -149,9 +147,8 @@ export default function PerfilScreen() {
     }
   }
 
-
   function VerificaInsta() {
-    if ((usuario?.instagram_usu != "") || (usuario?.instagram_usu != undefined)) {
+    if (usuario?.instagram_usu != "" || usuario?.instagram_usu != undefined) {
       setEstadoInsta(
         <TouchableOpacity
           onPress={() => openSocialMediaLink(usuario?.instagram_usu)}
@@ -175,6 +172,7 @@ export default function PerfilScreen() {
   useEffect(() => {
     VerificaServico() && VerificaLinkdin() && VerificaInsta();
   }, [usuario.uid]);
+
   // const checkServicosPreenchidos = () => {
   //   const servicosList = [
   //     usuario?.servicosUsu,
