@@ -89,7 +89,7 @@ export default function PesquisaScreen({ navigation }) {
           <View style={styles.conteudo}>
             <View style={styles.containerInner}>
               <TextInput
-                placeholder="Faça sua busca"
+                placeholder="Busque por um serviço..."
                 value={busca}
                 onChangeText={setBusca}
                 style={styles.input}
@@ -123,10 +123,10 @@ export default function PesquisaScreen({ navigation }) {
                             Serviços:
                           </Text>
                           <View style={styles.linhaServicos}>
-                            <Text style={styles.servicos}>
+                            <Text style={{...styles.servicos, marginRight: 10,}}>
                               {item.servicos_usu}
                             </Text>
-                            <Text style={styles.servicos}>
+                            <Text style={{...styles.servicos, marginRight: 10,}}>
                               {item.servicos_usu1}
                             </Text>
                             <Text style={styles.servicos}>

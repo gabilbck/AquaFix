@@ -366,16 +366,22 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   servicos: {
-    padding: 10,
-    borderRadius: 100,
+    padding: 8,
+    borderRadius: 15,
     backgroundColor: "white",
     color: "black",
     textAlign: "center",
     marginTop: 5,
+    textAlignVertical: "center",
+    textAlign: "center",
+    alignContent: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+
   },
   linhaServicos: {
     flexDirection: "row",
-    alignSelf: "stretch",
+    
     justifyContent: "space-between",
   },
   modalContent: {
