@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function FinalizarCompraScreen() {
   const navigation = useNavigation();
-  
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -20,6 +20,9 @@ export default function FinalizarCompraScreen() {
           </View>
           <View style={styles.conteudo}>
             <View style={styles.containerInner}>
+              <Text style={{ ...styles.titulo, marginBottom: 0 }}>
+                FINALIZAR COMPRA
+              </Text>
               <View
                 style={{
                   flex: 1,
@@ -27,13 +30,21 @@ export default function FinalizarCompraScreen() {
                   alignItems: "center",
                 }}
               >
-                <Text style={{ ...styles.subtitulo, fontWeight: "bold" }}>
+                <Text
+                  style={{
+                    ...styles.subtitulo,
+                    fontWeight: "bold",
+                    fontSize: 20,
+                    margin: 0,
+                    padding: 0,
+                  }}
+                >
                   Estamos trabalhando para disponibilizar essa função o mais
                   rápido possível!
                 </Text>
                 <Button
                   onPress={() => navigation.navigate("CarrinhoScreen")}
-                  style={styles.botao}
+                  style={{ ...styles.botao, marginBottom: 0 }}
                 >
                   Voltar
                 </Button>

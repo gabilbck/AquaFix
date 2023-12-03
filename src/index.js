@@ -156,14 +156,14 @@ export default function RootNavigation({ navigation }) {
             headerShown: false,
           }}
         />
-      </Stack.Navigator>
-      <Stack.Screen
+        <Stack.Screen
         name="FinalizarCompraScreen"
         component={FinalizarCompraScreen}
         options={{
           headerShown: false,
         }}
       />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
