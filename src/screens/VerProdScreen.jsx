@@ -16,7 +16,7 @@ import { auth, db } from "../config/firebase";
 import { ScrollView } from "react-native-web";
 
 export default function VerProdScreen({ route, navigation }) {
-  const { nome_prod, foto_prod, desc_prod, preco_prod } = route.params;
+  const { id_prod, nome_prod, foto_prod, desc_prod, preco_prod } = route.params;
   const [usuario, setUsuario] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -112,6 +112,7 @@ export default function VerProdScreen({ route, navigation }) {
     try {
       if (route.params?.user_id) {
         navigation.navigate("CarrinhoScreen", {
+          id_prod,
           nome_prod,
           foto_prod,
           desc_prod,
@@ -121,6 +122,7 @@ export default function VerProdScreen({ route, navigation }) {
 
         console.log("Produto adicionado ao carrinho!");
         addDoc(collection(db, "carrinho"), {
+          id_prod,
           nome_prod,
           foto_prod,
           desc_prod,

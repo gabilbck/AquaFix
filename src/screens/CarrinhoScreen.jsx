@@ -14,7 +14,7 @@ import { Button, Card } from "react-native-paper";
 import { getUser } from "../utils/asyncstorage";
 import { useNavigation } from "@react-navigation/native";
 
-export default function CarrinhoScreen({ route, }) {
+export default function CarrinhoScreen({ route }) {
   const { user_id } = route.params || {};
   const navigation = useNavigation();
   const [cartItems, setCartItems] = useState([]);
