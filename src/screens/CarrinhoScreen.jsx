@@ -12,9 +12,11 @@ import { db } from "../config/firebase";
 import { ScrollView } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { getUser } from "../utils/asyncstorage";
+import { useNavigation } from "@react-navigation/native";
 
-export default function CarrinhoScreen({ route, navigation }) {
+export default function CarrinhoScreen({ route, }) {
   const { user_id } = route.params || {};
+  const navigation = useNavigation();
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [msgErro, setMsgErro] = useState("");
@@ -152,12 +154,11 @@ export default function CarrinhoScreen({ route, navigation }) {
               </Text>
               <Text style={{ ...styles.subtitulo, fontWeight: "bold" }}>Total: R$ {totalPrice}</Text>
               <Button
-                onPress={() => navigation.navigate("FinalizarCompra")}
+                onPress={() => navigation.navigate("FinalizarCompraScreen")}
                 style={{ ...styles.botaoverde, marginTop: 10 }}
               >
                 COMPRAR
               </Button>
-              <Text style={styles.error}>{msgErro}</Text>
               <Button
                 onPress={() => navigation.navigate("LojaScreen")}
                 style={{...styles.botao, marginVertical: 10}}

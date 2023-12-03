@@ -1,10 +1,13 @@
 import { View, Text } from "react-native";
 import { styles } from "../utils/styles";
 import { Image } from "expo-image";
-import { Button, Card } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-export default function FinalizarCompra({ navigation }) {
+export default function FinalizarCompraScreen() {
+  const navigation = useNavigation();
+  
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -28,7 +31,12 @@ export default function FinalizarCompra({ navigation }) {
                   Estamos trabalhando para disponibilizar essa função o mais
                   rápido possível!
                 </Text>
-                <Button style={styles.botao}>Voltar</Button>
+                <Button
+                  onPress={() => navigation.navigate("CarrinhoScreen")}
+                  style={styles.botao}
+                >
+                  Voltar
+                </Button>
               </View>
             </View>
           </View>

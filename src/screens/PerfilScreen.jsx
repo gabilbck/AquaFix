@@ -67,10 +67,15 @@ export default function PerfilScreen() {
   const openWhatsAppChat = () => {
     if (usuario.whatsapp_usu) {
       const whatsappNumber = usuario.whatsapp_usu;
-      const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
+      const sanitizedWhatsAppNumber = whatsappNumber.replace(/[^0-9]/g, "");
+      if (sanitizedWhatsAppNumber.length === 0) {
+        console.error("Invalid WhatsApp number");
+        return;
+      }
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=55${sanitizedWhatsAppNumber}`;
       Linking.openURL(whatsappUrl)
         .then((data) => {
-          console.log("WhatsApp foi aberto");
+          console.log("WhatsApp chat opened");
         })
         .catch((error) => {
           console.error("Error opening WhatsApp chat", error);
