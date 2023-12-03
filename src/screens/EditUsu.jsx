@@ -203,7 +203,7 @@ export default function EditProfile({ navigation }) {
 
               {/* Update Button */}
               <Button
-                style={styles.botaoedit}
+                style={{...styles.botaoedit, alignContent: "center", alignItems: "center", alignSelf: "center",}}
                 labelStyle={{ color: "white", fontSize: 15 }}
                 onPress={() => {
                   handleUpdateProfile();
@@ -213,7 +213,7 @@ export default function EditProfile({ navigation }) {
                 SALVAR
               </Button>
               <Button
-                style={styles.botaovermelho2}
+                style={{...styles.botaovermelho2, width: "50%"}}
                 labelStyle={{ color: "white", fontSize: 15 }}
                 onPress={() => navigation.goBack()}
               >
